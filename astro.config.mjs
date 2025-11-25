@@ -8,7 +8,18 @@ import react from "@astrojs/react";
 export default defineConfig({
   site: "https://emircyn.com",
   vite: { plugins: [tailwindcss()], },
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    sitemap({
+      i18n: {
+        defaultLocale: "en",
+        locales: {
+          en: "en-US",
+          tr: "tr-TR",
+        },
+      },
+    }),
+  ],
   i18n: {
     locales: ["en", "tr"],
     defaultLocale: "en",
