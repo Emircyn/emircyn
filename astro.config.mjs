@@ -8,4 +8,11 @@ import react from "@astrojs/react";
 export default defineConfig({
   vite: { plugins: [tailwindcss()], },
   integrations: [react()],
+  i18n: {
+    locales: ["en", "tr"],
+    defaultLocale: "en",
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
 });

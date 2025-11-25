@@ -5,7 +5,11 @@ import { Image } from "astro:assets";
 import { Tiles } from "@/components/ui/tiles";
 import { AnimatedGlow } from "@/components/ui/animated-glow";
 import { Github, Linkedin } from "lucide-react";
+import { useTranslations } from "@/i18n/utils";
 import profileImage from "@/assets/images/hero-portrait.png";
+
+const lang = (Astro.currentLocale || "en") as "en" | "tr";
+const t = useTranslations(lang);
 ---
 
 <section id="hero" class="relative overflow-hidden py-20 md:py-32 lg:py-40">
@@ -21,24 +25,23 @@ import profileImage from "@/assets/images/hero-portrait.png";
                     <h1
                         class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-['JetBrains_Mono']"
                     >
-                        Frontend Developer <br class="hidden lg:inline" />
-                        <span class="text-primary">building web apps</span>
+                        {t("hero.title")} <br class="hidden lg:inline" />
                     </h1>
+                    <h2 class="text-primary text-2xl font-bold tracking-tighter md:text-3xl lg:text-4xl font-['JetBrains_Mono']">{t("hero.subtitle")}</h2>
+
                     <p
                         class="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
                     >
-                        Specializing in building exceptional digital experiences
-                        with Next.js, Astro, and React. Currently working at
-                        InspireIT.
+                        {t("hero.description")}
                     </p>
                 </div>
                 <div class="flex flex-col gap-4 min-[400px]:flex-row min-[400px]:items-center">
-                    <a href="mailto:contact@emircan.com">
+                    <a href="mailto:emircan.erdemci@hotmail.com">
                         <RainbowButton
                             client:load
                             size="lg"
                         >
-                            Contact me
+                            {t("hero.contactButton")}
                         </RainbowButton>
                     </a>
                     <div class="flex gap-4 items-center">

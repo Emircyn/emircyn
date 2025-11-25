@@ -1,8 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Hero from "../components/Hero.astro";
----
+import { defaultLang } from "../i18n/ui";
 
-<Layout>
-	<Hero />
-</Layout>
+return Astro.redirect(`/${defaultLang}/`, 302);
+---
