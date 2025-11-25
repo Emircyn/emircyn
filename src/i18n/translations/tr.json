@@ -1,9 +1,20 @@
 {
   "hero": {
-    "title": "Frontend Developer",
+    "title_1": "Frontend",
+    "title_2": "Geliştirici",
     "subtitle": "web uygulamaları geliştiriyorum",
-    "description": "Next.js, Astro ve React ile olağanüstü dijital deneyimler oluşturmada uzmanlaşmış. Şu anda InspireIT'te çalışıyorum.",
+    "desc_1": "Sıradışı dijital deneyimler geliştiren Frontend Geliştirici.",
+    "desc_2": "Basitlik, performans ve kullanıcı odaklı tasarıma inanıyorum.",
+    "desc_3_pre": "Şu anda ",
+    "desc_3_company": "InspireIT",
+    "desc_3_post": "'te harika şeyler inşa ediyorum.",
     "contactButton": "İletişime Geç"
+  },
+  "header": {
+    "sourceCode": "Projenin kaynak kodu"
+  },
+  "seo": {
+    "title": "Emircan Erdemci | Frontend Geliştirici",
+    "description": "Sıradışı dijital deneyimler geliştiren Frontend Geliştirici."
   }
 }
-

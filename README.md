@@ -1,46 +1,91 @@
-# Astro Starter Kit: Basics
+# Emircan Erdemci - Personal Portfolio
 
-```sh
-bun create astro@latest -- --template basics
+This is a modern, responsive personal portfolio website built with **Astro**, **React**, and **Tailwind CSS**. It features a clean design, dark/light mode support, internationalization (i18n), and interactive UI components.
+
+## Features
+
+-   **Framework**: Built with [Astro](https://astro.build/) for top-notch performance.
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/) for utility-first styling.
+-   **UI Components**: [shadcn/ui](https://ui.shadcn.com/) components for a polished look.
+-   **Internationalization**: Multi-language support (English & Turkish) with automatic language detection.
+-   **Dark Mode**: System-aware dark/light mode toggler with smooth transitions.
+-   **Animations**:
+    -   `AuroraText` for gradient text effects.
+    -   `AnimatedGlow` for background ambiance.
+    -   `Highlighter` for emphasizing key text.
+-   **Interactivity**:
+    -   `CompanyHoverCard` for previewing external links.
+    -   Responsive layout with a "responsive-first" approach.
+
+## Tech Stack
+
+-   **Astro**: Static Site Generator & Framework
+-   **React**: UI Library for interactive components
+-   **Tailwind CSS**: CSS Framework
+-   **Framer Motion**: Animation Library
+-   **Lucide React**: Icon Set
+-   **TypeScript**: Type Safety
+
+## Getting Started
+
+### Prerequisites
+
+-   Node.js (v18 or higher)
+-   npm, yarn, pnpm, or bun
+
+### Installation
+
+1.  Clone the repository:
+
+    ```bash
+    git clone https://github.com/Emircyn/emircyn.git
+    cd emircyn
+    ```
+
+2.  Install dependencies:
+
+    ```bash
+    npm install
+    # or
+    bun install
+    ```
+
+3.  Start the development server:
+
+    ```bash
+    npm run dev
+    # or
+    bun dev
+    ```
+
+4.  Open your browser and navigate to `http://localhost:4321`.
+
+## Building for Production
+
+To create a production build:
+
+```bash
+npm run build
+# or
+bun run build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The output will be in the `dist/` directory.
 
-## 🚀 Project Structure
+## Project Structure
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```
+src/
+├── assets/         # Images and static assets
+├── components/     # Reusable UI components
+│   ├── ui/         # shadcn/ui components
+│   └── ...         # Custom components (Hero, CompanyHoverCard, etc.)
+├── i18n/           # Translation files and utilities
+├── layouts/        # Page layouts
+├── pages/          # Astro pages and routing
+└── styles/         # Global styles
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## License
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+This project is open source and available under the [MIT License](LICENSE).

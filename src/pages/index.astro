@@ -1,5 +1,10 @@
 ---
-import { defaultLang } from "../i18n/ui";
 
-return Astro.redirect(`/${defaultLang}/`, 302);
 ---
+
+<script is:inline>
+    const lang = navigator.language.startsWith("tr") ? "tr" : "en";
+    window.location.href = `/${lang}/`;
+</script>
+
+<meta http-equiv="refresh" content="0;url=/en/" />

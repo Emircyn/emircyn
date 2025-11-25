@@ -1,9 +1,20 @@
 {
   "hero": {
-    "title": "Frontend Developer",
+    "title_1": "Frontend",
+    "title_2": "Developer",
     "subtitle": "building web apps",
-    "description": "Specializing in building exceptional digital experiences with Next.js, Astro, and React. Currently working at InspireIT.",
+    "desc_1": "I'm a Frontend Developer specializing in building exceptional digital experiences.",
+    "desc_2": "I believe in simplicity, performance, and user-centric design.",
+    "desc_3_pre": "Currently building cool things at ",
+    "desc_3_company": "InspireIT",
+    "desc_3_post": ".",
     "contactButton": "Contact me"
+  },
+  "header": {
+    "sourceCode": "Project source code"
+  },
+  "seo": {
+    "title": "Emircan Erdemci | Frontend Developer",
+    "description": "Frontend Developer specializing in building exceptional digital experiences."
   }
 }
-

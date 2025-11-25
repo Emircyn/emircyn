@@ -1,0 +1,64 @@
+---
+interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+    canonicalURL?: URL | string;
+}
+
+import { useTranslations } from "@/i18n/utils";
+
+const lang = (Astro.currentLocale || "en") as "en" | "tr";
+const t = useTranslations(lang);
+
+const {
+    title = t("seo.title"),
+    description = t("seo.description"),
+    image = "/og-image.png",
+    canonicalURL = new URL(Astro.url.pathname, Astro.site),
+} = Astro.props;
+
+const siteTitle =
+    title === t("seo.title")
+        ? title
+        : `${title} | ${t("seo.title").split("|")[0].trim()}`;
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Alternate Language URLs -->
+<link rel="alternate" hreflang="en" href={new URL("/en/", Astro.site)} />
+<link rel="alternate" hreflang="tr" href={new URL("/tr/", Astro.site)} />
+<link rel="alternate" hreflang="x-default" href={new URL("/en/", Astro.site)} />
+
+<!-- Primary Meta Tags -->
+<title>{siteTitle}</title>
+<meta name="title" content={siteTitle} />
+<meta name="description" content={description} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={siteTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={siteTitle} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<!-- Sitemap -->
+<link rel="sitemap" href="/sitemap-index.xml" />

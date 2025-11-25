@@ -1,5 +1,5 @@
 ---
-import { RainbowButton } from "@/components/ui/rainbow-button";
+import { rainbowButtonVariants } from "@/components/ui/rainbow-button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Image } from "astro:assets";
 import { Tiles } from "@/components/ui/tiles";
@@ -7,61 +7,98 @@ import { AnimatedGlow } from "@/components/ui/animated-glow";
 import { Github, Linkedin } from "lucide-react";
 import { useTranslations } from "@/i18n/utils";
 import profileImage from "@/assets/images/hero-portrait.png";
+import { cn } from "@/lib/utils";
+import { AuroraText } from "@/components/ui/aurora-text";
+import { Highlighter } from "@/components/ui/highlighter";
+import { CompanyHoverCard } from "@/components/CompanyHoverCard";
+import { Button } from "@/components/ui/button";
 
 const lang = (Astro.currentLocale || "en") as "en" | "tr";
 const t = useTranslations(lang);
 ---
 
-<section id="hero" class="relative overflow-hidden py-20 md:py-32 lg:py-40">
+<section
+    id="hero"
+    class="flex items-center justify-center min-h-[calc(100vh-(36px+2rem))] lg:h-[calc(100vh-(36px+2rem))] lg:min-h-0"
+>
     <div class="container mx-auto px-4 md:px-6">
         <div class="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
             <div class="flex flex-col justify-center space-y-8 text-left">
                 <div class="space-y-4">
-                    <p
-                        class="text-xl md:text-2xl text-muted-foreground font-['Caveat']"
+                    <h1
+                        class="text-lg md:text-xl text-muted-foreground font-caveat"
                     >
                         Emircan Erdemci
-                    </p>
-                    <h1
-                        class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-['JetBrains_Mono']"
-                    >
-                        {t("hero.title")} <br class="hidden lg:inline" />
                     </h1>
-                    <h2 class="text-primary text-2xl font-bold tracking-tighter md:text-3xl lg:text-4xl font-['JetBrains_Mono']">{t("hero.subtitle")}</h2>
+                    <h2
+                        class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl font-mono"
+                    >
+                        {t("hero.title_1")}
+                        <AuroraText client:idle>{t("hero.title_2")}</AuroraText>
+                        <br class="hidden lg:inline" />
+                    </h2>
+                    <h3
+                        class="text-primary text-2xl font-bold tracking-tighter md:text-3xl lg:text-4xl font-mono"
+                    >
+                        {t("hero.subtitle")}
+                    </h3>
 
                     <p
-                        class="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+                        class="max-w-xl text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
                     >
-                        {t("hero.description")}
+                        {t("hero.desc_1")}
+                        <Highlighter
+                            client:idle
+                            action="underline"
+                            color="#facc15"
+                        >
+                            {t("hero.desc_2")}
+                        </Highlighter>
+                        {t("hero.desc_3_pre")}
+                        <CompanyHoverCard
+                            client:idle
+                            text={t("hero.desc_3_company")}
+                        />
+                        {t("hero.desc_3_post")}
                     </p>
                 </div>
-                <div class="flex flex-col gap-4 min-[400px]:flex-row min-[400px]:items-center">
-                    <a href="mailto:emircan.erdemci@hotmail.com">
-                        <RainbowButton
-                            client:load
-                            size="lg"
-                        >
-                            {t("hero.contactButton")}
-                        </RainbowButton>
+                <div
+                    class="flex flex-col gap-4 min-[400px]:flex-row min-[400px]:items-center"
+                >
+                    <a
+                        href="mailto:emircan.erdemci@hotmail.com"
+                        class={cn(rainbowButtonVariants({ size: "default" }))}
+                    >
+                        {t("hero.contactButton")}
                     </a>
                     <div class="flex gap-4 items-center">
                         <a
                             href="https://github.com/emircyn"
                             target="_blank"
                             rel="noreferrer"
-                            class="text-muted-foreground hover:text-foreground transition-colors"
                             aria-label="GitHub"
                         >
-                            <Github className="h-6 w-6" />
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="cursor-pointer"
+                            >
+                                <Github className="h-6 w-6" />
+                            </Button>
                         </a>
                         <a
                             href="https://www.linkedin.com/in/emircyn/"
                             target="_blank"
                             rel="noreferrer"
-                            class="text-muted-foreground hover:text-foreground transition-colors"
                             aria-label="LinkedIn"
                         >
-                            <Linkedin className="h-6 w-6" />
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="cursor-pointer"
+                            >
+                                <Linkedin className="h-6 w-6" />
+                            </Button>
                         </a>
                     </div>
                 </div>
@@ -71,18 +108,21 @@ const t = useTranslations(lang);
             >
                 <Card className="bg-white p-0 relative overflow-hidden">
                     <CardContent className="relative">
-                        <Tiles 
-                            client:load
+                        <Tiles
+                            client:idle
                             className="absolute inset-0 w-full h-full z-0 dark:opacity-10"
                             tileSize="sm"
                             rows={29}
                             cols={29}
                         />
-                        <AnimatedGlow client:load className="dark:mix-blend-mode-normal" />
+                        <AnimatedGlow
+                            client:idle
+                            className="dark:mix-blend-mode-normal"
+                        />
                         <Image
                             src={profileImage}
-                            alt="Emircan Erdemci"
-                            class="w-full h-auto rounded-2xl object-cover relative z-10"
+                            alt="Emircan Erdemci - Frontend Developer"
+                            class="w-full h-auto rounded-2xl object-cover relative z-10 pointer-events-none"
                             loading="eager"
                         />
                     </CardContent>

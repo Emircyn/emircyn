@@ -32,12 +32,12 @@ export function LanguagePicker({ currentLocale }: LanguagePickerProps) {
 
   const handleLanguageChange = (lang: string) => {
     if (typeof window === "undefined") return;
-    
+
     const currentPath = window.location.pathname;
     // Mevcut path'ten dil kısmını çıkar
     let pathWithoutLang = currentPath.replace(/^\/(en|tr)/, "") || "/";
     if (pathWithoutLang === "") pathWithoutLang = "/";
-    
+
     // Yeni dil ile path oluştur
     // Default locale (en) için prefix yok
     const newPath = lang === "en" ? pathWithoutLang : `/${lang}${pathWithoutLang}`;
@@ -47,7 +47,7 @@ export function LanguagePicker({ currentLocale }: LanguagePickerProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" className="cursor-pointer">
           <Languages className="h-[1.2rem] w-[1.2rem]" />
           <span className="sr-only">Toggle language</span>
         </Button>

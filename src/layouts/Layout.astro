@@ -1,8 +1,10 @@
 ---
-import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
-import { LanguagePicker } from "@/components/LanguagePicker";
+import { Header } from "@/components/Header";
+import SEO from "@/components/SEO.astro";
 import "@/styles/global.css";
 import "@fontsource/inter";
+import "@fontsource/caveat";
+import "@fontsource/jetbrains-mono";
 
 const lang = Astro.currentLocale || "en";
 ---
@@ -10,17 +12,7 @@ const lang = Astro.currentLocale || "en";
 <!doctype html>
 <html lang={lang} class="scroll-smooth">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Emircan Erdemci | Frontend Developer</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=JetBrains+Mono:wght@100..800&display=swap"
-			rel="stylesheet"
-		/>
+		<SEO />
 		<script is:inline>
 			const getThemePreference = () => {
 				if (
@@ -52,29 +44,12 @@ const lang = Astro.currentLocale || "en";
 		</script>
 	</head>
 	<body
-		class="min-h-screen bg-background text-foreground font-sans antialiased flex flex-col relative"
+		class="min-h-screen bg-background text-foreground font-sans antialiased flex flex-col lg:h-screen lg:overflow-hidden"
 	>
-		<div class="absolute top-4 right-4 z-50 flex gap-2">
-			<LanguagePicker client:load currentLocale={lang} />
-			<AnimatedThemeToggler client:load />
-		</div>
+		<Header client:load currentLocale={lang} />
+
 		<main class="container mx-auto z-10 relative">
 			<slot />
 		</main>
 	</body>
 </html>
-
-<script>
-	// Smooth scroll for anchor links
-	document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-		anchor.addEventListener("click", function (this: HTMLAnchorElement, e) {
-			e.preventDefault();
-			const href = this.getAttribute("href");
-			if (href) {
-				document.querySelector(href)?.scrollIntoView({
-					behavior: "smooth",
-				});
-			}
-		});
-	});
-</script>
