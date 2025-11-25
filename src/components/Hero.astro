@@ -1,0 +1,90 @@
+---
+import { RainbowButton } from "@/components/ui/rainbow-button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Image } from "astro:assets";
+import { Tiles } from "@/components/ui/tiles";
+import { AnimatedGlow } from "@/components/ui/animated-glow";
+import { Github, Linkedin } from "lucide-react";
+import profileImage from "@/assets/images/hero-portrait.png";
+---
+
+<section id="hero" class="relative overflow-hidden py-20 md:py-32 lg:py-40">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
+            <div class="flex flex-col justify-center space-y-8 text-left">
+                <div class="space-y-4">
+                    <p
+                        class="text-xl md:text-2xl text-muted-foreground font-['Caveat']"
+                    >
+                        Emircan Erdemci
+                    </p>
+                    <h1
+                        class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-['JetBrains_Mono']"
+                    >
+                        Frontend Developer <br class="hidden lg:inline" />
+                        <span class="text-primary">building web apps</span>
+                    </h1>
+                    <p
+                        class="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+                    >
+                        Specializing in building exceptional digital experiences
+                        with Next.js, Astro, and React. Currently working at
+                        InspireIT.
+                    </p>
+                </div>
+                <div class="flex flex-col gap-4 min-[400px]:flex-row min-[400px]:items-center">
+                    <a href="mailto:contact@emircan.com">
+                        <RainbowButton
+                            client:load
+                            size="lg"
+                        >
+                            Contact me
+                        </RainbowButton>
+                    </a>
+                    <div class="flex gap-4 items-center">
+                        <a
+                            href="https://github.com/emircyn"
+                            target="_blank"
+                            rel="noreferrer"
+                            class="text-muted-foreground hover:text-foreground transition-colors"
+                            aria-label="GitHub"
+                        >
+                            <Github className="h-6 w-6" />
+                        </a>
+                        <a
+                            href="https://www.linkedin.com/in/emircyn/"
+                            target="_blank"
+                            rel="noreferrer"
+                            class="text-muted-foreground hover:text-foreground transition-colors"
+                            aria-label="LinkedIn"
+                        >
+                            <Linkedin className="h-6 w-6" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="flex-1 relative flex justify-center md:justify-end mt-8 md:mt-0"
+            >
+                <Card className="bg-white p-0 relative overflow-hidden">
+                    <CardContent className="relative">
+                        <Tiles 
+                            client:load
+                            className="absolute inset-0 w-full h-full z-0 dark:opacity-10"
+                            tileSize="sm"
+                            rows={29}
+                            cols={29}
+                        />
+                        <AnimatedGlow client:load className="dark:mix-blend-mode-normal" />
+                        <Image
+                            src={profileImage}
+                            alt="Emircan Erdemci"
+                            class="w-full h-auto rounded-2xl object-cover relative z-10"
+                            loading="eager"
+                        />
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
+    </div>
+</section>

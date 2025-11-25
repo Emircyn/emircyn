@@ -1,0 +1,54 @@
+---
+import { Card, CardContent } from "@/components/ui/card";
+---
+
+<section id="about" class="container py-8 md:py-12 lg:py-24">
+    <div
+        class="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center"
+    >
+        <h2 class="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+            About Me
+        </h2>
+        <p
+            class="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7"
+        >
+            I am a passionate Frontend Developer with a strong background in
+            building modern web applications. I love creating intuitive and
+            dynamic user experiences using the latest technologies.
+        </p>
+    </div>
+    <div
+        class="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3 mt-8"
+    >
+        <Card>
+            <CardContent
+                class="flex flex-col items-center justify-center p-6 gap-2"
+            >
+                <h3 class="font-bold">Frontend</h3>
+                <p class="text-sm text-muted-foreground text-center">
+                    React, Next.js, Vue.js, Astro, Tailwind CSS
+                </p>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardContent
+                class="flex flex-col items-center justify-center p-6 gap-2"
+            >
+                <h3 class="font-bold">CMS</h3>
+                <p class="text-sm text-muted-foreground text-center">
+                    WordPress, Statamic
+                </p>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardContent
+                class="flex flex-col items-center justify-center p-6 gap-2"
+            >
+                <h3 class="font-bold">Tools</h3>
+                <p class="text-sm text-muted-foreground text-center">
+                    Git, VS Code, Figma
+                </p>
+            </CardContent>
+        </Card>
+    </div>
+</section>
