@@ -31,10 +31,10 @@ export function Highlighter({
   className = "",
   action = "highlight",
   color = "#ffd1dc",
-  strokeWidth = 1.5,
+  strokeWidth = 2,
   animationDuration = 600,
   iterations = 2,
-  padding = 2,
+  padding = 4,
   multiline = true,
   isView = false,
 }: HighlighterProps) {
@@ -68,21 +68,37 @@ export function Highlighter({
     const annotation = annotate(element, annotationConfig)
 
     annotationRef.current = annotation
-    annotationRef.current.show()
 
-    const resizeObserver = new ResizeObserver(() => {
-      annotation.hide()
-      annotation.show()
-    })
+    // Delay to ensure proper rendering on mobile
+    setTimeout(() => {
+      annotationRef.current?.show()
+    }, 100)
 
+    // Handle resize and orientation changes
+    const handleResize = () => {
+      if (annotationRef.current) {
+        annotationRef.current.hide()
+        setTimeout(() => {
+          annotationRef.current?.show()
+        }, 50)
+      }
+    }
+
+    const resizeObserver = new ResizeObserver(handleResize)
     resizeObserver.observe(element)
     resizeObserver.observe(document.body)
+
+    // Listen for orientation changes on mobile
+    window.addEventListener('resize', handleResize)
+    window.addEventListener('orientationchange', handleResize)
 
     return () => {
       if (element) {
         annotate(element, { type: action }).remove()
         resizeObserver.disconnect()
       }
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('orientationchange', handleResize)
     }
   }, [
     shouldShow,
@@ -96,7 +112,7 @@ export function Highlighter({
   ])
 
   return (
-    <span ref={elementRef} className={`relative inline-block bg-transparent ${className}`}>
+    <span ref={elementRef} className={`relative inline bg-transparent ${className}`}>
       {children}
     </span>
   )
