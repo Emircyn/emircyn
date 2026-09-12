@@ -82,31 +82,35 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
                 </h1>
             </div>
 
-            <!-- The second moving plane. The roller lays its band of ink across
-                 the sheet on exactly the scroll that opens the width axis, so
-                 the hero is one move seen twice rather than a still page with
-                 an animation parked in the corner. The playhead is driven by
-                 the hero timeline, not by this element's own position: the hero
-                 is pinned, so the plane never moves on screen and its own rect
-                 would report one frozen value for the whole act. -->
+            <!-- The sheet the hero is printed on. The roller lays its band of
+                 ink across it on exactly the scroll that opens the width axis,
+                 so the hero is one move seen twice rather than a still page
+                 with an animation parked in a box in the corner. It is washed
+                 back to a ghost impression: the paper stays the ground of the
+                 page, and every reading on top of it keeps its contrast.
+
+                 The playhead is driven by the hero timeline, not by this
+                 element's own position. The hero is pinned, so the ground never
+                 moves on screen and its own rect would report one frozen value
+                 for the whole act. -->
             <div
-                class="hero__plane"
+                class="hero__ground"
                 data-scrub-stage
                 data-scrub-driven="hero"
-                aria-label={t("plates.roller")}
+                aria-hidden="true"
             >
                 <Image
                     src={rollerPlate}
                     alt=""
-                    widths={[520, 900, 1400]}
-                    sizes="(max-width: 767px) 92vw, 36vw"
+                    widths={[720, 1200, 1800]}
+                    sizes="100vw"
                     loading="lazy"
                     decoding="async"
-                    class="hero__plane-still"
+                    class="hero__ground-still"
                     data-scrub-poster
                 />
                 <video
-                    class="hero__plane-video"
+                    class="hero__ground-video"
                     data-scrub-video
                     data-scrub-src="/media/roller.mp4"
                     data-scrub-src-mobile="/media/roller-m.mp4"
@@ -191,15 +195,30 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
         background-color: var(--color-rule-strong);
     }
 
-    /* Travelling index. Sits at the top until the scroll layer moves it. */
+    /* Travelling index. The element is the full height of the rail and the
+       mark is drawn at its top edge, so the travel can be expressed as a
+       percentage of the element itself. That is the whole point: a percentage
+       cannot disagree with the rail, whereas a pixel figure measured once in
+       JS can, and did. It was read before the name band was given its fixed
+       height, so it carried the taller pre-layout rail for the rest of the
+       session and ran the index a third of the way off the bottom. */
     .hero__index {
         position: absolute;
         left: -1px;
         top: 0;
         width: 2rem;
+        height: 100%;
+        pointer-events: none;
+        transform: translateY(calc(var(--hero-index, 0) * (100% - 2px)));
+        will-change: transform;
+    }
+
+    .hero__index::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
         height: 2px;
         background-color: var(--color-accent);
-        will-change: transform;
     }
 
     .hero__readout {
@@ -293,24 +312,29 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
         color: var(--color-accent);
     }
 
-    /* --- The roller plane ------------------------------------------------ */
+    /* --- The ground ------------------------------------------------------ */
 
-    .hero__plane {
+    .hero__ground {
         position: absolute;
-        z-index: 2;
+        inset: 0;
+        z-index: 0;
         overflow: hidden;
-        border: 1px solid var(--color-rule-strong);
-        background-color: var(--color-paper-sunk);
-        /* Desktop: the band of right-hand air above the figure, which was the
-           emptiest part of the frame. */
-        right: 0;
-        top: 13%;
-        width: 36%;
-        aspect-ratio: 2 / 1;
+        pointer-events: none;
     }
 
-    .hero__plane-still,
-    .hero__plane-video {
+    /* Washed back to a ghost. At this strength the worst case, ink text over a
+       solid black frame of the clip, still measures 11.9:1, and the accent
+       4.8:1. The small mono labels are moved to full ink below for the same
+       reason: at ink-soft they land at 4.4:1, just under the threshold. */
+    .hero__ground::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-color: rgba(241, 241, 239, 0.88);
+    }
+
+    .hero__ground-still,
+    .hero__ground-video {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -319,19 +343,41 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
         display: block;
     }
 
-    /* The still holds the frame until a real video frame has painted. */
-    .hero__plane-video {
+    /* The still holds the ground until a real video frame has painted. */
+    .hero__ground-video {
         opacity: 0;
         transition: opacity 0.2s linear;
     }
 
-    .hero__plane[data-scrub-ready] .hero__plane-video {
+    .hero__ground[data-scrub-ready] .hero__ground-video {
         opacity: 1;
     }
 
-    /* Reduced motion, or no script: the plane is simply a printed plate. */
-    .hero__plane[data-scrub-static] .hero__plane-video {
+    /* Reduced motion, or no script: the ground is a printed plate. */
+    .hero__ground[data-scrub-static] .hero__ground-video {
         display: none;
+    }
+
+    /* The grid items are lifted over the ground. Without this the ground,
+       being positioned, paints above them, because they are not.
+
+       The scale is deliberately not in this list. It is already absolute with
+       its own z-index, and adding position: relative here overrode that and
+       collapsed the rail into a stack of ticks under the header. */
+    .hero__meta,
+    .hero__scenes {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Full ink rather than the soft grey used elsewhere. Over the ground the
+       soft grey drops to 4.4:1, and these are the smallest text on the page. */
+    .hero .label {
+        color: var(--color-ink);
+    }
+
+    .hero .label-accent {
+        color: var(--color-accent);
     }
 
     /* --- Portrait, above everything -------------------------------------- */
@@ -428,19 +474,6 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
 
         .hero[data-meta-lifted] .hero__meta {
             opacity: 0;
-        }
-
-        /* Mobile: the dead band between the message and the name, which is
-           where the composition was emptiest. */
-        .hero__plane {
-            right: 0;
-            left: 0;
-            top: 46%;
-            width: auto;
-            /* Shallower than desktop. The messages run to three lines on a
-               narrow measure and they grow downward from the centre of the
-               band, so the plane has to clear the tallest of them. */
-            aspect-ratio: 2 / 1;
         }
 
         .hero__scene-text {

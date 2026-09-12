@@ -174,20 +174,11 @@ export function initScroll() {
     if (readout) readout.textContent = String(Math.round(state.wdth));
 
     if (scaleIndex) {
+      // A bare fraction. The rail's own height does the rest, in CSS, so
+      // nothing here has to know how tall it currently is.
       const t = (state.wdth - WDTH_MIN) / (125 - WDTH_MIN);
-      // Positioned as a fraction of the rail, transform-only so it never
-      // triggers layout while it travels.
-      scaleIndex.style.transform = `translateY(calc(${t} * (${rail()}px - 2px)))`;
+      scaleIndex.style.setProperty("--hero-index", String(t));
     }
-  }
-
-  /** Height of the scale rail, read once per resize rather than per frame. */
-  let railH = 0;
-  function rail() {
-    if (!railH && scaleIndex?.parentElement) {
-      railH = scaleIndex.parentElement.clientHeight;
-    }
-    return railH;
   }
 
   /* --- The timeline ------------------------------------------------------
@@ -328,7 +319,6 @@ export function initScroll() {
   window.addEventListener("resize", () => {
     if (window.innerWidth === lastWidth) return;
     lastWidth = window.innerWidth;
-    railH = 0;
     build();
     ScrollTrigger.refresh();
   });

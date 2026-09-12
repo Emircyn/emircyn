@@ -150,8 +150,7 @@
   "plates": {
     "instrument": "Halftone plaka: kadranlı komparatör, ibresi kazınmış skalanın üstünde duruyor.",
     "surface": "Halftone plaka: neredeyse boş bir çizim masası, üstünde tek bir çelik cetvel.",
-    "caliper": "Halftone plaka: ince bir kağıt destesine kapanmış kumpas.",
-    "roller": "Halftone plaka: bir baskı mürekkep merdanesi geçişin ortasında, arkasında bıraktığı dolu mürekkep bandıyla."
+    "caliper": "Halftone plaka: ince bir kağıt destesine kapanmış kumpas."
   },
   "scrub": {
     "label": "Ölçüm",
