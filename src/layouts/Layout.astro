@@ -70,7 +70,6 @@ const lang = Astro.currentLocale || "en";
         initPlates,
         initReveals,
         initRoleBar,
-        initFooterRegister,
         refreshScroll,
     } from "@/scripts/scroll";
     import { initScrub } from "@/scripts/scrub";
@@ -79,7 +78,6 @@ const lang = Astro.currentLocale || "en";
     initScrub();
     initPlates();
     initRoleBar();
-    initFooterRegister();
     initReveals();
 
     // Last, so every trigger above is measured against the final document

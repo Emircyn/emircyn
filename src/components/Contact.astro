@@ -57,10 +57,13 @@ const headingLines = t("contact.headingLines") as string[];
 </section>
 
 <style>
+    /* The one ending. The colophon continues this surface with no seam, so
+       the bottom padding stops short of what a closing block would take: the
+       block and its fine print are one object. */
     .contact {
         background-color: var(--color-accent);
         color: var(--color-paper);
-        padding-block: calc(var(--spacing) * 16);
+        padding-block: calc(var(--spacing) * 16) calc(var(--spacing) * 7);
         margin-top: calc(var(--spacing) * 8);
     }
 

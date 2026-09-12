@@ -137,8 +137,9 @@
   },
   "footer": {
     "rights": "Emircan Erdemci",
-    "offset": "Offset",
-    "registered": "In register"
+    "setIn": "Set in Archivo and JetBrains Mono",
+    "builtWith": "Built with Astro, on Cloudflare",
+    "updated": "Updated"
   },
   "header": {
     "sourceCode": "Project source code"

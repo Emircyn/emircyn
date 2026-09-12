@@ -137,8 +137,9 @@
   },
   "footer": {
     "rights": "Emircan Erdemci",
-    "offset": "Kayma",
-    "registered": "Rejistrde"
+    "setIn": "Archivo ve JetBrains Mono ile dizildi",
+    "builtWith": "Astro ile kuruldu, Cloudflare üzerinde",
+    "updated": "Güncellendi"
   },
   "header": {
     "sourceCode": "Projenin kaynak kodu"
