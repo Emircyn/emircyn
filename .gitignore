@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # locks
 *.lock
+# local verification harness and generation scratch
+lab/
+scrollcraft/

@@ -1,0 +1,133 @@
+---
+import { useTranslations, type Locale } from "@/i18n/utils";
+
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+
+type Entry = { org: string; detail: string; period: string };
+
+const positions = t("record.positions") as Entry[];
+const education = t("record.education") as Entry[];
+---
+
+<section id="record" class="record" aria-labelledby="record-heading">
+    <div class="shell">
+        <hr class="rule-strong" />
+        <div class="record__grid" data-reveal>
+            <h2 id="record-heading" class="label record__label">
+                {t("record.label")}
+            </h2>
+
+            <div class="record__col">
+                <h3 class="label record__sub">{t("record.workHeading")}</h3>
+                <ul class="register">
+                    {
+                        positions.map((e) => (
+                            <li class="register__row">
+                                <span class="register__org">{e.org}</span>
+                                <span class="register__detail">{e.detail}</span>
+                                <span class="label register__period">
+                                    {e.period}
+                                </span>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+
+            <div class="record__col">
+                <h3 class="label record__sub">{t("record.educationHeading")}</h3>
+                <ul class="register">
+                    {
+                        education.map((e) => (
+                            <li class="register__row">
+                                <span class="register__org">{e.org}</span>
+                                <span class="register__detail">{e.detail}</span>
+                                <span class="label register__period">
+                                    {e.period}
+                                </span>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .record {
+        padding-block: calc(var(--spacing) * 12);
+    }
+
+    .record__grid {
+        display: grid;
+        gap: calc(var(--spacing) * 6);
+        padding-top: calc(var(--spacing) * 4);
+    }
+
+    .record__label,
+    .record__sub {
+        margin: 0;
+    }
+
+    .record__col {
+        display: grid;
+        gap: calc(var(--spacing) * 2);
+        align-content: start;
+    }
+
+    .register {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* A register, not a bulleted list: one hairline above each row and none
+       below the last, so the block reads as a table of record. */
+    .register__row {
+        display: grid;
+        gap: calc(var(--spacing) * 0.5);
+        padding-block: calc(var(--spacing) * 2);
+        border-top: 1px solid var(--color-rule);
+    }
+
+    .register__org {
+        font-variation-settings:
+            "wdth" 92,
+            "wght" 600;
+        font-size: 1.0625rem;
+        line-height: 1.25;
+    }
+
+    .register__detail {
+        color: var(--color-ink-soft);
+        font-size: 0.9375rem;
+    }
+
+    .register__period {
+        color: var(--color-accent);
+    }
+
+    @media (min-width: 900px) {
+        .record__grid {
+            grid-template-columns: 12rem 1fr 1fr;
+            gap: calc(var(--spacing) * 6);
+        }
+        .record__label {
+            padding-top: calc(var(--spacing) * 1.5);
+        }
+        .register__row {
+            grid-template-columns: 1fr auto;
+            align-items: baseline;
+            column-gap: calc(var(--spacing) * 3);
+        }
+        .register__detail {
+            grid-column: 1;
+        }
+        .register__period {
+            grid-row: 1;
+            grid-column: 2;
+        }
+    }
+</style>

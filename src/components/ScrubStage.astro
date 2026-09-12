@@ -1,0 +1,153 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+    /** Poster frame. Also the whole section under reduced motion. */
+    poster: ImageMetadata;
+    alt: string;
+    src: string;
+    srcMobile?: string;
+    /** Scroll length of the stage, in viewport heights. */
+    span?: number;
+    label?: string;
+    caption?: string;
+}
+
+const {
+    poster,
+    alt,
+    src,
+    srcMobile,
+    span = 2.4,
+    label,
+    caption,
+} = Astro.props;
+---
+
+<section
+    class="scrub"
+    data-scrub-stage
+    style={`--scrub-span:${span}`}
+    aria-label={alt}
+>
+    <div class="scrub__sticky">
+        <div class="scrub__frame">
+            <!-- Held until a real video frame has painted. On iOS a muted video
+                 that has been seeked but never played stays blank, so dropping
+                 the poster on metadata alone flashes an empty stage. -->
+            <Image
+                src={poster}
+                alt={alt}
+                widths={[640, 1024, 1600, 2200]}
+                sizes="100vw"
+                loading="lazy"
+                decoding="async"
+                class="scrub__poster"
+                data-scrub-poster
+            />
+
+            <video
+                class="scrub__video"
+                data-scrub-video
+                data-scrub-src={src}
+                data-scrub-src-mobile={srcMobile ?? src}
+                muted
+                playsinline
+                preload="none"
+                tabindex="-1"
+                aria-hidden="true"></video>
+
+            {
+                (label || caption) && (
+                    <div class="scrub__meta">
+                        {label && <span class="label">{label}</span>}
+                        {caption && <p class="scrub__caption">{caption}</p>}
+                    </div>
+                )
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    /* The section is tall; the frame inside it sticks. Sticky rather than a
+       GSAP pin, so the clip's scroll mapping and the layout agree with no
+       pin-spacer arithmetic and no chance of a shift when it engages. */
+    .scrub {
+        position: relative;
+        height: calc(var(--scrub-span) * 100dvh);
+    }
+
+    .scrub__sticky {
+        position: sticky;
+        top: 0;
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    .scrub__frame {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-paper-sunk);
+    }
+
+    .scrub__poster,
+    .scrub__video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .scrub__video {
+        opacity: 0;
+        transition: opacity 0.35s ease;
+    }
+
+    /* Only once a frame has actually painted. */
+    .scrub[data-scrub-ready] .scrub__video {
+        opacity: 1;
+    }
+
+    /* Reduced motion, or no JS: the poster is the section. It is a composed
+       still, not a placeholder, so nothing reads as missing. */
+    .scrub[data-scrub-static] .scrub__video {
+        display: none;
+    }
+
+    .scrub__meta {
+        position: absolute;
+        left: var(--gutter);
+        bottom: calc(var(--spacing) * 4);
+        display: grid;
+        gap: calc(var(--spacing) * 1);
+        max-width: 28rem;
+        /* The plates are pale, so the meta sits in ink with a soft paper scrim
+           behind it rather than a full-frame overlay. */
+        padding: calc(var(--spacing) * 2);
+        background-color: rgba(241, 241, 239, 0.92);
+    }
+
+    .scrub__caption {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.35;
+        font-variation-settings: "wdth" 96, "wght" 500;
+        max-width: 26ch;
+    }
+
+    @media (max-width: 767px) {
+        .scrub {
+            /* Shorter travel on a phone, per the brief's mobile composition. */
+            height: calc(var(--scrub-span) * 62dvh);
+        }
+        .scrub__meta {
+            right: var(--gutter);
+            max-width: none;
+        }
+    }
+</style>

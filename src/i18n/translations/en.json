@@ -1,20 +1,159 @@
 {
+  "meta": {
+    "name": "Emircan Erdemci",
+    "role": "Frontend Developer",
+    "location": "Ankara, Turkey"
+  },
   "hero": {
-    "title_1": "Frontend",
-    "title_2": "Developer",
-    "subtitle": "building web apps",
-    "desc_1": "I'm a Frontend Developer specializing in building exceptional digital experiences.",
-    "desc_2": "I believe in simplicity, performance, and user-centric design.",
-    "desc_3_pre": "Currently building cool things at ",
-    "desc_3_company": "InspireIT",
-    "desc_3_post": ".",
-    "contactButton": "Contact me"
+    "scenes": [
+      {
+        "label": "Index",
+        "text": "Frontend developer at InspireIT, in Ankara."
+      },
+      {
+        "label": "Practice",
+        "text": "I build interfaces for the web."
+      },
+      {
+        "label": "Simplicity",
+        "text": "Simplicity is a result, not a starting point."
+      },
+      {
+        "label": "Performance",
+        "text": "Performance is a feature you can measure."
+      },
+      {
+        "label": "People",
+        "text": "The person using it decides if it worked."
+      }
+    ],
+    "staticIntro": "Frontend developer at InspireIT in Ankara, building interfaces for the web."
+  },
+  "work": {
+    "label": "Selected work",
+    "heading": "Three things I built, described as they are.",
+    "fields": {
+      "role": "Role",
+      "problem": "Problem",
+      "approach": "Approach",
+      "stack": "Stack",
+      "outcome": "Outcome",
+      "source": "View source"
+    },
+    "deadDemoNote": "Live demos are offline. Source is on GitHub.",
+    "projects": [
+      {
+        "index": "01",
+        "name": "XOFram",
+        "year": "2022",
+        "role": "Sole developer",
+        "problem": "A third-party agriculture template shipped as static HTML, CSS and jQuery. The same markup was duplicated across five pages, so any change had to be made five times.",
+        "approach": "Rebuilt it as a React component tree. Moved the page content into a single data module so sections render from data instead of repeated markup, and replaced hash links with real routes.",
+        "stack": "React 18, React Router 6, Tailwind CSS 3, Swiper",
+        "outcome": "Five routed pages from one shared component set. Changing a section is now one edit in one file.",
+        "honesty": "A rebuild of a template I did not design. The work here is the architecture, not the visual design.",
+        "href": "https://github.com/Emircyn/xofram"
+      },
+      {
+        "index": "02",
+        "name": "Netflix Clone",
+        "year": "2022",
+        "role": "Sole developer",
+        "problem": "I wanted to find out what changes when an interface is driven entirely by a live API instead of fixed content.",
+        "approach": "Built a catalogue on TheMovieDB with category browsing, search and lazy-loaded artwork. State lives in Pinia so every view reads one source of truth. The app picks up the browser language and falls back to English when the API has no match for it.",
+        "stack": "Vue 3, Pinia, Vue Router, Swiper, TheMovieDB API",
+        "outcome": "The language fallback is the part I still reuse. It is the same problem this site solves in Turkish and English.",
+        "honesty": "Built to learn the stack. The interface follows Netflix's.",
+        "href": "https://github.com/Emircyn/netflix-clone-vue3"
+      },
+      {
+        "index": "03",
+        "name": "Agentic Starter Kit",
+        "year": "2026",
+        "role": "Author",
+        "problem": "Every AI coding tool reads its own instruction file. Keeping eight of them in agreement by hand meant they drifted apart within a week.",
+        "approach": "One canonical AGENTS.md holds the rules. The client-specific files for Claude, Gemini, Cursor, Copilot, Windsurf, Aider and Junie are thin pointers back to it, so there is one place to edit.",
+        "stack": "Markdown, no build step",
+        "outcome": "Starting a project means copying one folder instead of writing eight instruction files.",
+        "honesty": "A working convention, not an application.",
+        "href": "https://github.com/Emircyn/agentic-setup-starter-kit"
+      }
+    ]
+  },
+  "about": {
+    "label": "Approach",
+    "body": [
+      "I am a frontend developer at InspireIT in Ankara. Alongside it I am finishing a management information systems degree at İstanbul University.",
+      "Most of what I do is the unglamorous half of frontend: taking something that already works and making it easier to change. Splitting a page into parts that stand on their own. Removing what is on screen until what matters is obvious.",
+      "I am early in this. Everything listed here is work I actually did, described as it is."
+    ]
+  },
+  "record": {
+    "label": "Record",
+    "workHeading": "Work",
+    "educationHeading": "Education",
+    "positions": [
+      {
+        "org": "InspireIT Information Technologies Consultancy",
+        "detail": "Frontend Developer, full time, Istanbul",
+        "period": "Apr 2024 to now"
+      },
+      {
+        "org": "GuruDesk.com",
+        "detail": "Frontend Developer, full time, Tallinn",
+        "period": "Feb 2023 to Apr 2024"
+      },
+      {
+        "org": "Bilgeweb",
+        "detail": "Junior Web Developer, internship, Ankara",
+        "period": "Sep 2019 to Jun 2020"
+      }
+    ],
+    "education": [
+      {
+        "org": "İstanbul Üniversitesi",
+        "detail": "Management Information Systems, bachelor",
+        "period": "Sep 2022 to Jun 2026"
+      },
+      {
+        "org": "Sincan Borsa İstanbul Mesleki ve Teknik Anadolu Lisesi",
+        "detail": "Information technologies, web design and programming",
+        "period": "Sep 2016 to Jun 2020"
+      }
+    ]
+  },
+  "contact": {
+    "label": "Contact",
+    "heading": "Tell me what you are building.",
+    "body": "The fastest way to reach me is email. I read everything.",
+    "action": "Email me",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "sourceCode": "Source of this site",
+    "headingLines": [
+      "Tell me what",
+      "you are building."
+    ]
+  },
+  "footer": {
+    "rights": "Emircan Erdemci",
+    "offset": "Offset",
+    "registered": "In register"
   },
   "header": {
     "sourceCode": "Project source code"
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Developer",
-    "description": "Frontend Developer specializing in building exceptional digital experiences."
+    "description": "Frontend developer at InspireIT in Ankara. I build interfaces for the web."
+  },
+  "plates": {
+    "instrument": "Halftone plate: a machinist dial gauge, its needle resting on the engraved scale.",
+    "surface": "Halftone plate: an almost empty drafting table with a single steel ruler across it.",
+    "caliper": "Halftone plate: vernier calipers closed on a thin stack of paper."
+  },
+  "scrub": {
+    "label": "Measure",
+    "caption": "Scroll drives the needle. The page is the instrument, not a picture of one."
   }
 }

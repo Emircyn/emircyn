@@ -1,0 +1,70 @@
+---
+import { useTranslations, type Locale } from "@/i18n/utils";
+
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+
+const body = t("about.body") as string[];
+---
+
+<section id="approach" class="approach" aria-labelledby="approach-heading">
+    <div class="shell">
+        <hr class="rule-strong" />
+        <div class="approach__grid" data-reveal>
+            <h2 id="approach-heading" class="label approach__label">
+                {t("about.label")}
+            </h2>
+            <div class="approach__body">
+                {body.map((p) => <p class="pretty">{p}</p>)}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .approach {
+        padding-block: calc(var(--spacing) * 12);
+    }
+
+    .approach__grid {
+        display: grid;
+        gap: calc(var(--spacing) * 4);
+        padding-top: calc(var(--spacing) * 4);
+    }
+
+    .approach__label {
+        margin: 0;
+    }
+
+    .approach__body {
+        display: grid;
+        gap: calc(var(--spacing) * 3);
+        /* Under 80 characters, per the brief's own typographic floor. */
+        max-width: 46rem;
+    }
+
+    .approach__body p {
+        margin: 0;
+        font-size: clamp(1.25rem, 2.6vw, 1.875rem);
+        line-height: 1.32;
+        font-variation-settings:
+            "wdth" 100,
+            "wght" 420;
+    }
+
+    .approach__body p:first-child {
+        font-variation-settings:
+            "wdth" 96,
+            "wght" 560;
+    }
+
+    @media (min-width: 900px) {
+        .approach__grid {
+            grid-template-columns: 12rem 1fr;
+            gap: calc(var(--spacing) * 6);
+        }
+        .approach__label {
+            padding-top: calc(var(--spacing) * 1.5);
+        }
+    }
+</style>

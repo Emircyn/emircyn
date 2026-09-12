@@ -1,133 +1,388 @@
 ---
-import { rainbowButtonVariants } from "@/components/ui/rainbow-button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Image } from "astro:assets";
-import { Tiles } from "@/components/ui/tiles";
-import { AnimatedGlow } from "@/components/ui/animated-glow";
-import { Github, Linkedin } from "lucide-react";
-import { useTranslations } from "@/i18n/utils";
+import { useTranslations, type Locale } from "@/i18n/utils";
 import profileImage from "@/assets/images/hero-portrait.png";
-import { cn } from "@/lib/utils";
-import { AuroraText } from "@/components/ui/aurora-text";
-import { Highlighter } from "@/components/ui/highlighter";
-import { CompanyHoverCard } from "@/components/CompanyHoverCard";
-import { Button } from "@/components/ui/button";
 
-const lang = (Astro.currentLocale || "en") as "en" | "tr";
+const lang = (Astro.currentLocale || "en") as Locale;
 const t = useTranslations(lang);
+
+const scenes = t("hero.scenes") as { label: string; text: string }[];
+const name = t("meta.name") as string;
+const role = t("meta.role") as string;
+
+const [firstName, ...restName] = name.split(" ");
+const lastName = restName.join(" ");
+
+// Tick marks for the scale. Every fifth one is long and carries a reading.
+const ticks = Array.from({ length: 33 }, (_, i) => i);
 ---
 
-<section
-    id="hero"
-    class="flex items-center justify-center min-h-[calc(100vh-(36px+2rem))] lg:h-[calc(100vh-(36px+2rem))] lg:min-h-0"
->
-    <div class="container mx-auto px-4 md:px-6">
-        <div class="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
-            <div class="flex flex-col justify-center space-y-8 text-left">
-                <div class="space-y-4">
-                    <h1
-                        class="text-lg md:text-xl text-muted-foreground font-caveat"
-                    >
-                        Emircan Erdemci
-                    </h1>
-                    <h2
-                        class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl font-mono"
-                    >
-                        {t("hero.title_1")}
-                        <AuroraText client:idle>{t("hero.title_2")}</AuroraText>
-                        <br class="hidden lg:inline" />
-                    </h2>
-                    <h3
-                        class="text-primary text-2xl font-bold tracking-tighter md:text-3xl lg:text-4xl font-mono"
-                    >
-                        {t("hero.subtitle")}
-                    </h3>
-
-                    <p
-                        class="max-w-xl text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
-                    >
-                        {t("hero.desc_1")}
-                        <Highlighter
-                            client:idle
-                            action="underline"
-                            color="#facc15"
-                        >
-                            {t("hero.desc_2")}
-                        </Highlighter>
-                        {t("hero.desc_3_pre")}
-                        <CompanyHoverCard
-                            client:idle
-                            text={t("hero.desc_3_company")}
-                        />
-                        {t("hero.desc_3_post")}
-                    </p>
-                </div>
-                <div
-                    class="flex flex-col gap-4 min-[400px]:flex-row min-[400px]:items-center"
-                >
-                    <a
-                        href="mailto:emircan.erdemci@hotmail.com"
-                        class={cn(rainbowButtonVariants({ size: "default" }))}
-                    >
-                        {t("hero.contactButton")}
-                    </a>
-                    <div class="flex gap-4 items-center">
-                        <a
-                            href="https://github.com/emircyn"
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label="GitHub"
-                        >
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="cursor-pointer"
-                            >
-                                <Github className="h-6 w-6" />
-                            </Button>
-                        </a>
-                        <a
-                            href="https://www.linkedin.com/in/emircyn/"
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label="LinkedIn"
-                        >
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="cursor-pointer"
-                            >
-                                <Linkedin className="h-6 w-6" />
-                            </Button>
-                        </a>
-                    </div>
+<section id="hero" class="hero" data-hero aria-labelledby="hero-name">
+    <div class="hero__pin" data-hero-pin>
+        <div class="shell hero__frame">
+            <div class="hero__meta">
+                <hr class="rule-strong" />
+                <div class="hero__meta-row">
+                    <span class="label label-accent">{role}</span>
+                    <span class="label">{t("meta.location")}</span>
                 </div>
             </div>
-            <div
-                class="flex-1 relative flex justify-center md:justify-end mt-8 md:mt-0"
-            >
-                <Card className="bg-white p-0 relative overflow-hidden">
-                    <CardContent className="relative">
-                        <Tiles
-                            client:idle
-                            className="absolute inset-0 w-full h-full z-0 dark:opacity-10"
-                            tileSize="sm"
-                            rows={29}
-                            cols={29}
-                        />
-                        <AnimatedGlow
-                            client:idle
-                            className="dark:mix-blend-mode-normal"
-                        />
-                        <Image
-                            src={profileImage}
-                            alt="Emircan Erdemci - Frontend Developer"
-                            class="w-full h-auto rounded-2xl object-cover relative z-10 pointer-events-none"
-                            loading="eager"
-                        />
-                    </CardContent>
-                </Card>
+
+            <!-- The scale. The width axis of the display face is a real
+                 measurement, so the hero shows it the way an instrument would:
+                 a ruled scale with a travelling index and a live reading. It is
+                 the empty left edge doing work instead of sitting blank. -->
+            <div class="hero__scale" aria-hidden="true">
+                <div class="hero__scale-rail">
+                    {
+                        ticks.map((i) => (
+                            <span
+                                class={`hero__tick${i % 4 === 0 ? " hero__tick--major" : ""}`}
+                            />
+                        ))
+                    }
+                    <span class="hero__index" data-hero-index></span>
+                </div>
+                <span class="label hero__readout">
+                    <span class="hero__readout-key">wdth</span>
+                    <span class="hero__readout-val" data-hero-readout>62</span>
+                </span>
+            </div>
+
+            <ol class="hero__scenes" data-hero-scenes>
+                {
+                    scenes.map((scene, i) => (
+                        <li
+                            class="hero__scene"
+                            data-hero-scene
+                            data-scene-index={i}
+                        >
+                            <span class="label hero__scene-label">
+                                <span class="hero__scene-num">
+                                    {String(i + 1).padStart(2, "0")}
+                                </span>
+                                {scene.label}
+                            </span>
+                            <p class="hero__scene-text pretty">{scene.text}</p>
+                        </li>
+                    ))
+                }
+            </ol>
+
+            <!-- lang="tr" so uppercasing gives the Turkish forms on the English
+                 route too. The second line is set as an outline: the same word
+                 in two states, which is what the whole hero is about. -->
+            <div class="hero__type">
+                <h1 id="hero-name" class="hero__name" lang="tr" data-hero-name>
+                    <span class="hero__line" data-hero-line>{firstName}</span>
+                    <span class="hero__line hero__line--outline" data-hero-line
+                        >{lastName}</span
+                    >
+                </h1>
+            </div>
+
+            <!-- Above everything. The name passes behind the figure; nothing is
+                 ever printed across it. -->
+            <div class="hero__portrait" data-hero-portrait aria-hidden="true">
+                <Image
+                    src={profileImage}
+                    alt=""
+                    widths={[420, 720, 1040]}
+                    sizes="(max-width: 767px) 62vw, 38vw"
+                    loading="eager"
+                    class="hero__portrait-img"
+                />
             </div>
         </div>
     </div>
 </section>
+
+<style>
+    .hero__pin {
+        min-height: 100dvh;
+        display: flex;
+    }
+
+    .hero__frame {
+        position: relative;
+        width: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        row-gap: calc(var(--spacing) * 3);
+        padding-block: calc(var(--spacing) * 9) calc(var(--spacing) * 4);
+    }
+
+    .hero__meta-row {
+        display: flex;
+        justify-content: space-between;
+        gap: calc(var(--spacing) * 2);
+        padding-top: calc(var(--spacing) * 1.5);
+    }
+
+    /* --- The scale ------------------------------------------------------- */
+
+    .hero__scale {
+        position: absolute;
+        left: var(--gutter);
+        top: 22%;
+        bottom: 24%;
+        width: 3.5rem;
+        display: none;
+        flex-direction: column;
+        gap: calc(var(--spacing) * 1.5);
+        z-index: 2;
+    }
+
+    .hero__scale-rail {
+        position: relative;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-left: 1px solid var(--color-rule-strong);
+        padding-left: 0;
+    }
+
+    .hero__tick {
+        display: block;
+        width: 0.5rem;
+        height: 1px;
+        background-color: var(--color-rule);
+    }
+
+    .hero__tick--major {
+        width: 1.25rem;
+        background-color: var(--color-rule-strong);
+    }
+
+    /* Travelling index. Sits at the top until the scroll layer moves it. */
+    .hero__index {
+        position: absolute;
+        left: -1px;
+        top: 0;
+        width: 2rem;
+        height: 2px;
+        background-color: var(--color-accent);
+        will-change: transform;
+    }
+
+    .hero__readout {
+        display: grid;
+        gap: 2px;
+        line-height: 1.1;
+    }
+
+    .hero__readout-val {
+        color: var(--color-accent);
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* --- Scenes ---------------------------------------------------------- */
+
+    .hero__scenes {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-self: start;
+        display: grid;
+        max-width: 42rem;
+    }
+
+    .hero__scene {
+        display: grid;
+        gap: calc(var(--spacing) * 1.5);
+        padding-block: calc(var(--spacing) * 2);
+        border-top: 1px solid var(--color-rule);
+    }
+
+    .hero__scene:last-child {
+        border-bottom: 1px solid var(--color-rule);
+    }
+
+    .hero__scene-label {
+        display: flex;
+        gap: calc(var(--spacing) * 1.5);
+    }
+
+    .hero__scene-num {
+        color: var(--color-accent);
+    }
+
+    .hero__scene-text {
+        margin: 0;
+        font-size: clamp(1.125rem, 2.2vw, 1.625rem);
+        font-variation-settings: "wdth" 100, "wght" 450;
+        line-height: 1.26;
+        max-width: 30ch;
+    }
+
+    /* --- The name -------------------------------------------------------- */
+
+    .hero__type {
+        position: relative;
+        min-width: 0;
+        z-index: 1;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .hero__name {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        font-family: var(--font-display);
+        font-variation-settings:
+            "wdth" var(--hero-wdth),
+            "wght" var(--hero-wght);
+        text-transform: uppercase;
+        /* Opened up. The two lines are one mark, but they need air between them
+           to read as a stacked composition rather than a solid block. The band
+           reserved in the scroll layer uses this exact figure. */
+        line-height: 1.04;
+        letter-spacing: -0.012em;
+        font-size: clamp(2.75rem, 13vw, 11rem);
+        pointer-events: none;
+    }
+
+    .hero__line {
+        display: block;
+        white-space: nowrap;
+    }
+
+    /* The same word in two states: printed in ink, drawn in the accent. The
+       stroke is thin, so the accent stays rationed: it reads as the same
+       structural red as the scale index and the scene numbers rather than as a
+       second colour competing with the closing block. */
+    .hero__line--outline {
+        color: transparent;
+        -webkit-text-stroke: 0.015em var(--color-accent);
+    }
+
+    /* --- Portrait, above everything -------------------------------------- */
+
+    .hero__portrait {
+        position: absolute;
+        z-index: 3;
+        right: 0;
+        bottom: 0;
+        width: 38%;
+        max-width: 28rem;
+        pointer-events: none;
+        will-change: transform;
+        /* Anchored, so the parallax scale grows inward instead of pushing the
+           figure past the right edge of the viewport. */
+        transform-origin: right bottom;
+    }
+
+    .hero__portrait-img {
+        width: 100%;
+        height: auto;
+        display: block;
+        mix-blend-mode: multiply;
+    }
+
+    /* --- Scroll composition ---------------------------------------------- */
+
+    .hero[data-scroll-ready] .hero__scenes {
+        grid-template-areas: "scene";
+        align-self: center;
+    }
+
+    .hero[data-scroll-ready] .hero__scene {
+        grid-area: scene;
+        border: 0;
+        padding-block: 0;
+        align-content: start;
+        opacity: 0;
+    }
+
+    .hero[data-scroll-ready] .hero__scene:last-child {
+        border-bottom: 0;
+    }
+
+    .hero[data-scroll-ready] .hero__scene-text {
+        border-top: 1px solid var(--color-rule-strong);
+        padding-top: calc(var(--spacing) * 2);
+    }
+
+    @media (min-width: 900px) {
+        .hero__scale {
+            display: flex;
+        }
+        /* The scene column clears the scale. */
+        /* Everything clears the scale, so it reads as a margin instrument
+           rather than something sitting on top of the text. */
+        .hero__scenes,
+        .hero__meta,
+        .hero__type {
+            margin-left: 6rem;
+        }
+
+        /* The name stops short of the portrait. The figure is on top and the
+           type passes behind it, but only grazing the edge: an h1 that loses
+           its last letters behind a picture is not a layering effect. */
+        .hero__type {
+            max-width: 66%;
+        }
+    }
+
+    /* --- Mobile ----------------------------------------------------------- */
+
+    @media (max-width: 767px) {
+        /* Sized so the figure lands exactly on the viewport edge. Anything
+           past it is not a bleed, it is a horizontal scrollbar: once the hero
+           unpins, the overhang starts contributing to the document width. */
+        .hero__portrait {
+            width: 48%;
+            max-width: none;
+            right: 0;
+        }
+
+        /* Same rule as desktop, for the same reason. An h1 that loses its last
+           letters behind a picture is not a layering effect. */
+        .hero__type {
+            max-width: 58%;
+        }
+
+        /* Handed over to the fixed bar at the top rather than duplicated by it.
+           Opacity only: the row keeps its height, so nothing moves. */
+        .hero__meta {
+            transition: opacity 0.45s ease;
+        }
+
+        .hero[data-meta-lifted] .hero__meta {
+            opacity: 0;
+        }
+
+        .hero__scene-text {
+            max-width: none;
+            font-size: 1.25rem;
+        }
+
+        .hero__scenes {
+            max-width: none;
+            margin-top: calc(var(--spacing) * 2);
+        }
+
+        .hero[data-scroll-ready] .hero__scenes {
+            align-self: center;
+        }
+
+        .hero[data-scroll-ready] .hero__scene-text {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hero__meta {
+            transition: none;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .hero__frame {
+            padding-block: calc(var(--spacing) * 10) calc(var(--spacing) * 7);
+            row-gap: calc(var(--spacing) * 5);
+        }
+    }
+</style>

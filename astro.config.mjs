@@ -2,14 +2,19 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
-import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://emircyn.com",
-  vite: { plugins: [tailwindcss()], },
+  vite: {
+    plugins: [tailwindcss()],
+    // Both servers are reviewed over a Tailscale hostname, which Vite blocks by
+    // default. `server` covers `astro dev` and `preview` covers `astro preview`;
+    // they are separate settings. Neither affects the built site.
+    server: { allowedHosts: [".ts.net"] },
+    preview: { allowedHosts: [".ts.net"] },
+  },
   integrations: [
-    react(),
     sitemap({
       i18n: {
         defaultLocale: "en",

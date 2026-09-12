@@ -1,10 +1,39 @@
 ---
-
+// Language gate. The previous version shipped a bare script with no document
+// around it, so a crawler or a visitor without JS got an empty response. This
+// renders a real document, sends the meta refresh for the no-JS path, and only
+// upgrades to the Turkish route when the browser actually asks for Turkish.
 ---
 
-<script is:inline>
-    const lang = navigator.language.startsWith("tr") ? "tr" : "en";
-    window.location.href = `/${lang}/`;
-</script>
-
-<meta http-equiv="refresh" content="0;url=/en/" />
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Emircan Erdemci | Frontend Developer</title>
+        <link rel="canonical" href="https://emircyn.com/en/" />
+        <link rel="alternate" hreflang="en" href="https://emircyn.com/en/" />
+        <link rel="alternate" hreflang="tr" href="https://emircyn.com/tr/" />
+        <link
+            rel="alternate"
+            hreflang="x-default"
+            href="https://emircyn.com/en/"
+        />
+        <meta http-equiv="refresh" content="0;url=/en/" />
+        <script is:inline>
+            if (navigator.language && navigator.language.startsWith("tr")) {
+                window.location.replace("/tr/");
+            } else {
+                window.location.replace("/en/");
+            }
+        </script>
+    </head>
+    <body>
+        <p>
+            <a href="/en/">Continue in English</a>
+        </p>
+        <p>
+            <a href="/tr/">Türkçe devam et</a>
+        </p>
+    </body>
+</html>

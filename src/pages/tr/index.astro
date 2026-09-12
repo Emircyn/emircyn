@@ -1,9 +1,46 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Hero from "../../components/Hero.astro";
+import Layout from "@/layouts/Layout.astro";
+import Hero from "@/components/Hero.astro";
+import Approach from "@/components/Approach.astro";
+import Record from "@/components/Record.astro";
+import Contact from "@/components/Contact.astro";
+import Plate from "@/components/Plate.astro";
+import ScrubStage from "@/components/ScrubStage.astro";
+
+import { useTranslations, type Locale } from "@/i18n/utils";
+import plateInstrument from "@/assets/plates/instrument.jpg";
+import plateSurface from "@/assets/plates/surface.jpg";
+import plateCaliper from "@/assets/plates/caliper.jpg";
+
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
 ---
 
 <Layout>
-	<Hero />
-</Layout>
+    <Hero />
 
+    <!-- Plates are windows onto a larger sheet: oversized inside a fixed frame
+         and travelling against the scroll. Same coarse halftone as the
+         portrait, so the page has one material world. -->
+    <Plate src={plateSurface} alt={t("plates.surface")} height="tall" />
+
+    <Approach />
+
+    <Plate src={plateCaliper} alt={t("plates.caliper")} />
+
+    <Record />
+
+    <!-- The one scrub act. The instrument is not a picture of a measurement,
+         it is a measurement the visitor drives with the wheel. -->
+    <ScrubStage
+        poster={plateInstrument}
+        alt={t("plates.instrument")}
+        src="/media/dial.mp4"
+        srcMobile="/media/dial-m.mp4"
+        span={2.4}
+        label={t("scrub.label")}
+        caption={t("scrub.caption")}
+    />
+
+    <Contact />
+</Layout>

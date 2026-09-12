@@ -1,0 +1,160 @@
+---
+import { useTranslations, type Locale } from "@/i18n/utils";
+import { languages } from "@/i18n/ui";
+import { site } from "@/config";
+
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+
+// Two languages do not need a dropdown island. Real links are crawlable,
+// keyboard reachable, and work before any script runs.
+const localeHref = (l: string) => `/${l}/`;
+---
+
+<header class="site-header">
+    <div class="shell site-header__inner">
+        <a class="site-header__mark" href={localeHref(lang)}>
+            <span class="label">{t("meta.name")}</span>
+        </a>
+
+        <nav class="site-header__nav" aria-label={t("contact.label")}>
+            <a
+                class="label site-header__link"
+                href={site.repo}
+                target="_blank"
+                rel="noreferrer">{t("header.sourceCode")}</a
+            >
+
+            <ul class="site-header__langs">
+                {
+                    Object.entries(languages).map(([code, label]) => (
+                        <li>
+                            <a
+                                class="label site-header__lang"
+                                href={localeHref(code)}
+                                hreflang={code}
+                                lang={code}
+                                aria-current={code === lang ? "true" : undefined}
+                            >
+                                {label}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- On a phone the header scrolls away with the page and nothing is left at the
+     top. The hero identity strip takes its place, set exactly as it is in the
+     hero: role against location, on the same measure. It arrives only once the
+     header has actually gone, so the two are never both on screen. -->
+<div class="role-bar" data-role-bar aria-hidden="true">
+    <div class="shell role-bar__inner">
+        <span class="label label-accent">{t("meta.role")}</span>
+        <span class="label">{t("meta.location")}</span>
+    </div>
+</div>
+
+<style>
+    /* Overlaid rather than stacked above the hero. The hero is pinned at
+       100dvh, so any header that takes height in the flow pushes it past the
+       bottom of the viewport by exactly its own height. */
+    .site-header {
+        position: absolute;
+        inset-inline: 0;
+        top: 0;
+        z-index: 20;
+    }
+
+    .site-header__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: calc(var(--spacing) * 2);
+        padding-block: calc(var(--spacing) * 2);
+        min-height: 3.5rem;
+    }
+
+    .site-header__nav {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--spacing) * 3);
+    }
+
+    .site-header__langs {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: calc(var(--spacing) * 1.5);
+    }
+
+    .site-header__link,
+    .site-header__lang {
+        border-bottom: 1px solid transparent;
+        padding-bottom: 2px;
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .site-header__link:hover,
+    .site-header__lang:hover {
+        color: var(--color-ink);
+        border-bottom-color: var(--color-rule-strong);
+    }
+
+    .site-header__lang[aria-current="true"] {
+        color: var(--color-accent);
+        border-bottom-color: var(--color-accent);
+    }
+
+    /* The source link is secondary. Below 600px it would push the nav onto a
+       second line, so it drops out and stays reachable from the closing block. */
+    @media (max-width: 599px) {
+        .site-header__link {
+            display: none;
+        }
+    }
+
+    .role-bar {
+        display: none;
+    }
+
+    @media (max-width: 767px) {
+        .role-bar {
+            display: block;
+            position: fixed;
+            inset-inline: 0;
+            top: 0;
+            z-index: 30;
+            background-color: var(--color-paper);
+            border-bottom: 1px solid var(--color-rule);
+            opacity: 0;
+            transform: translateY(-100%);
+            pointer-events: none;
+            transition:
+                opacity 0.5s ease,
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .role-bar[data-role-bar-on] {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .role-bar__inner {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: calc(var(--spacing) * 2);
+            padding-block: calc(var(--spacing) * 1.5);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .role-bar {
+            transition: none;
+        }
+    }
+</style>

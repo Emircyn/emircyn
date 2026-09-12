@@ -1,55 +1,109 @@
 ---
-import { Header } from "@/components/Header";
 import SEO from "@/components/SEO.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+
 import "@/styles/global.css";
-import "@fontsource/inter";
-import "@fontsource/caveat";
-import "@fontsource/jetbrains-mono";
+// The width-axis build. The default entrypoint ships weight only, and the whole
+// hero mechanic depends on wdth.
+import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+
+// Preloaded so the display face is present for the first paint of the hero.
+// Turkish needs latin-ext as well: U+0130 (İ) and U+011E (ğ) are not in latin.
+import archivoLatin from "@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url";
+import archivoLatinExt from "@fontsource-variable/archivo/files/archivo-latin-ext-wdth-normal.woff2?url";
+// The mono face carries the identity strip, which is above the fold.
+import monoLatin from "@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2?url";
+import monoLatinExt from "@fontsource/jetbrains-mono/files/jetbrains-mono-latin-ext-400-normal.woff2?url";
 
 const lang = Astro.currentLocale || "en";
 ---
 
 <!doctype html>
-<html lang={lang} class="scroll-smooth">
-	<head>
-		<SEO />
-		<script is:inline>
-			const getThemePreference = () => {
-				if (
-					typeof localStorage !== "undefined" &&
-					localStorage.getItem("theme")
-				) {
-					return localStorage.getItem("theme");
-				}
-				return window.matchMedia("(prefers-color-scheme: dark)").matches
-					? "dark"
-					: "light";
-			};
-			const isDark = getThemePreference() === "dark";
-			document.documentElement.classList[isDark ? "add" : "remove"](
-				"dark",
-			);
-
-			if (typeof localStorage !== "undefined") {
-				const observer = new MutationObserver(() => {
-					const isDark =
-						document.documentElement.classList.contains("dark");
-					localStorage.setItem("theme", isDark ? "dark" : "light");
-				});
-				observer.observe(document.documentElement, {
-					attributes: true,
-					attributeFilter: ["class"],
-				});
-			}
-		</script>
-	</head>
-	<body
-		class="min-h-screen bg-background text-foreground font-sans antialiased flex flex-col lg:h-screen lg:overflow-hidden"
-	>
-		<Header client:load currentLocale={lang} />
-
-		<main class="container mx-auto z-10 relative">
-			<slot />
-		</main>
-	</body>
+<html lang={lang}>
+    <head>
+        <SEO />
+        <link
+            rel="preload"
+            as="font"
+            type="font/woff2"
+            href={archivoLatin}
+            crossorigin
+        />
+        <link
+            rel="preload"
+            as="font"
+            type="font/woff2"
+            href={archivoLatinExt}
+            crossorigin
+        />
+        <link
+            rel="preload"
+            as="font"
+            type="font/woff2"
+            href={monoLatin}
+            crossorigin
+        />
+        <link
+            rel="preload"
+            as="font"
+            type="font/woff2"
+            href={monoLatinExt}
+            crossorigin
+        />
+    </head>
+    <body>
+        <a class="skip-link" href="#work">Skip to content</a>
+        <SiteHeader />
+        <main id="main">
+            <slot />
+        </main>
+        <SiteFooter />
+    </body>
 </html>
+
+<script>
+    import {
+        initScroll,
+        initPlates,
+        initReveals,
+        initRoleBar,
+        initFooterRegister,
+        refreshScroll,
+    } from "@/scripts/scroll";
+    import { initScrub } from "@/scripts/scrub";
+
+    initScroll();
+    initScrub();
+    initPlates();
+    initRoleBar();
+    initFooterRegister();
+    initReveals();
+
+    // Last, so every trigger above is measured against the final document
+    // height rather than the one that existed before the hero pinned.
+    refreshScroll();
+</script>
+
+<style is:global>
+    .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        z-index: 100;
+        background: var(--color-ink);
+        color: var(--color-paper);
+        padding: 0.75rem 1rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+    }
+
+    .skip-link:focus {
+        left: 1rem;
+        top: 1rem;
+    }
+</style>

@@ -1,0 +1,246 @@
+---
+import { useTranslations, type Locale } from "@/i18n/utils";
+
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+const name = t("footer.rights") as string;
+// Rendered in the resolved state, because that is what a visitor with no
+// script, or with motion reduced, should be left looking at.
+const registered = t("footer.registered") as string;
+---
+
+<!-- The closing device: the press coming into register.
+     The mark is printed twice, once from the colour plate and once from the
+     key plate that outlines it. The two arrive out of register, and the scroll
+     that ends the page is what pulls them together, so the last thing that
+     happens on a site about measurement is a measurement resolving to zero.
+     The readout is the same instrument grammar as the hero scale, and the
+     relationship is inverted: the hero is ink printed and the accent drawn,
+     the footer is the accent printed and the ink drawn. -->
+<footer class="site-footer" data-footer>
+    <div class="shell">
+        <div class="site-footer__sheet">
+            <span
+                class="site-footer__trim site-footer__trim--tl"
+                aria-hidden="true"></span>
+            <span
+                class="site-footer__trim site-footer__trim--tr"
+                aria-hidden="true"></span>
+            <span
+                class="site-footer__trim site-footer__trim--bl"
+                aria-hidden="true"></span>
+            <span
+                class="site-footer__trim site-footer__trim--br"
+                aria-hidden="true"></span>
+
+            <div class="site-footer__head">
+                <!-- A registration target, carrying the same offset as the
+                     mark: the colour ring drifts, the key crosshair holds. -->
+                <svg
+                    class="site-footer__target"
+                    viewBox="0 0 28 28"
+                    width="28"
+                    height="28"
+                    aria-hidden="true"
+                    focusable="false"
+                >
+                    <circle
+                        class="site-footer__target-ring"
+                        cx="14"
+                        cy="14"
+                        r="8"></circle>
+                    <g class="site-footer__target-key">
+                        <path d="M14 1 V27 M1 14 H27"></path>
+                        <circle cx="14" cy="14" r="4.2"></circle>
+                    </g>
+                </svg>
+
+                <span class="label site-footer__year">{year}</span>
+
+                <span
+                    class="label site-footer__readout"
+                    data-footer-readout
+                    data-offset={t("footer.offset")}
+                    data-registered={registered}
+                >
+                    <span class="site-footer__readout-key">{registered}</span>
+                    <span class="site-footer__readout-val"></span>
+                </span>
+            </div>
+
+            <p class="site-footer__mark" lang="tr">
+                <span
+                    class="site-footer__plate site-footer__plate--colour"
+                    aria-hidden="true">{name}</span
+                >
+                <span class="site-footer__plate site-footer__plate--key"
+                    >{name}</span
+                >
+            </p>
+        </div>
+    </div>
+
+</footer>
+
+<style>
+    /* --reg is the misregistration, 1 at its widest and 0 in register. It stays
+       at 0 with no script and with motion reduced, so the page ends on a
+       finished impression rather than on a broken one. */
+    .site-footer {
+        --reg: 0;
+        padding-block: calc(var(--spacing) * 12) calc(var(--spacing) * 6);
+        overflow: hidden;
+    }
+
+    .site-footer__sheet {
+        position: relative;
+        padding: calc(var(--spacing) * 4) 0 calc(var(--spacing) * 5);
+    }
+
+    /* Trim marks on the corners of the measure. The footer is the bottom of the
+       sheet, so it is allowed to show how the sheet was cut. */
+    .site-footer__trim {
+        position: absolute;
+        width: 0.75rem;
+        height: 0.75rem;
+        pointer-events: none;
+    }
+
+    .site-footer__trim--tl {
+        top: 0;
+        left: 0;
+        border-top: 1px solid var(--color-rule-strong);
+        border-left: 1px solid var(--color-rule-strong);
+    }
+
+    .site-footer__trim--tr {
+        top: 0;
+        right: 0;
+        border-top: 1px solid var(--color-rule-strong);
+        border-right: 1px solid var(--color-rule-strong);
+    }
+
+    .site-footer__trim--bl {
+        bottom: 0;
+        left: 0;
+        border-bottom: 1px solid var(--color-rule-strong);
+        border-left: 1px solid var(--color-rule-strong);
+    }
+
+    .site-footer__trim--br {
+        bottom: 0;
+        right: 0;
+        border-bottom: 1px solid var(--color-rule-strong);
+        border-right: 1px solid var(--color-rule-strong);
+    }
+
+    .site-footer__head {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--spacing) * 3);
+        padding-bottom: calc(var(--spacing) * 6);
+    }
+
+    .site-footer__target {
+        flex: none;
+        overflow: visible;
+    }
+
+    .site-footer__target-ring {
+        fill: none;
+        stroke: var(--color-accent);
+        stroke-width: 1.5;
+        transform: translate(
+            calc(var(--reg) * 5px),
+            calc(var(--reg) * 2.5px)
+        );
+    }
+
+    .site-footer__target-key {
+        fill: none;
+        stroke: var(--color-ink);
+        stroke-width: 1;
+    }
+
+    .site-footer__year {
+        color: var(--color-ink-soft);
+    }
+
+    /* Pushed to the far edge, the way an instrument puts its reading opposite
+       its scale. */
+    .site-footer__readout {
+        margin-left: auto;
+        display: flex;
+        gap: calc(var(--spacing) * 1.5);
+    }
+
+    .site-footer__readout-val {
+        color: var(--color-accent);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .site-footer__mark {
+        display: grid;
+        margin: 0;
+        font-family: var(--font-display);
+        font-variation-settings:
+            "wdth" 96,
+            "wght" 700;
+        text-transform: uppercase;
+        font-size: clamp(1.75rem, 8.3vw, 8rem);
+        line-height: 0.9;
+        letter-spacing: 0.06em;
+        /* letter-spacing also adds a trailing gap after the last glyph, which
+           pushes the mark past the measure. Pull it back by the same amount. */
+        margin-right: -0.06em;
+        white-space: nowrap;
+    }
+
+    .site-footer__plate {
+        grid-area: 1 / 1;
+        display: block;
+    }
+
+    /* The colour plate carries the ink. It is the copy that drifts. */
+    .site-footer__plate--colour {
+        color: var(--color-accent);
+        transform: translate(calc(var(--reg) * 0.052em), calc(var(--reg) * 0.026em));
+        will-change: transform;
+    }
+
+    /* The key plate is drawn, not printed, and holds its position. In register
+       it lands exactly on the colour as a hairline outline around it. */
+    .site-footer__plate--key {
+        color: transparent;
+        -webkit-text-stroke: 0.009em var(--color-ink);
+    }
+
+    /* One line at this measure would be 32px type, which is a caption and not
+       a signature. Set over two instead, at a size worth closing the page on.
+       Both plates carry the same string on the same measure, so they break in
+       the same place. */
+    @media (max-width: 767px) {
+        .site-footer__mark {
+            white-space: normal;
+            font-size: 13.5vw;
+            line-height: 0.98;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .site-footer {
+            padding-block: calc(var(--spacing) * 18) calc(var(--spacing) * 8);
+        }
+        .site-footer__sheet {
+            padding: calc(var(--spacing) * 6) 0 calc(var(--spacing) * 7);
+        }
+        .site-footer__head {
+            padding-bottom: calc(var(--spacing) * 10);
+        }
+        .site-footer__mark {
+            letter-spacing: 0.09em;
+            margin-right: -0.09em;
+        }
+    }
+</style>
