@@ -30,17 +30,6 @@
 const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
 const LERP = 0.18;
 
-/* Progress published by another driver. The hero clip cannot use the rect
-   mapping below: the hero is pinned, so its plane does not move on screen at
-   all while the scrub is happening, and its own rect would report a single
-   frozen value for the whole act. The hero timeline owns that progress, and
-   writes it here. Everything else about the playhead, the lerp, the deadband,
-   the seek coalescing and the poster hand-off, stays in one place. */
-const driven = new Map<string, number>();
-
-export function setDrivenProgress(key: string, p: number) {
-  driven.set(key, Math.min(1, Math.max(0, p)));
-}
 
 type Clip = {
   video: HTMLVideoElement;
@@ -52,8 +41,6 @@ type Clip = {
   seeking: boolean;
   painted: boolean;
   visible: boolean;
-  /** Set when the target comes from another driver instead of the rect. */
-  drivenBy: string | null;
 };
 
 /** Remap linear progress so the clip moves quickly at the edges and settles in
@@ -111,7 +98,6 @@ export function initScrub() {
       seeking: false,
       painted: false,
       visible: false,
-      drivenBy: stage.dataset.scrubDriven || null,
     };
 
     // Fetched as a Blob so seeking does not depend on the host honouring HTTP
@@ -207,15 +193,9 @@ export function initScrub() {
       // leaves the top. Mapping it to the sticky travel alone would freeze the
       // clip on frame one while the section slides in and on its last frame
       // while it slides out, which is the failure this device is known for.
-      if (c.drivenBy) {
-        // Straight through, no dwell: this playhead is tied to another move
-        // and has to stay in step with it rather than ease on its own.
-        c.target = driven.get(c.drivenBy) ?? c.target;
-      } else {
-        const rect = c.stage.getBoundingClientRect();
-        const raw = (vh - rect.top) / (vh + rect.height);
-        c.target = dwell(Math.min(1, Math.max(0, raw)), 0.35);
-      }
+      const rect = c.stage.getBoundingClientRect();
+      const raw = (vh - rect.top) / (vh + rect.height);
+      c.target = dwell(Math.min(1, Math.max(0, raw)), 0.35);
 
       c.current += (c.target - c.current) * LERP;
       const t = c.current * c.duration;

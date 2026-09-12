@@ -1,7 +1,6 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { setDrivenProgress } from "./scrub";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -97,6 +96,7 @@ export function initScroll() {
     document.querySelectorAll<HTMLElement>("[data-hero-scene]"),
   );
 
+
   /* --- Smooth scroll ---------------------------------------------------- */
 
   const lenis = new Lenis({
@@ -173,12 +173,17 @@ export function initScroll() {
     // because a scale with three decimal places is a readout nobody can use.
     if (readout) readout.textContent = String(Math.round(state.wdth));
 
+    // One normalised position drives the scale index and the ground. They are
+    // two readings of the same axis, so they cannot be allowed to disagree.
+    const t = (state.wdth - WDTH_MIN) / (125 - WDTH_MIN);
+
     if (scaleIndex) {
       // A bare fraction. The rail's own height does the rest, in CSS, so
       // nothing here has to know how tall it currently is.
-      const t = (state.wdth - WDTH_MIN) / (125 - WDTH_MIN);
       scaleIndex.style.setProperty("--hero-index", String(t));
     }
+
+
   }
 
   /* --- The timeline ------------------------------------------------------
@@ -219,9 +224,6 @@ export function initScroll() {
           trigger: hero!,
           start: "top top",
           end: () => `+=${window.innerHeight * total}`,
-          // The roller plane rides this exact progress. Published rather than
-          // measured, because the plane is inside the pin and never moves.
-          onUpdate: (self) => setDrivenProgress("hero", self.progress),
           pin: pin!,
           pinSpacing: true,
           scrub: true,

@@ -17,6 +17,12 @@
   --color-rule: rgba(25, 25, 25, 0.14);
   --color-rule-strong: rgba(25, 25, 25, 0.32);
   --color-accent: #b3001b;
+  /* The machine layer. Crimson is the human accent and stays rationed to the
+     name, the index and the closing block; this one belongs to the readouts
+     and the character field. A true neon reads 1.36:1 on this paper and is
+     unusable, so the cold accent is taken as far as it can go and still be
+     read: 5.11:1. */
+  --color-machine: #046e8f;
 
   --font-display: "Archivo Variable", "Archivo", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;

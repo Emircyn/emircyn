@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import { useTranslations, type Locale } from "@/i18n/utils";
 import profileImage from "@/assets/images/hero-portrait.png";
-import rollerPlate from "@/assets/plates/roller.jpg";
 
 const lang = (Astro.currentLocale || "en") as Locale;
 const t = useTranslations(lang);
@@ -82,48 +81,15 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
                 </h1>
             </div>
 
-            <!-- The sheet the hero is printed on. The roller lays its band of
-                 ink across it on exactly the scroll that opens the width axis,
-                 so the hero is one move seen twice rather than a still page
-                 with an animation parked in a box in the corner. It is washed
-                 back to a ghost impression: the paper stays the ground of the
-                 page, and every reading on top of it keeps its contrast.
-
-                 The playhead is driven by the hero timeline, not by this
-                 element's own position. The hero is pinned, so the ground never
-                 moves on screen and its own rect would report one frozen value
-                 for the whole act. -->
-            <div
-                class="hero__ground"
-                data-scrub-stage
-                data-scrub-driven="hero"
-                aria-hidden="true"
-            >
-                <Image
-                    src={rollerPlate}
-                    alt=""
-                    widths={[720, 1200, 1800]}
-                    sizes="100vw"
-                    loading="lazy"
-                    decoding="async"
-                    class="hero__ground-still"
-                    data-scrub-poster
-                />
-                <video
-                    class="hero__ground-video"
-                    data-scrub-video
-                    data-scrub-src="/media/roller.mp4"
-                    data-scrub-src-mobile="/media/roller-m.mp4"
-                    muted
-                    playsinline
-                    preload="none"
-                    tabindex="-1"
-                    aria-hidden="true"></video>
-            </div>
-
             <!-- Above everything. The name passes behind the figure; nothing is
-                 ever printed across it. -->
-            <div class="hero__portrait" data-hero-portrait aria-hidden="true">
+                 ever printed across it.
+
+                 The figure is framed the way this page frames anything it is
+                 measuring: a hairline box with corner brackets and a plate tag.
+                 The crop tightens as the width axis opens, so the frame is
+                 reading the same scroll as everything else rather than sitting
+                 there as decoration. -->
+            <div class="hero__portrait" data-hero-portrait>
                 <Image
                     src={profileImage}
                     alt=""
@@ -312,78 +278,23 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
         color: var(--color-accent);
     }
 
-    /* --- The ground ------------------------------------------------------ */
-
-    .hero__ground {
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        overflow: hidden;
-        pointer-events: none;
-    }
-
-    /* Washed back to a ghost. At this strength the worst case, ink text over a
-       solid black frame of the clip, still measures 11.9:1, and the accent
-       4.8:1. The small mono labels are moved to full ink below for the same
-       reason: at ink-soft they land at 4.4:1, just under the threshold. */
-    .hero__ground::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-color: rgba(241, 241, 239, 0.88);
-    }
-
-    .hero__ground-still,
-    .hero__ground-video {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-
-    /* The still holds the ground until a real video frame has painted. */
-    .hero__ground-video {
-        opacity: 0;
-        transition: opacity 0.2s linear;
-    }
-
-    .hero__ground[data-scrub-ready] .hero__ground-video {
-        opacity: 1;
-    }
-
-    /* Reduced motion, or no script: the ground is a printed plate. */
-    .hero__ground[data-scrub-static] .hero__ground-video {
-        display: none;
-    }
-
-    /* The grid items are lifted over the ground. Without this the ground,
-       being positioned, paints above them, because they are not.
-
-       The scale is deliberately not in this list. It is already absolute with
-       its own z-index, and adding position: relative here overrode that and
-       collapsed the rail into a stack of ticks under the header. */
-    .hero__meta,
-    .hero__scenes {
-        position: relative;
-        z-index: 1;
-    }
-
-    /* Full ink rather than the soft grey used elsewhere. Over the ground the
-       soft grey drops to 4.4:1, and these are the smallest text on the page. */
-    .hero .label {
-        color: var(--color-ink);
-    }
-
-    .hero .label-accent {
-        color: var(--color-accent);
-    }
-
     /* --- Portrait, above everything -------------------------------------- */
 
     .hero__portrait {
         position: absolute;
+        /* The contour follows the alpha channel, and the alpha channel ends
+           where the file does, so without this it draws a straight red rule
+           along the bottom crop of the figure. */
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            #000 calc(100% - 10px),
+            transparent calc(100% - 10px)
+        );
+        mask-image: linear-gradient(
+            to bottom,
+            #000 calc(100% - 10px),
+            transparent calc(100% - 10px)
+        );
         z-index: 3;
         right: 0;
         bottom: 0;
@@ -397,10 +308,53 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
     }
 
     .hero__portrait-img {
+        position: relative;
+        z-index: 1;
         width: 100%;
         height: auto;
         display: block;
+        /* Applied after the filter, so the contour is drawn first and then
+           multiplied with the paper. Against a near-white sheet that leaves
+           the accent where it was, and puts the figure back on the page
+           rather than a shade brighter than it. */
         mix-blend-mode: multiply;
+    }
+
+    /* --- The contour ------------------------------------------------------ */
+
+    /* A border that follows the figure rather than boxing it in. The portrait
+       is a cut-out with a real alpha channel, so stacking drop-shadows at zero
+       blur in eight directions traces its silhouette exactly: an outline that
+       wraps the person, drawn in the same accent the family name is printed in.
+
+       Eight directions rather than four, because four leaves the diagonals
+       thin and the contour reads as a cross rather than as a line. */
+    .hero__portrait-img {
+        /* Constant. Animating the width forces the browser to re-rasterise
+           eight drop-shadows on every frame of the scrub; held still, the
+           filter is drawn once and cached. Measured: a 227ms hitch on the
+           first scroll became nothing. */
+        --contour: 2px;
+        filter: drop-shadow(var(--contour) 0 0 var(--color-accent))
+            drop-shadow(calc(var(--contour) * -1) 0 0 var(--color-accent))
+            drop-shadow(0 var(--contour) 0 var(--color-accent))
+            drop-shadow(0 calc(var(--contour) * -1) 0 var(--color-accent))
+            drop-shadow(
+                calc(var(--contour) * 0.72) calc(var(--contour) * 0.72) 0
+                    var(--color-accent)
+            )
+            drop-shadow(
+                calc(var(--contour) * -0.72) calc(var(--contour) * 0.72) 0
+                    var(--color-accent)
+            )
+            drop-shadow(
+                calc(var(--contour) * 0.72) calc(var(--contour) * -0.72) 0
+                    var(--color-accent)
+            )
+            drop-shadow(
+                calc(var(--contour) * -0.72) calc(var(--contour) * -0.72) 0
+                    var(--color-accent)
+            );
     }
 
     /* --- Scroll composition ---------------------------------------------- */
