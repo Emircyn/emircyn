@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { useTranslations, type Locale } from "@/i18n/utils";
 import profileImage from "@/assets/images/hero-portrait.png";
+import rollerPlate from "@/assets/plates/roller.jpg";
 
 const lang = (Astro.currentLocale || "en") as Locale;
 const t = useTranslations(lang);
@@ -70,15 +71,50 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
             </ol>
 
             <!-- lang="tr" so uppercasing gives the Turkish forms on the English
-                 route too. The second line is set as an outline: the same word
-                 in two states, which is what the whole hero is about. -->
+                 route too. The second line carries the accent, so the name is
+                 one mark printed from two plates. -->
             <div class="hero__type">
                 <h1 id="hero-name" class="hero__name" lang="tr" data-hero-name>
                     <span class="hero__line" data-hero-line>{firstName}</span>
-                    <span class="hero__line hero__line--outline" data-hero-line
+                    <span class="hero__line hero__line--accent" data-hero-line
                         >{lastName}</span
                     >
                 </h1>
+            </div>
+
+            <!-- The second moving plane. The roller lays its band of ink across
+                 the sheet on exactly the scroll that opens the width axis, so
+                 the hero is one move seen twice rather than a still page with
+                 an animation parked in the corner. The playhead is driven by
+                 the hero timeline, not by this element's own position: the hero
+                 is pinned, so the plane never moves on screen and its own rect
+                 would report one frozen value for the whole act. -->
+            <div
+                class="hero__plane"
+                data-scrub-stage
+                data-scrub-driven="hero"
+                aria-label={t("plates.roller")}
+            >
+                <Image
+                    src={rollerPlate}
+                    alt=""
+                    widths={[520, 900, 1400]}
+                    sizes="(max-width: 767px) 92vw, 36vw"
+                    loading="lazy"
+                    decoding="async"
+                    class="hero__plane-still"
+                    data-scrub-poster
+                />
+                <video
+                    class="hero__plane-video"
+                    data-scrub-video
+                    data-scrub-src="/media/roller.mp4"
+                    data-scrub-src-mobile="/media/roller-m.mp4"
+                    muted
+                    playsinline
+                    preload="none"
+                    tabindex="-1"
+                    aria-hidden="true"></video>
             </div>
 
             <!-- Above everything. The name passes behind the figure; nothing is
@@ -249,13 +285,53 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
         white-space: nowrap;
     }
 
-    /* The same word in two states: printed in ink, drawn in the accent. The
-       stroke is thin, so the accent stays rationed: it reads as the same
-       structural red as the scale index and the scene numbers rather than as a
-       second colour competing with the closing block. */
-    .hero__line--outline {
-        color: transparent;
-        -webkit-text-stroke: 0.015em var(--color-accent);
+    /* Two impressions of one mark: the given name in ink, the family name in
+       the accent. Both printed solid. Drawn as an outline it went thin and
+       unresolved at this size, and the weight of the composition fell out of
+       the bottom of the frame. */
+    .hero__line--accent {
+        color: var(--color-accent);
+    }
+
+    /* --- The roller plane ------------------------------------------------ */
+
+    .hero__plane {
+        position: absolute;
+        z-index: 2;
+        overflow: hidden;
+        border: 1px solid var(--color-rule-strong);
+        background-color: var(--color-paper-sunk);
+        /* Desktop: the band of right-hand air above the figure, which was the
+           emptiest part of the frame. */
+        right: 0;
+        top: 13%;
+        width: 36%;
+        aspect-ratio: 2 / 1;
+    }
+
+    .hero__plane-still,
+    .hero__plane-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* The still holds the frame until a real video frame has painted. */
+    .hero__plane-video {
+        opacity: 0;
+        transition: opacity 0.2s linear;
+    }
+
+    .hero__plane[data-scrub-ready] .hero__plane-video {
+        opacity: 1;
+    }
+
+    /* Reduced motion, or no script: the plane is simply a printed plate. */
+    .hero__plane[data-scrub-static] .hero__plane-video {
+        display: none;
     }
 
     /* --- Portrait, above everything -------------------------------------- */
@@ -322,7 +398,7 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
            type passes behind it, but only grazing the edge: an h1 that loses
            its last letters behind a picture is not a layering effect. */
         .hero__type {
-            max-width: 66%;
+            max-width: 62%;
         }
     }
 
@@ -352,6 +428,19 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
 
         .hero[data-meta-lifted] .hero__meta {
             opacity: 0;
+        }
+
+        /* Mobile: the dead band between the message and the name, which is
+           where the composition was emptiest. */
+        .hero__plane {
+            right: 0;
+            left: 0;
+            top: 46%;
+            width: auto;
+            /* Shallower than desktop. The messages run to three lines on a
+               narrow measure and they grow downward from the centre of the
+               band, so the plane has to clear the tallest of them. */
+            aspect-ratio: 2 / 1;
         }
 
         .hero__scene-text {

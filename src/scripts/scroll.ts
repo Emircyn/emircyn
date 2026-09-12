@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { setDrivenProgress } from "./scrub";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -227,6 +228,9 @@ export function initScroll() {
           trigger: hero!,
           start: "top top",
           end: () => `+=${window.innerHeight * total}`,
+          // The roller plane rides this exact progress. Published rather than
+          // measured, because the plane is inside the pin and never moves.
+          onUpdate: (self) => setDrivenProgress("hero", self.progress),
           pin: pin!,
           pinSpacing: true,
           scrub: true,
