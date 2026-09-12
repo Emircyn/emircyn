@@ -1,0 +1,135 @@
+---
+import { useTranslations, type Locale } from "@/i18n/utils";
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+---
+
+<!-- The signature move. A hairline drawn down the left edge by scroll, from
+     the figure's red contour in the hero to the address in the close. Every
+     act passed stamps its name onto the thread and the stamp stays, so by the
+     end the thread is a record of the journey. It is also the navigation:
+     each stamp is a link. Populated from [data-thread-stop] by scroll.ts. -->
+<nav class="thread" data-thread aria-label={t("thread.label")} hidden>
+    <svg class="thread__svg" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true">
+        <line class="thread__ghost" x1="1" y1="0" x2="1" y2="1000" />
+        <line class="thread__line" x1="1" y1="0" x2="1" y2="1000" data-thread-line />
+    </svg>
+    <ol class="thread__stops" data-thread-stops></ol>
+</nav>
+
+<style is:global>
+    .thread {
+        position: fixed;
+        left: calc(var(--gutter) * 0.5);
+        top: 14vh;
+        bottom: 14vh;
+        width: 2px;
+        z-index: 40;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 400ms var(--ease-out);
+    }
+    .thread[data-thread-on] {
+        opacity: 1;
+    }
+    .thread__svg {
+        position: absolute;
+        inset: 0;
+        width: 2px;
+        height: 100%;
+        overflow: visible;
+    }
+    .thread__ghost {
+        stroke: rgba(241, 241, 239, 0.14);
+        stroke-width: 1;
+    }
+    .thread__line {
+        stroke: var(--color-red-lit);
+        stroke-width: 2;
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        will-change: stroke-dashoffset;
+    }
+    /* On the paper ground the thread reads in the paper accent. */
+    .thread[data-thread-paper] .thread__line {
+        stroke: var(--color-red);
+    }
+    .thread[data-thread-paper] .thread__ghost {
+        stroke: rgba(25, 25, 25, 0.16);
+    }
+    .thread__stops {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        inset: 0;
+    }
+    .thread__stop {
+        position: absolute;
+        left: 0;
+        top: calc(var(--at, 0) * 100%);
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        pointer-events: auto;
+        opacity: 0;
+        transition:
+            opacity 300ms var(--ease-out),
+            transform 300ms var(--ease-out);
+        transform: translate3d(-6px, -50%, 0);
+    }
+    .thread__stop[data-stamped] {
+        opacity: 1;
+        transform: translate3d(0, -50%, 0);
+    }
+    .thread__dot {
+        width: 8px;
+        height: 8px;
+        margin-left: -3px;
+        border-radius: 50%;
+        background: var(--color-room);
+        border: 2px solid var(--color-red-lit);
+        flex: none;
+        transition: background-color 160ms var(--ease-out);
+    }
+    .thread__stop[data-current] .thread__dot {
+        background: var(--color-red-lit);
+    }
+    .thread[data-thread-paper] .thread__dot {
+        background: var(--color-paper);
+        border-color: var(--color-red);
+    }
+    .thread[data-thread-paper] .thread__stop[data-current] .thread__dot {
+        background: var(--color-red);
+    }
+    .thread__link {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-bone-soft);
+        white-space: nowrap;
+        padding: 0.3rem 0;
+    }
+    .thread[data-thread-paper] .thread__link {
+        color: var(--color-ink-soft);
+    }
+    .thread__stop[data-current] .thread__link {
+        color: var(--color-red-lit);
+    }
+    .thread[data-thread-paper] .thread__stop[data-current] .thread__link {
+        color: var(--color-red);
+    }
+
+    @media (max-width: 767px) {
+        /* On a phone the thread keeps the line and the dots but drops the
+           labels; a label column would sit over the copy. */
+        .thread__link {
+            display: none;
+        }
+        .thread {
+            left: 6px;
+        }
+    }
+</style>

@@ -1,0 +1,190 @@
+---
+import { useTranslations, type Locale } from "@/i18n/utils";
+
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+
+// The four beliefs. The first hero scene is the identity line and belongs to
+// the hero; the rest are the argument.
+const scenes = (t("hero.scenes") as { label: string; text: string }[]).slice(1);
+---
+
+<!-- Act 2, pinned. The frame holds while four sentences arrive at scale, one
+     at a time, each pushing the last one back into the room. Behind them a
+     slow index line travels sideways with the scroll, so even the "still"
+     act is never still. -->
+<section
+    id="manifesto"
+    class="manifesto grain"
+    data-manifesto
+    data-thread-stop={t("thread.manifesto")}
+    aria-label={t("manifesto.label")}
+>
+    <div class="manifesto__pin" data-manifesto-pin>
+        <div class="manifesto__band" data-manifesto-band aria-hidden="true">
+            <span class="manifesto__band-in">
+                {scenes.map((s) => <span>{s.label}</span>)}
+                {scenes.map((s) => <span>{s.label}</span>)}
+            </span>
+        </div>
+
+        <div class="shell manifesto__frame">
+            <ol class="manifesto__list">
+                {
+                    scenes.map((s, i) => (
+                        <li class="manifesto__item" data-manifesto-item data-index={i}>
+                            <span class="label label-accent manifesto__label">
+                                {s.label}
+                            </span>
+                            <p class="manifesto__text balance">
+                                {s.text.split(" ").map((w) => (
+                                    <span class="manifesto__w">
+                                        <span class="manifesto__w-in">{w}</span>
+                                    </span>
+                                ))}
+                            </p>
+                        </li>
+                    ))
+                }
+            </ol>
+        </div>
+    </div>
+</section>
+
+<style>
+    .manifesto {
+        position: relative;
+        background: var(--color-room);
+        isolation: isolate;
+    }
+    .manifesto__pin {
+        position: relative;
+        height: 100dvh;
+        min-height: 560px;
+        overflow: hidden;
+    }
+    .manifesto__frame {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+    }
+    .manifesto__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        width: 100%;
+    }
+    .manifesto__item {
+        grid-area: 1 / 1;
+        display: grid;
+        gap: calc(var(--spacing) * 3);
+        opacity: 0;
+        will-change: transform, opacity;
+    }
+    .manifesto__item:first-child {
+        opacity: 1;
+    }
+    .manifesto__label {
+        display: block;
+    }
+    .manifesto__text {
+        margin: 0;
+        max-width: 14ch;
+        font-family: var(--font-display);
+        font-variation-settings:
+            "wdth" 84,
+            "wght" 780;
+        text-transform: uppercase;
+        font-size: clamp(2.6rem, 7.6vw, 8.5rem);
+        line-height: 0.92;
+        letter-spacing: -0.02em;
+        color: var(--color-bone);
+    }
+    .manifesto__w {
+        display: inline-block;
+        margin-inline-end: 0.22em;
+        overflow: hidden;
+        vertical-align: top;
+        padding-bottom: 0.06em;
+        margin-bottom: -0.06em;
+    }
+    .manifesto__w-in {
+        display: inline-block;
+        will-change: transform;
+    }
+    /* Alternate anchors so four screens do not sit on one corner. */
+    .manifesto__item[data-index="1"] {
+        justify-items: end;
+        text-align: right;
+    }
+    .manifesto__item[data-index="2"] {
+        justify-items: center;
+        text-align: center;
+    }
+
+    /* The travelling band: the four labels at 20vw, outlined, crossing the
+       frame with the scroll behind the copy. */
+    .manifesto__band {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 0;
+        font-family: var(--font-display);
+        font-variation-settings:
+            "wdth" 110,
+            "wght" 800;
+        text-transform: uppercase;
+        font-size: clamp(9rem, 26vw, 30rem);
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(241, 241, 239, 0.16);
+        will-change: transform;
+    }
+    .manifesto__band-in {
+        display: inline-flex;
+        gap: 0.35em;
+        padding-inline: 0.35em;
+    }
+    .manifesto__frame {
+        z-index: 1;
+    }
+
+    @media (max-width: 767px) {
+        .manifesto__text {
+            max-width: 11ch;
+            font-size: clamp(2.4rem, 12vw, 4rem);
+        }
+        .manifesto__item[data-index="1"],
+        .manifesto__item[data-index="2"] {
+            justify-items: start;
+            text-align: left;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .manifesto__pin {
+            height: auto;
+            min-height: 0;
+            padding-block: calc(var(--spacing) * 12);
+        }
+        .manifesto__frame {
+            position: static;
+        }
+        .manifesto__list {
+            gap: calc(var(--spacing) * 8);
+        }
+        .manifesto__item {
+            grid-area: auto;
+            opacity: 1;
+        }
+        .manifesto__band {
+            display: none;
+        }
+    }
+</style>

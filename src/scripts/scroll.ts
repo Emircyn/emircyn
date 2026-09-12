@@ -5,432 +5,475 @@ import Lenis from "lenis";
 gsap.registerPlugin(ScrollTrigger);
 
 /* ---------------------------------------------------------------------------
-   The scroll layer.
+   The scroll layer, build 3.
 
-   One ScrollTrigger, one timeline. It drives three things that have to stay in
-   lockstep, because they are one instrument and not three animations that
-   happen to overlap:
+   Six acts, one smooth-scroll instance, one ScrollTrigger per act. Two kinds
+   of motion live here and they are kept apart on purpose:
 
-     1. the width axis of the display face (wdth 62 -> open)
-     2. the font size, refitted so the name stays flush to the measure as the
-        axis opens
-     3. the portrait mask and the scene text states
+     scroll-driven   GSAP timelines, scrubbed. Own the outer plane elements.
+     ambient         one rAF loop writing CSS variables (--ax/--ay idle drift,
+                     --px/--py pointer). Own the inner wrappers. Runs only
+                     while its act is on screen.
 
-   If the visitor prefers reduced motion, none of this initialises. The page
-   already renders a complete static composition without it.
+   Under reduced motion none of this initialises. The page renders a complete
+   static composition on its own.
 --------------------------------------------------------------------------- */
 
-const MOBILE_QUERY = "(max-width: 767px)";
-const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
+const MOBILE = "(max-width: 767px)";
+const REDUCED = "(prefers-reduced-motion: reduce)";
+const FINE = "(hover: hover) and (pointer: fine)";
 
-const WDTH_MIN = 62;
-const WGHT = 800;
-// Must match line-height on .hero__name. The reserved band is derived from it,
-// and a band that disagrees with the leading either clips the name or leaves a
-// gap under it.
-const LEADING = 1.04;
+const isMobile = () => window.matchMedia(MOBILE).matches;
+const isFine = () => window.matchMedia(FINE).matches;
+const q = <T extends HTMLElement>(sel: string, root: ParentNode = document) =>
+  root.querySelector<T>(sel);
+const qa = <T extends HTMLElement>(sel: string, root: ParentNode = document) =>
+  Array.from(root.querySelectorAll<T>(sel));
 
-type Fit = { widths: number[]; ratios: number[] };
+let lenis: Lenis | null = null;
 
-/** Sample how wide a string is, per unit of font size, across the width axis.
- *  Resolution independent, so it survives resize without re-measuring. */
-function measure(text: string, source: HTMLElement, samples = 8): Fit {
-  const cs = getComputedStyle(source);
-  const probe = document.createElement("span");
-  probe.setAttribute("aria-hidden", "true");
-  probe.style.cssText = [
-    "position:absolute",
-    "left:-99999px",
-    "top:0",
-    "visibility:hidden",
-    "white-space:nowrap",
-    "font-size:100px",
-    `font-family:${cs.fontFamily}`,
-    `text-transform:${cs.textTransform}`,
-    `letter-spacing:${cs.letterSpacing}`,
-  ].join(";");
-  probe.textContent = text;
-  document.body.appendChild(probe);
+export function initPage() {
+  initReveals();
+  if (window.matchMedia(REDUCED).matches) return;
 
-  const widths: number[] = [];
-  const ratios: number[] = [];
-  for (let i = 0; i < samples; i++) {
-    const w = WDTH_MIN + ((125 - WDTH_MIN) * i) / (samples - 1);
-    probe.style.fontVariationSettings = `"wdth" ${w}, "wght" ${WGHT}`;
-    widths.push(w);
-    ratios.push(probe.getBoundingClientRect().width / 100);
-  }
-
-  probe.remove();
-  return { widths, ratios };
-}
-
-/** Linear interpolation across the sampled width ratios. */
-function ratioAt(fit: Fit, wdth: number): number {
-  const { widths, ratios } = fit;
-  if (wdth <= widths[0]) return ratios[0];
-  if (wdth >= widths[widths.length - 1]) return ratios[ratios.length - 1];
-  for (let i = 1; i < widths.length; i++) {
-    if (wdth <= widths[i]) {
-      const span = widths[i] - widths[i - 1];
-      const k = (wdth - widths[i - 1]) / span;
-      return ratios[i - 1] + (ratios[i] - ratios[i - 1]) * k;
-    }
-  }
-  return ratios[ratios.length - 1];
-}
-
-export function initScroll() {
-  if (window.matchMedia(REDUCED_QUERY).matches) return;
-
-  const hero = document.querySelector<HTMLElement>("[data-hero]");
-  const pin = document.querySelector<HTMLElement>("[data-hero-pin]");
-  const nameEl = document.querySelector<HTMLElement>("[data-hero-name]");
-  const lines = Array.from(
-    document.querySelectorAll<HTMLElement>("[data-hero-line]"),
-  );
-  const portrait = document.querySelector<HTMLElement>("[data-hero-portrait]");
-  const scaleIndex = document.querySelector<HTMLElement>("[data-hero-index]");
-  const readout = document.querySelector<HTMLElement>("[data-hero-readout]");
-  const scenes = Array.from(
-    document.querySelectorAll<HTMLElement>("[data-hero-scene]"),
-  );
-
-
-  /* --- Smooth scroll ---------------------------------------------------- */
-
-  const lenis = new Lenis({
-    duration: 1.05,
-    // Touch is left on the platform's own physics. Lenis smoothing on touch
-    // makes iOS scrolling feel detached from the finger.
+  lenis = new Lenis({
+    duration: 1.1,
     smoothWheel: true,
+    // Touch stays on the platform's own physics. Smoothing touch on iOS makes
+    // the page feel detached from the finger.
     syncTouch: false,
   });
-
   lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.add((time) => lenis!.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
-
-  // An iOS URL bar collapsing is a viewport resize. Without this every pin
-  // recalculates mid-scroll and the section jumps.
   ScrollTrigger.config({ ignoreMobileResize: true });
 
-  if (!hero || !pin || !nameEl || !portrait || lines.length === 0) return;
-
-  /* --- Fit the name to the measure -------------------------------------- */
-
-  const fits = lines.map((line) => measure(line.textContent ?? "", nameEl));
-
-  const state = { wdth: WDTH_MIN };
-
-  /** The probe copies the computed font properties but cannot reproduce every
-   *  detail of the real line box. Compare it once against the actually
-   *  rendered width so the fitted name lands on the measure, not near it. */
-  function calibrate() {
-    lines.forEach((line, i) => {
-      const size = parseFloat(getComputedStyle(line).fontSize);
-      if (!size) return;
-      const range = document.createRange();
-      range.selectNodeContents(line);
-      const real = range.getBoundingClientRect().width;
-      range.detach();
-      const predicted = ratioAt(fits[i], state.wdth) * size;
-      if (!real || predicted <= 0) return;
-      const k = real / predicted;
-      if (k > 0.5 && k < 2) fits[i].ratios = fits[i].ratios.map((r) => r * k);
-    });
-  }
-
-  function isMobile() {
-    return window.matchMedia(MOBILE_QUERY).matches;
-  }
-
-  function applyWidth() {
-    nameEl!.style.setProperty("--hero-wdth", String(state.wdth));
-    nameEl!.style.setProperty("--hero-wght", String(WGHT));
-
-    const available = nameEl!.parentElement?.clientWidth ?? window.innerWidth;
-
-    // The name is widest, and therefore set smallest, at the open end of the
-    // axis; it is largest at the closed end. So the tallest the two lines can
-    // ever be is their size at WDTH_MIN, and that is exactly what the band has
-    // to reserve. Reserving a flat share of the frame instead over-reserved it
-    // by 2.3x on a phone, where the name is constrained by the measure rather
-    // than by the band: 304px held for 131px of letters, which was most of the
-    // dead air in the mobile hero.
-    const sizes = lines.map((_, i) => available / ratioAt(fits[i], state.wdth));
-    const tallest = lines.map((_, i) => available / ratioAt(fits[i], WDTH_MIN));
-    const needed = tallest.reduce((a, b) => a + b, 0) * LEADING;
-
-    // A ceiling, so a very short viewport cannot let the name take the screen.
-    // It bites on a wide desktop measure, where the fitted name would run
-    // taller than the frame; on a phone the measure sets the size long before
-    // this does.
-    const ceiling = pin!.clientHeight * 0.46;
-    const band = Math.min(needed, ceiling);
-    const squeeze = needed > ceiling ? ceiling / needed : 1;
-
-    // The band is reserved as a fixed height. Refitting the name changes its
-    // font size on every frame of the scrub, and in an auto-height row that
-    // would resize the row and push the whole column around: a layout shift on
-    // every notch of the wheel.
-    const type = nameEl!.parentElement;
-    if (type) type.style.height = `${Math.round(band)}px`;
-
-    lines.forEach((line, i) => {
-      line.style.fontSize = `${sizes[i] * squeeze}px`;
-    });
-
-    // The instrument reads out the axis it is actually driving. Rounded,
-    // because a scale with three decimal places is a readout nobody can use.
-    if (readout) readout.textContent = String(Math.round(state.wdth));
-
-    // One normalised position drives the scale index and the ground. They are
-    // two readings of the same axis, so they cannot be allowed to disagree.
-    const t = (state.wdth - WDTH_MIN) / (125 - WDTH_MIN);
-
-    if (scaleIndex) {
-      // A bare fraction. The rail's own height does the rest, in CSS, so
-      // nothing here has to know how tall it currently is.
-      scaleIndex.style.setProperty("--hero-index", String(t));
-    }
-
-
-  }
-
-  /* --- The timeline ------------------------------------------------------
-     Desktop runs all five scenes and opens the axis to 125. Mobile merges the
-     middle pair and the closing pair into three scenes, and stops the axis at
-     100, because the expanded widths do not fit a narrow measure. */
-
   let ctx: gsap.Context | null = null;
-
-  function build() {
+  const build = () => {
     ctx?.revert();
-
     ctx = gsap.context(() => {
-      const mobile = isMobile();
-      const wdthMax = mobile ? 100 : 125;
-
-      // One message owns one beat, on every viewport. Sharing a beat would put
-      // two messages in the same grid cell, on top of each other.
-      const beatCount = scenes.length;
-
-      // Scroll distance per beat, in viewport heights. The fourth beat is the
-      // peak (the portrait arriving through the type) and gets the most room;
-      // the beat before it is deliberately the quietest. Mobile keeps the same
-      // five beats but travels less for each, so the pin is shorter.
-      const spans = mobile
-        ? [0.6, 0.6, 0.6, 1.0, 0.7]
-        : [0.7, 0.8, 0.7, 1.4, 0.9];
-      const total = spans.reduce((a, b) => a + b, 0);
-
-      state.wdth = WDTH_MIN;
-      applyWidth();
-      calibrate();
-      applyWidth();
-
-      const tl = gsap.timeline({
-        defaults: { ease: "none" },
-        scrollTrigger: {
-          trigger: hero!,
-          start: "top top",
-          end: () => `+=${window.innerHeight * total}`,
-          pin: pin!,
-          pinSpacing: true,
-          scrub: true,
-          invalidateOnRefresh: true,
-          anticipatePin: 1,
-        },
-      });
-
-      // Claimed only here, once the trigger exists. If anything above this
-      // line throws, the readable static composition is what remains.
-      hero!.setAttribute("data-scroll-ready", "");
-      applyWidth();
-
-      // 1. The width axis, opening across the whole timeline.
-      tl.to(
-        state,
-        {
-          wdth: wdthMax,
-          duration: total,
-          onUpdate: applyWidth,
-        },
-        0,
-      );
-
-      // 2. Scene states. One message owns one beat, and hands over cleanly
-      //    before the next arrives.
-      let at = 0;
-      scenes.forEach((el, b) => {
-        const span = spans[b];
-        const fadeIn = Math.min(0.28, span * 0.35);
-        const fadeOut = Math.min(0.24, span * 0.3);
-
-        if (b === 0) {
-          // The opening message has to be readable before a single pixel of
-          // scroll happens, so it starts on rather than fading in.
-          gsap.set(el, { opacity: 1, yPercent: 0 });
-        } else {
-          tl.fromTo(
-            el,
-            { opacity: 0, yPercent: 14 },
-            { opacity: 1, yPercent: 0, duration: fadeIn, ease: "power2.out" },
-            at,
-          );
-        }
-
-        // The last message stays up, so the hero hands over to the page
-        // instead of fading to nothing.
-        if (b < beatCount - 1) {
-          tl.to(
-            el,
-            { opacity: 0, yPercent: -10, duration: fadeOut, ease: "power2.in" },
-            at + span - fadeOut,
-          );
-        }
-
-        at += span;
-      });
-
-      // 3. The peak. The portrait is masked up from the baseline during the
-      //    beat about measurable performance, arriving through the letterforms
-      //    exactly as the axis has opened far enough to let it show.
-      // 3. The portrait is its own plane. It is present from the first frame,
-      //    because a visitor who never scrolls should still meet the person,
-      //    and it travels slower than the type so the two separate in depth as
-      //    the axis opens. Transform only, and it is never masked or covered:
-      //    the name passes behind it.
-      tl.fromTo(
-        portrait!,
-        { yPercent: 7, scale: 1.04 },
-        { yPercent: -5, scale: 1, duration: total, ease: "none" },
-        0,
-      );
-    }, hero!);
-  }
-
-  // document.fonts.ready matters: measuring before Archivo loads samples the
-  // fallback face and the name is fitted to the wrong ratios.
-  const start = () => {
-    build();
+      hero();
+      manifesto();
+      work();
+      close();
+    });
     ScrollTrigger.refresh();
+    thread();
   };
 
-  if (document.fonts?.status === "loaded") {
-    start();
-  } else {
-    document.fonts?.ready.then(start).catch(start);
-  }
+  const start = () => {
+    build();
+    window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+  };
+  if (document.fonts?.status === "loaded") start();
+  else document.fonts?.ready.then(start).catch(start);
 
-  /* --- Resize ------------------------------------------------------------
-     Width changes rebuild the timeline, because the beat structure itself
-     differs between mobile and desktop. Height-only changes (the iOS URL bar)
-     are absorbed by ScrollTrigger and must not rebuild. */
+  ambient();
 
   let lastWidth = window.innerWidth;
   window.addEventListener("resize", () => {
     if (window.innerWidth === lastWidth) return;
     lastWidth = window.innerWidth;
     build();
-    ScrollTrigger.refresh();
-  });
-
-  // If the visitor turns reduced motion on mid-session, tear the whole layer
-  // down and leave the static composition behind.
-  window.matchMedia(REDUCED_QUERY).addEventListener("change", (e) => {
-    if (!e.matches) return;
-    ctx?.revert();
-    hero!.removeAttribute("data-scroll-ready");
-    lines.forEach((l) => (l.style.fontSize = ""));
-    lenis.destroy();
   });
 }
 
-/* The plates are windows onto a larger sheet, not pictures pasted on the page.
-   The image is oversized inside a fixed frame and travels against the scroll,
-   so the frame reads as an aperture moving over printed matter. One property,
-   transform only, and it is the only thing these sections do. */
-export function initPlates() {
-  if (window.matchMedia(REDUCED_QUERY).matches) return;
+/* --- Act 1: the hero ------------------------------------------------------ */
 
-  document.querySelectorAll<HTMLElement>("[data-plate]").forEach((frame) => {
-    const img = frame.querySelector<HTMLElement>("[data-plate-img]");
-    if (!img) return;
+function hero() {
+  const root = q("[data-hero]");
+  const pin = q("[data-hero-pin]");
+  if (!root || !pin) return;
 
-    frame.setAttribute("data-plate-live", "");
+  const mobile = isMobile();
+  const room = q("[data-hero-room]", root);
+  const figure = q("[data-hero-figure]", root);
+  const haze = q("[data-hero-haze]", root);
+  const line0 = q('[data-hero-line="0"]', root);
+  const line1 = q('[data-hero-line="1"]', root);
+  const meta = q("[data-hero-meta]", root);
+  const beat = q("[data-hero-beat]", root);
+  const span = mobile ? 1.7 : 2.3;
 
-    // The image is 1.32x the frame, so it can travel 16% in each direction
-    // without ever exposing an edge.
-    gsap.fromTo(
-      img,
-      { yPercent: -12 },
-      {
-        yPercent: 12,
-        ease: "none",
-        scrollTrigger: {
-          trigger: frame,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-          invalidateOnRefresh: true,
-        },
-      },
-    );
-  });
-}
-
-/* Positions resolved before the hero pin exists are stale by several viewport
-   heights, because pinning adds its spacer to the document after the fact. Call
-   this once everything has been created, and again on load when the images have
-   settled the final height. */
-export function refreshScroll() {
-  const run = () => ScrollTrigger.refresh();
-  if (document.fonts?.status === "loaded") run();
-  else document.fonts?.ready.then(run).catch(run);
-  window.addEventListener("load", run, { once: true });
-}
-
-/* On a phone the identity strip moves up into the slot the header leaves when
-   it scrolls away. Driven by an observer on the header itself rather than a
-   scroll threshold, so it cannot disagree with where the header actually is.
-
-   The hero copy of the strip is faded out at the same moment. Without that the
-   two are on screen together, because the hero is pinned and its own strip
-   never leaves: the same line printed twice, one above the other. */
-export function initRoleBar() {
-  const bar = document.querySelector<HTMLElement>("[data-role-bar]");
-  const header = document.querySelector<HTMLElement>(".site-header");
-  const hero = document.querySelector<HTMLElement>("[data-hero]");
-  if (!bar || !header || !("IntersectionObserver" in window)) return;
-
-  new IntersectionObserver(
-    ([entry]) => {
-      const gone = !entry.isIntersecting;
-      bar.toggleAttribute("data-role-bar-on", gone);
-      hero?.toggleAttribute("data-meta-lifted", gone);
+  const tl = gsap.timeline({
+    defaults: { ease: "none" },
+    scrollTrigger: {
+      trigger: root,
+      start: "top top",
+      end: () => `+=${window.innerHeight * span}`,
+      pin,
+      pinSpacing: true,
+      scrub: 0.6,
+      invalidateOnRefresh: true,
+      anticipatePin: 1,
     },
-    { threshold: 0 },
-  ).observe(header);
+  });
+  root.setAttribute("data-scroll-ready", "");
+
+  // Far plane: the camera pushes in, slowly.
+  if (room) tl.fromTo(room, { scale: 1.06, yPercent: 0 }, { scale: 1.16, yPercent: -6, duration: 1 }, 0);
+
+  // The name splits and recedes into the wall. Two lines, two directions.
+  if (line0 && line1) {
+    tl.fromTo(line0, { xPercent: 0 }, { xPercent: mobile ? -70 : -26, duration: 1 }, 0);
+    tl.fromTo(line1, { xPercent: 0 }, { xPercent: mobile ? 70 : 18, duration: 1 }, 0);
+    tl.fromTo([line0, line1], { opacity: 1 }, { opacity: mobile ? 0 : 0.22, duration: 0.5 }, 0.35);
+  }
+
+  // Near plane: the figure comes forward, feet anchored.
+  if (figure)
+    tl.fromTo(
+      figure,
+      { yPercent: 0, scale: 1 },
+      { yPercent: mobile ? -14 : -6, scale: mobile ? 1.18 : 1.14, duration: 1 },
+      0,
+    );
+
+  // Haze thins as the room comes forward.
+  if (haze) tl.fromTo(haze, { opacity: 1 }, { opacity: 0.45, duration: 1 }, 0);
+
+  if (meta) tl.to(meta, { opacity: 0, yPercent: -40, duration: 0.25 }, 0.1);
+
+  // The second beat: arrives once the name has cleared, and holds.
+  if (beat) {
+    tl.fromTo(
+      beat,
+      { opacity: 0, y: 24 },
+      { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" },
+      0.45,
+    );
+  }
 }
 
-/* Section reveals below the hero. Deliberately one device, used once per
-   section, rather than a fade-up on every element. */
-export function initReveals() {
-  if (window.matchMedia(REDUCED_QUERY).matches) return;
+/* --- Act 2: the manifesto ------------------------------------------------- */
 
-  document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: 18 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.9,
-        ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 85%", once: true },
-      },
-    );
+function manifesto() {
+  const root = q("[data-manifesto]");
+  const pin = q("[data-manifesto-pin]");
+  if (!root || !pin) return;
+
+  const items = qa("[data-manifesto-item]", root);
+  const band = q("[data-manifesto-band]", root);
+  const n = items.length;
+  if (!n) return;
+
+  const mobile = isMobile();
+  const span = mobile ? 0.8 * n : 0.9 * n;
+
+  const tl = gsap.timeline({
+    defaults: { ease: "none" },
+    scrollTrigger: {
+      trigger: root,
+      start: "top top",
+      end: () => `+=${window.innerHeight * span}`,
+      pin,
+      pinSpacing: true,
+      scrub: 0.5,
+      invalidateOnRefresh: true,
+      anticipatePin: 1,
+    },
   });
+
+  if (band) tl.fromTo(band, { xPercent: 0 }, { xPercent: -50, duration: 1 }, 0);
+
+  const slot = 1 / n;
+  const inDur = slot * 0.36;
+  const outDur = slot * 0.24;
+  // The next sentence starts arriving while the last is still leaving, so no
+  // scroll position ever shows an empty frame.
+  const hold = -outDur * 0.45;
+
+  items.forEach((item, i) => {
+    const words = qa(".manifesto__w-in", item);
+    const at = i * slot;
+
+    if (i === 0) {
+      gsap.set(item, { opacity: 1, scale: 1, yPercent: 0 });
+      gsap.set(words, { yPercent: 0 });
+    } else {
+      tl.fromTo(item, { opacity: 0, scale: 1, yPercent: 4 }, { opacity: 1, yPercent: 0, duration: inDur * 0.5 }, at + hold);
+      tl.fromTo(
+        words,
+        { yPercent: 110 },
+        { yPercent: 0, duration: inDur, ease: "power3.out", stagger: inDur / Math.max(words.length, 1) * 0.6 },
+        at + hold,
+      );
+    }
+    if (i < n - 1) {
+      tl.to(item, { opacity: 0, scale: 0.94, yPercent: -6, duration: outDur, ease: "power2.in" }, at + slot - outDur);
+    }
+  });
+}
+
+/* --- Act 3: the work rail ------------------------------------------------- */
+
+function work() {
+  const root = q("[data-work]");
+  const pin = q("[data-work-pin]");
+  const rail = q("[data-work-rail]");
+  if (!root || !pin || !rail) return;
+
+  const cards = qa("[data-work-card]", rail);
+  const plates = qa<HTMLImageElement>(".card__plate-img", rail);
+
+  if (isMobile()) {
+    // A stack. The plates travel against the scroll inside their frames and
+    // each card rises as it arrives.
+    plates.forEach((img) => {
+      gsap.fromTo(
+        img,
+        { yPercent: -8 },
+        {
+          yPercent: 8,
+          ease: "none",
+          scrollTrigger: { trigger: img, start: "top bottom", end: "bottom top", scrub: true },
+        },
+      );
+    });
+    cards.forEach((card) => {
+      gsap.fromTo(
+        card,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          scrollTrigger: { trigger: card, start: "top 88%", once: true },
+        },
+      );
+    });
+    return;
+  }
+
+  const travel = () => Math.max(0, rail.scrollWidth - window.innerWidth);
+
+  const tl = gsap.timeline({
+    defaults: { ease: "none" },
+    scrollTrigger: {
+      trigger: root,
+      start: "top top",
+      end: () => `+=${travel() + window.innerHeight * 0.4}`,
+      pin,
+      pinSpacing: true,
+      scrub: 0.7,
+      invalidateOnRefresh: true,
+      anticipatePin: 1,
+    },
+  });
+
+  tl.to(rail, { x: () => -travel(), duration: 1 }, 0);
+  // The plates slide inside their frames at a different rate to the rail, so
+  // each card has depth of its own while it crosses.
+  plates.forEach((img) => tl.fromTo(img, { xPercent: 6 }, { xPercent: -6, duration: 1 }, 0));
+  cards.forEach((card, i) =>
+    tl.fromTo(card, { y: i % 2 ? 24 : 0 }, { y: i % 2 ? -24 : 20, duration: 1 }, 0),
+  );
+}
+
+/* --- Act 6: the close ----------------------------------------------------- */
+
+function close() {
+  const root = q("[data-close]");
+  if (!root) return;
+  const lines = qa("[data-close-line]", root);
+  const body = q("[data-close-body]", root);
+
+  gsap.fromTo(
+    lines,
+    { yPercent: 40, opacity: 0 },
+    {
+      yPercent: 0,
+      opacity: 1,
+      stagger: 0.12,
+      ease: "power3.out",
+      scrollTrigger: { trigger: root, start: "top 75%", end: "top 20%", scrub: 0.6 },
+    },
+  );
+  if (body)
+    gsap.fromTo(
+      body,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, ease: "power2.out", scrollTrigger: { trigger: root, start: "top 55%", end: "top 15%", scrub: 0.6 } },
+    );
+}
+
+/* --- Ambient loop --------------------------------------------------------- */
+
+function ambient() {
+  const heroPin = q("[data-hero-pin]");
+  const closePin = q("[data-close-pin]");
+  const magnet = q("[data-magnet]");
+  const heroRoot = q("[data-hero]");
+  const closeRoot = q("[data-close]");
+
+  const fine = isFine();
+  let heroOn = true;
+  let closeOn = false;
+
+  if ("IntersectionObserver" in window) {
+    if (heroRoot)
+      new IntersectionObserver(([e]) => (heroOn = e.isIntersecting), { threshold: 0 }).observe(heroRoot);
+    if (closeRoot)
+      new IntersectionObserver(([e]) => (closeOn = e.isIntersecting), { threshold: 0 }).observe(closeRoot);
+  }
+
+  // Pointer, normalised to -1..1 from the viewport centre, lerped.
+  const target = { x: 0, y: 0 };
+  const cur = { x: 0, y: 0 };
+  // The light in the close, in viewport percent.
+  const lightT = { x: 30, y: 60 };
+  const light = { x: 30, y: 60 };
+  let magnetRect: DOMRect | null = null;
+  let px = 0, py = 0;
+
+  if (fine) {
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        px = e.clientX;
+        py = e.clientY;
+        target.x = (e.clientX / window.innerWidth) * 2 - 1;
+        target.y = (e.clientY / window.innerHeight) * 2 - 1;
+        lightT.x = (e.clientX / window.innerWidth) * 100;
+        lightT.y = (e.clientY / window.innerHeight) * 100;
+      },
+      { passive: true },
+    );
+  }
+
+  const t0 = performance.now();
+  const tick = (now: number) => {
+    const t = (now - t0) / 1000;
+
+    if (heroOn && heroPin) {
+      cur.x += (target.x - cur.x) * 0.06;
+      cur.y += (target.y - cur.y) * 0.06;
+      // Idle drift: two slow sines, never in phase, so the planes breathe.
+      const ax = Math.sin(t * 0.21) * 0.9 + Math.sin(t * 0.07) * 0.5;
+      const ay = Math.cos(t * 0.17) * 0.8 + Math.sin(t * 0.11) * 0.4;
+      heroPin.style.setProperty("--px", cur.x.toFixed(4));
+      heroPin.style.setProperty("--py", cur.y.toFixed(4));
+      heroPin.style.setProperty("--ax", ax.toFixed(4));
+      heroPin.style.setProperty("--ay", ay.toFixed(4));
+    }
+
+    if (closeOn && closePin) {
+      // With no pointer the light wanders on its own.
+      const wx = fine ? lightT.x : 40 + Math.sin(t * 0.18) * 22;
+      const wy = fine ? lightT.y : 55 + Math.cos(t * 0.14) * 18;
+      light.x += (wx - light.x) * 0.08;
+      light.y += (wy - light.y) * 0.08;
+      closePin.style.setProperty("--lx", `${light.x.toFixed(2)}%`);
+      closePin.style.setProperty("--ly", `${light.y.toFixed(2)}%`);
+
+      if (fine && magnet) {
+        if (!magnetRect || now % 30 < 16) magnetRect = magnet.getBoundingClientRect();
+        const cx = magnetRect.left + magnetRect.width / 2;
+        const cy = magnetRect.top + magnetRect.height / 2;
+        const dx = px - cx;
+        const dy = py - cy;
+        const d = Math.hypot(dx, dy);
+        const r = 140;
+        const k = d < r ? (1 - d / r) * 0.35 : 0;
+        magnet.style.transform = `translate3d(${(dx * k).toFixed(1)}px, ${(dy * k).toFixed(1)}px, 0)`;
+      }
+    }
+
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+/* --- Reveals -------------------------------------------------------------- */
+
+function initReveals() {
+  const els = qa("[data-reveal]");
+  if (!els.length || window.matchMedia(REDUCED).matches || !("IntersectionObserver" in window)) return;
+  els.forEach((el) => el.setAttribute("data-reveal-armed", ""));
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        e.target.setAttribute("data-reveal-on", "");
+        io.unobserve(e.target);
+      }
+    },
+    { rootMargin: "0px 0px -12% 0px" },
+  );
+  els.forEach((el) => io.observe(el));
+}
+
+/* --- The thread (signature) ----------------------------------------------- */
+
+function thread() {
+  const nav = q("[data-thread]");
+  const line = q<SVGLineElement & HTMLElement>("[data-thread-line]");
+  const list = q("[data-thread-stops]");
+  const bar = q("[data-bar]");
+  const paper = q("[data-paper]");
+  if (!nav || !line || !list) return;
+
+  const stops = qa("[data-thread-stop]");
+  if (!stops.length) return;
+  nav.hidden = false;
+
+  type Stop = { el: HTMLElement; li: HTMLElement; at: number };
+  const rows: Stop[] = [];
+  list.innerHTML = "";
+  stops.forEach((el) => {
+    const li = document.createElement("li");
+    li.className = "thread__stop";
+    const a = document.createElement("a");
+    a.className = "thread__link";
+    a.href = `#${el.id}`;
+    a.textContent = el.dataset.threadStop || el.id;
+    const dot = document.createElement("span");
+    dot.className = "thread__dot";
+    li.append(dot, a);
+    list.append(li);
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      lenis?.scrollTo(el, { offset: 0, duration: 1.4 });
+    });
+    rows.push({ el, li, at: 0 });
+  });
+
+  const measure = () => {
+    const total = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const y = window.scrollY;
+    rows.forEach((r) => {
+      const top = r.el.getBoundingClientRect().top + y;
+      r.at = Math.min(0.985, Math.max(0.01, top / total));
+      r.li.style.setProperty("--at", r.at.toFixed(4));
+    });
+  };
+  measure();
+  ScrollTrigger.addEventListener("refresh", measure);
+
+  const update = () => {
+    const total = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const p = Math.min(1, Math.max(0, window.scrollY / total));
+    line.style.strokeDashoffset = String(1000 * (1 - p));
+    nav.toggleAttribute("data-thread-on", p > 0.015);
+
+    let current: Stop | null = null;
+    rows.forEach((r) => {
+      const stamped = p >= r.at - 0.012;
+      r.li.toggleAttribute("data-stamped", stamped);
+      if (stamped) current = r;
+    });
+    rows.forEach((r) => r.li.toggleAttribute("data-current", r === current));
+
+    // Ground: the thread and the bar re-ink over the paper act.
+    if (paper) {
+      const rect = paper.getBoundingClientRect();
+      const mid = window.innerHeight * 0.5;
+      nav.toggleAttribute("data-thread-paper", rect.top < mid && rect.bottom > mid);
+      bar?.toggleAttribute("data-bar-paper", rect.top < 40 && rect.bottom > 40);
+    }
+  };
+  update();
+  ScrollTrigger.addEventListener("scrollEnd", update);
+  lenis?.on("scroll", update);
 }

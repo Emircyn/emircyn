@@ -27,7 +27,22 @@
         "text": "The person using it decides if it worked."
       }
     ],
-    "staticIntro": "Frontend developer at InspireIT in Ankara, building interfaces for the web."
+    "staticIntro": "Frontend developer at InspireIT in Ankara, building interfaces for the web.",
+    "beat": "I build interfaces for the web, and I measure whether they work.",
+    "ticker": [
+      "Frontend Developer",
+      "Ankara",
+      "InspireIT",
+      "Astro",
+      "React",
+      "Vue",
+      "TypeScript",
+      "Tailwind",
+      "GSAP",
+      "Performance",
+      "Accessibility",
+      "Since 2019"
+    ]
   },
   "work": {
     "label": "Selected work",
@@ -156,5 +171,17 @@
   "scrub": {
     "label": "Measure",
     "caption": "Scroll drives the needle. The page is the instrument, not a picture of one."
+  },
+  "thread": {
+    "label": "Journey",
+    "hero": "Emircan",
+    "manifesto": "Beliefs",
+    "work": "Work",
+    "measure": "Measure",
+    "record": "Record",
+    "contact": "Contact"
+  },
+  "manifesto": {
+    "label": "What I believe"
   }
 }

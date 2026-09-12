@@ -5,47 +5,62 @@ const lang = (Astro.currentLocale || "en") as Locale;
 const t = useTranslations(lang);
 
 type Entry = { org: string; detail: string; period: string };
-
 const positions = t("record.positions") as Entry[];
 const education = t("record.education") as Entry[];
+const body = t("about.body") as string[];
 ---
 
-<section id="record" class="record" aria-labelledby="record-heading">
-    <div class="shell">
+<!-- Act 5. The one hard cut to paper. The only act on the page with no
+     ambient motion: reveals on entry, then nothing moves. The quiet before
+     the close is authored, not dead. -->
+<section
+    id="record"
+    class="paper ground-paper"
+    data-paper
+    data-thread-stop={t("thread.record")}
+    aria-labelledby="record-heading"
+>
+    <div class="shell paper__inner">
+        <div class="paper__about" data-reveal>
+            <h2 id="approach-heading" class="label paper__label">
+                {t("about.label")}
+            </h2>
+            <div class="paper__body">
+                {body.map((p) => <p class="pretty">{p}</p>)}
+            </div>
+        </div>
+
         <hr class="rule-strong" />
-        <div class="record__grid" data-reveal>
-            <h2 id="record-heading" class="label record__label">
+
+        <div class="paper__grid" data-reveal>
+            <h2 id="record-heading" class="label paper__label">
                 {t("record.label")}
             </h2>
 
-            <div class="record__col">
-                <h3 class="label record__sub">{t("record.workHeading")}</h3>
+            <div class="paper__col">
+                <h3 class="label paper__sub">{t("record.workHeading")}</h3>
                 <ul class="register">
                     {
                         positions.map((e) => (
                             <li class="register__row">
                                 <span class="register__org">{e.org}</span>
                                 <span class="register__detail">{e.detail}</span>
-                                <span class="label register__period">
-                                    {e.period}
-                                </span>
+                                <span class="label register__period">{e.period}</span>
                             </li>
                         ))
                     }
                 </ul>
             </div>
 
-            <div class="record__col">
-                <h3 class="label record__sub">{t("record.educationHeading")}</h3>
+            <div class="paper__col">
+                <h3 class="label paper__sub">{t("record.educationHeading")}</h3>
                 <ul class="register">
                     {
                         education.map((e) => (
                             <li class="register__row">
                                 <span class="register__org">{e.org}</span>
                                 <span class="register__detail">{e.detail}</span>
-                                <span class="label register__period">
-                                    {e.period}
-                                </span>
+                                <span class="label register__period">{e.period}</span>
                             </li>
                         ))
                     }
@@ -56,78 +71,101 @@ const education = t("record.education") as Entry[];
 </section>
 
 <style>
-    .record {
-        padding-block: calc(var(--spacing) * 12);
+    .paper {
+        position: relative;
+        /* The dot screen of the previous build, kept for the one paper act. */
+        background-image: radial-gradient(rgba(25, 25, 25, 0.055) 0.5px, transparent 0.5px);
+        background-size: 5px 5px;
     }
-
-    .record__grid {
+    .paper__inner {
         display: grid;
-        gap: calc(var(--spacing) * 6);
-        padding-top: calc(var(--spacing) * 4);
+        gap: calc(var(--spacing) * 8);
+        padding-block: calc(var(--spacing) * 16) calc(var(--spacing) * 14);
     }
-
-    .record__label,
-    .record__sub {
+    .paper__about,
+    .paper__grid {
+        display: grid;
+        gap: calc(var(--spacing) * 4);
+    }
+    .paper__label,
+    .paper__sub {
         margin: 0;
     }
-
-    .record__col {
+    .paper__body {
         display: grid;
-        gap: calc(var(--spacing) * 2);
-        align-content: start;
+        gap: calc(var(--spacing) * 3);
+        max-width: 46rem;
     }
-
+    .paper__body p {
+        margin: 0;
+        font-size: clamp(1.25rem, 2.4vw, 1.875rem);
+        line-height: 1.32;
+        font-variation-settings:
+            "wdth" 100,
+            "wght" 420;
+    }
+    .paper__body p:first-child {
+        font-variation-settings:
+            "wdth" 96,
+            "wght" 600;
+    }
     .register {
         list-style: none;
         margin: 0;
         padding: 0;
+        display: grid;
     }
-
-    /* A register, not a bulleted list: one hairline above each row and none
-       below the last, so the block reads as a table of record. */
     .register__row {
         display: grid;
-        gap: calc(var(--spacing) * 0.5);
+        gap: 0.25rem;
         padding-block: calc(var(--spacing) * 2);
-        border-top: 1px solid var(--color-rule);
+        border-top: 1px solid var(--g-rule);
     }
-
     .register__org {
         font-variation-settings:
-            "wdth" 92,
-            "wght" 600;
-        font-size: 1.0625rem;
-        line-height: 1.25;
+            "wdth" 96,
+            "wght" 640;
     }
-
     .register__detail {
-        color: var(--color-ink-soft);
-        font-size: 0.9375rem;
+        color: var(--g-ink-soft);
+        font-size: 0.95rem;
+    }
+    .register__period {
+        padding-top: 0.2rem;
     }
 
-    .register__period {
-        color: var(--color-accent);
+    /* Reveal: each direct child rises into place. Driven by --rv from JS. */
+    [data-reveal] > * {
+        opacity: calc(var(--rv, 1));
+        transform: translate3d(0, calc((1 - var(--rv, 1)) * 28px), 0);
+        transition:
+            opacity 700ms var(--ease-out),
+            transform 700ms var(--ease-out);
+    }
+    [data-reveal] > *:nth-child(2) {
+        transition-delay: 70ms;
+    }
+    [data-reveal] > *:nth-child(3) {
+        transition-delay: 140ms;
+    }
+    [data-reveal][data-reveal-armed] {
+        --rv: 0;
+    }
+    [data-reveal][data-reveal-on] {
+        --rv: 1;
     }
 
     @media (min-width: 900px) {
-        .record__grid {
+        .paper__about {
+            grid-template-columns: 12rem 1fr;
+            gap: calc(var(--spacing) * 6);
+        }
+        .paper__grid {
             grid-template-columns: 12rem 1fr 1fr;
             gap: calc(var(--spacing) * 6);
         }
-        .record__label {
-            padding-top: calc(var(--spacing) * 1.5);
-        }
         .register__row {
-            grid-template-columns: 1fr auto;
-            align-items: baseline;
-            column-gap: calc(var(--spacing) * 3);
-        }
-        .register__detail {
-            grid-column: 1;
-        }
-        .register__period {
-            grid-row: 1;
-            grid-column: 2;
+            grid-template-columns: 1fr;
         }
     }
 </style>

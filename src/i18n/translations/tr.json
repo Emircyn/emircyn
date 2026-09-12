@@ -27,7 +27,22 @@
         "text": "İşe yarayıp yaramadığına kullanan kişi karar verir."
       }
     ],
-    "staticIntro": "Ankara'da InspireIT'te frontend geliştirici. Web için arayüz geliştiriyorum."
+    "staticIntro": "Ankara'da InspireIT'te frontend geliştirici. Web için arayüz geliştiriyorum.",
+    "beat": "Web için arayüz geliştiriyorum ve işe yarayıp yaramadığını ölçüyorum.",
+    "ticker": [
+      "Frontend Geliştirici",
+      "Ankara",
+      "InspireIT",
+      "Astro",
+      "React",
+      "Vue",
+      "TypeScript",
+      "Tailwind",
+      "GSAP",
+      "Performans",
+      "Erişilebilirlik",
+      "2019'dan beri"
+    ]
   },
   "work": {
     "label": "Seçilmiş işler",
@@ -156,5 +171,17 @@
   "scrub": {
     "label": "Ölçüm",
     "caption": "İbreyi scroll sürüyor. Sayfa bir aletin resmi değil, aletin kendisi."
+  },
+  "thread": {
+    "label": "Yolculuk",
+    "hero": "Emircan",
+    "manifesto": "İnançlar",
+    "work": "İşler",
+    "measure": "Ölçüm",
+    "record": "Kayıt",
+    "contact": "İletişim"
+  },
+  "manifesto": {
+    "label": "Neye inanıyorum"
   }
 }

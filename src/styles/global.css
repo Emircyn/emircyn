@@ -1,41 +1,51 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   emircyn.com design floor
-   One ground, one accent, one display family, one mono. Nothing else.
-   Contrast, measured against the paper ground #F1F1EF:
-     ink     #191919  15.55:1  AAA
-     accent  #B3001B   6.33:1  AA   (and 7.16:1 for paper text on accent fill)
-     soft    #5E5E5A   5.29:1  AA
+   emircyn.com design floor, build 3.
+
+   Two grounds, one hue. The page is a dark room that hard-cuts to paper once
+   (the record) and back. The accent is crimson on both grounds, at two
+   lightnesses, because one stop cannot clear 4.5:1 on both.
+
+   Contrast, measured:
+     paper #F1F1EF on room #0B0A0A     18.6:1
+     soft  #A8A39B on room             9.1:1
+     red   #FF3247 on room             5.4:1   (large type and labels only)
+     ink   #191919 on paper            15.5:1
+     red   #B3001B on paper            6.3:1
 --------------------------------------------------------------------------- */
 
 @theme {
+  --color-room: #0b0a0a;
+  --color-room-lift: #151313;
   --color-paper: #f1f1ef;
-  --color-paper-sunk: #e8e8e4;
+  --color-paper-sunk: #e6e6e2;
   --color-ink: #191919;
   --color-ink-soft: #5e5e5a;
-  --color-rule: rgba(25, 25, 25, 0.14);
-  --color-rule-strong: rgba(25, 25, 25, 0.32);
-  --color-accent: #b3001b;
-  /* The machine layer. Crimson is the human accent and stays rationed to the
-     name, the index and the closing block; this one belongs to the readouts
-     and the character field. A true neon reads 1.36:1 on this paper and is
-     unusable, so the cold accent is taken as far as it can go and still be
-     read: 5.11:1. */
-  --color-machine: #046e8f;
+  --color-bone: #f1f1ef;
+  --color-bone-soft: #a8a39b;
+  --color-red: #b3001b;
+  --color-red-lit: #ff3247;
 
   --font-display: "Archivo Variable", "Archivo", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  /* 8px base unit */
   --spacing: 0.5rem;
 }
 
 :root {
   --gutter: 1.25rem;
-  --hero-wdth: 62;
-  --hero-wght: 800;
-  color-scheme: light;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  color-scheme: dark;
+
+  /* Ground tokens. Redefined per section, and `color` restated with them. */
+  --g-canvas: var(--color-room);
+  --g-surface: var(--color-room-lift);
+  --g-ink: var(--color-bone);
+  --g-ink-soft: var(--color-bone-soft);
+  --g-rule: rgba(241, 241, 239, 0.14);
+  --g-rule-strong: rgba(241, 241, 239, 0.34);
+  --g-accent: var(--color-red-lit);
 }
 
 @media (min-width: 768px) {
@@ -46,12 +56,11 @@
 
 @layer base {
   html {
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-room);
+    color: var(--g-ink);
     -webkit-text-size-adjust: 100%;
   }
 
-  /* Lenis drives scrolling; native smooth-scroll fights it. */
   html.lenis,
   html.lenis body {
     height: auto;
@@ -65,32 +74,24 @@
 
   body {
     position: relative;
-    background-color: var(--color-paper);
-    /* A dot screen, at the density where it reads as stock rather than as
-       pattern: the page is printed matter too, not just the plates on it.
-       A tiling background-image composites with the scroll and costs no
-       repaint, unlike a fixed grain overlay. */
-    background-image: radial-gradient(
-      rgba(25, 25, 25, 0.055) 0.5px,
-      transparent 0.5px
-    );
-    background-size: 5px 5px;
-    color: var(--color-ink);
+    background-color: var(--g-canvas);
+    color: var(--g-ink);
     font-family: var(--font-display);
     font-variation-settings: "wdth" 100, "wght" 400;
     font-size: 1rem;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    overflow-x: clip;
   }
 
   ::selection {
-    background-color: var(--color-accent);
-    color: var(--color-paper);
+    background-color: var(--g-accent);
+    color: var(--color-room);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--g-accent);
     outline-offset: 3px;
   }
 
@@ -98,73 +99,125 @@
     color: inherit;
     text-decoration: none;
   }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+  }
 }
 
 @layer components {
-  /* Small uppercase technical label. The brief's meta register. */
   .label {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     line-height: 1;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-ink-soft);
+    color: var(--g-ink-soft);
   }
 
   .label-accent {
-    color: var(--color-accent);
+    color: var(--g-accent);
   }
 
-  /* Condensed gothic display setting. Weight comes from size and density. */
+  /* Condensed gothic display. Weight comes from size and density. */
   .display {
     font-family: var(--font-display);
     font-variation-settings: "wdth" 88, "wght" 800;
     text-transform: uppercase;
-    line-height: 0.86;
-    letter-spacing: -0.01em;
+    line-height: 0.88;
+    letter-spacing: -0.015em;
   }
 
   .rule {
     border: 0;
-    border-top: 1px solid var(--color-rule);
+    border-top: 1px solid var(--g-rule);
     margin: 0;
   }
 
   .rule-strong {
     border: 0;
-    border-top: 1px solid var(--color-rule-strong);
+    border-top: 1px solid var(--g-rule-strong);
     margin: 0;
   }
 
-  /* Page shell: the exposed grid the whole page aligns to. */
   .shell {
     width: 100%;
     max-width: 96rem;
     margin-inline: auto;
     padding-inline: var(--gutter);
   }
+
+  /* The paper ground. Every inherited property restated, because `color`
+     inherits as a computed value and a token swap alone re-inks nothing. */
+  .ground-paper {
+    --g-canvas: var(--color-paper);
+    --g-surface: var(--color-paper-sunk);
+    --g-ink: var(--color-ink);
+    --g-ink-soft: var(--color-ink-soft);
+    --g-rule: rgba(25, 25, 25, 0.14);
+    --g-rule-strong: rgba(25, 25, 25, 0.34);
+    --g-accent: var(--color-red);
+    background-color: var(--g-canvas);
+    color: var(--g-ink);
+    color-scheme: light;
+  }
+
+  /* Film grain, on the dark grounds only. A pre-rasterised alpha tile, not an
+     SVG filter: a feTurbulence layer per section plus a blend mode was enough
+     compositor memory to kill a software-rendered Chromium outright. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0.5;
+    background-image: url("/tex/grain.png");
+    background-size: 128px 128px;
+  }
+
+  /* Continuous marquee. Two copies of the strip, translated by half. */
+  .ticker {
+    overflow: hidden;
+    white-space: nowrap;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .ticker__track {
+    display: inline-flex;
+    gap: 0;
+    will-change: transform;
+    animation: ticker var(--ticker-dur, 42s) linear infinite;
+  }
+  .ticker__item {
+    flex: none;
+    padding-inline-end: 3rem;
+  }
+  @keyframes ticker {
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
 }
 
 @layer utilities {
-  /* Masked line reveal. One vocabulary, used everywhere. */
-  .reveal-mask {
-    clip-path: inset(0 0 var(--reveal, 100%) 0);
-    will-change: clip-path;
-  }
-
   .balance {
     text-wrap: balance;
   }
-
   .pretty {
     text-wrap: pretty;
   }
+
+  /* Reveals resolve to visible by default; scroll.ts arms them to 0 only
+     when it is actually going to run them. No JS, reduced motion: visible. */
+  [data-reveal] {
+    --rv: 1;
+  }
 }
 
-/* ---------------------------------------------------------------------------
-   Reduced motion: the scroll layer never initialises (see scroll.ts), so this
-   only has to guarantee the static composition is fully visible and settled.
---------------------------------------------------------------------------- */
+/* Under reduced motion the scroll layer never initialises, so every device
+   must resolve to its final static state in CSS alone. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -174,8 +227,7 @@
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-
-  .reveal-mask {
-    clip-path: none !important;
+  .ticker__track {
+    animation: none !important;
   }
 }

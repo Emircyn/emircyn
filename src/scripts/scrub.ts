@@ -41,6 +41,7 @@ type Clip = {
   seeking: boolean;
   painted: boolean;
   visible: boolean;
+  readout: HTMLElement | null;
 };
 
 /** Remap linear progress so the clip moves quickly at the edges and settles in
@@ -98,6 +99,7 @@ export function initScrub() {
       seeking: false,
       painted: false,
       visible: false,
+      readout: stage.querySelector<HTMLElement>("[data-scrub-pct]"),
     };
 
     // Fetched as a Blob so seeking does not depend on the host honouring HTTP
@@ -199,6 +201,10 @@ export function initScrub() {
 
       c.current += (c.target - c.current) * LERP;
       const t = c.current * c.duration;
+      if (c.readout) {
+        // The reading the wheel is producing, as the instrument would show it.
+        c.readout.textContent = String(Math.round(c.current * 1000)).padStart(3, "0");
+      }
 
       if (!c.seeking && Math.abs(t - c.video.currentTime) > deadband) {
         c.seeking = true;

@@ -1,180 +1,238 @@
 ---
 import { useTranslations, type Locale } from "@/i18n/utils";
 import { site } from "@/config";
+import { execSync } from "node:child_process";
 
 const lang = (Astro.currentLocale || "en") as Locale;
 const t = useTranslations(lang);
 
-// Explicit lines rather than a wrapping heading, so one of them can be set as
-// an outline. A heading that relies on where the browser happens to break is a
-// heading whose composition changes with the viewport.
 const headingLines = t("contact.headingLines") as string[];
+
+function commit(): string | null {
+    const fromHost =
+        import.meta.env.CF_PAGES_COMMIT_SHA ?? process.env.CF_PAGES_COMMIT_SHA;
+    if (fromHost) return String(fromHost).slice(0, 7);
+    try {
+        return (
+            execSync("git rev-parse --short=7 HEAD", {
+                stdio: ["ignore", "pipe", "ignore"],
+            })
+                .toString()
+                .trim() || null
+        );
+    } catch {
+        return null;
+    }
+}
+const built = new Date();
+const stamp = new Intl.DateTimeFormat(lang === "tr" ? "tr-TR" : "en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+}).format(built);
+const sha = commit();
 ---
 
-<!-- The close. The only reversed surface on the page, so the page resolves
-     into a held state rather than trailing off into a footer. -->
-<section id="contact" class="contact" aria-labelledby="contact-heading">
-    <div class="shell contact__inner">
-        <span class="label contact__label">{t("contact.label")}</span>
+<!-- Act 6, the close. The page stops moving and starts answering: the light
+     follows the pointer, the address pulls toward it. Nothing after this. -->
+<section
+    id="contact"
+    class="close grain"
+    data-close
+    data-thread-stop={t("thread.contact")}
+    aria-labelledby="contact-heading"
+>
+    <div class="close__pin" data-close-pin>
+        <div class="close__light" data-close-light aria-hidden="true"></div>
 
-        <h2 id="contact-heading" class="contact__heading">
-            {
-                headingLines.map((line, i) => (
-                    <span
-                        class={`contact__line${i % 2 === 1 ? " contact__line--outline" : ""}`}
-                    >
-                        {line}
-                    </span>
-                ))
-            }
-        </h2>
+        <div class="shell close__frame">
+            <span class="label close__label">{t("contact.label")}</span>
 
-        <p class="contact__body pretty">{t("contact.body")}</p>
+            <h2 id="contact-heading" class="close__heading">
+                {
+                    headingLines.map((line, i) => (
+                        <span
+                            class={`close__line${i % 2 === 1 ? " close__line--lit" : ""}`}
+                            data-close-line
+                        >
+                            {line}
+                        </span>
+                    ))
+                }
+            </h2>
 
-        <a class="contact__action" href={`mailto:${site.email}`}>
-            <span class="contact__action-text">{t("contact.action")}</span>
-            <span class="contact__action-addr">{site.email}</span>
-        </a>
+            <p class="close__body pretty" data-close-body>{t("contact.body")}</p>
 
-        <ul class="contact__links">
-            <li>
-                <a href={site.github} target="_blank" rel="noreferrer">
-                    {t("contact.github")}
-                </a>
-            </li>
-            <li>
-                <a href={site.linkedin} target="_blank" rel="noreferrer">
-                    {t("contact.linkedin")}
-                </a>
-            </li>
-            <li>
-                <a href={site.repo} target="_blank" rel="noreferrer">
-                    {t("contact.sourceCode")}
-                </a>
-            </li>
-        </ul>
+            <a class="close__action" href={`mailto:${site.email}`} data-magnet>
+                <span class="close__action-text">{t("contact.action")}</span>
+                <span class="close__action-addr label">{site.email}</span>
+            </a>
+
+            <ul class="close__links">
+                <li>
+                    <a href={site.github} target="_blank" rel="noreferrer">
+                        {t("contact.github")}
+                    </a>
+                </li>
+                <li>
+                    <a href={site.linkedin} target="_blank" rel="noreferrer">
+                        {t("contact.linkedin")}
+                    </a>
+                </li>
+                <li>
+                    <a href={site.repo} target="_blank" rel="noreferrer">
+                        {t("contact.sourceCode")}
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <footer class="shell close__colophon">
+            <span>{built.getFullYear()} {t("footer.rights")}</span>
+            <span>{t("footer.setIn")}</span>
+            <span>{t("footer.builtWith")}</span>
+            <span>
+                {t("footer.updated")} {stamp}{sha ? ` · ${sha}` : ""}
+            </span>
+        </footer>
     </div>
 </section>
 
 <style>
-    /* The one ending. The colophon continues this surface with no seam, so
-       the bottom padding stops short of what a closing block would take: the
-       block and its fine print are one object. */
-    .contact {
-        background-color: var(--color-accent);
-        color: var(--color-paper);
-        padding-block: calc(var(--spacing) * 16) calc(var(--spacing) * 7);
-        margin-top: calc(var(--spacing) * 8);
+    .close {
+        position: relative;
+        background: var(--color-room);
+        isolation: isolate;
     }
-
-    .contact__inner {
+    .close__pin {
+        position: relative;
+        min-height: 100dvh;
         display: grid;
-        gap: calc(var(--spacing) * 3);
+        grid-template-rows: 1fr auto;
+        overflow: hidden;
     }
-
-    .contact__label,
-    .contact__body {
-        color: rgba(241, 241, 239, 0.82);
+    .close__light {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+            38vmax 38vmax at var(--lx, 30%) var(--ly, 60%),
+            rgba(255, 50, 71, 0.22),
+            rgba(255, 50, 71, 0.06) 40%,
+            transparent 70%
+        );
+        will-change: background-position;
+        z-index: 0;
     }
-
-    .contact__heading {
+    .close__frame {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        align-content: center;
+        gap: calc(var(--spacing) * 4);
+        padding-block: calc(var(--spacing) * 14) calc(var(--spacing) * 8);
+    }
+    .close__heading {
         margin: 0;
         display: grid;
-        /* Opened right up: the close is the one place on the page that is
-           allowed to take its time. */
-        row-gap: calc(var(--spacing) * 2.5);
         font-family: var(--font-display);
-        text-transform: uppercase;
-        font-size: clamp(2.5rem, 9vw, 7rem);
-        line-height: 0.9;
         font-variation-settings:
-            "wdth" 78,
+            "wdth" 80,
             "wght" 800;
+        text-transform: uppercase;
+        font-size: clamp(3rem, 9.5vw, 10.5rem);
+        line-height: 0.88;
+        letter-spacing: -0.02em;
     }
-
-    .contact__line {
+    .close__line {
         display: block;
+        will-change: transform, opacity;
     }
-
-    /* Second line drawn rather than printed, in the paper the block is
-       reversed out of. Same device as the hero and the footer mark. */
-    .contact__line--outline {
-        color: transparent;
-        -webkit-text-stroke: 0.014em var(--color-paper);
+    .close__line--lit {
+        color: var(--color-red-lit);
     }
-
-    @media (min-width: 768px) {
-        .contact__heading {
-            row-gap: calc(var(--spacing) * 4);
-        }
-    }
-
-    .contact__body {
+    .close__body {
         margin: 0;
-        max-width: 40ch;
-        font-size: 1.0625rem;
+        max-width: 38ch;
+        font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+        color: var(--g-ink-soft);
     }
-
-    .contact__action {
+    .close__action {
         justify-self: start;
         display: grid;
-        gap: calc(var(--spacing) * 0.75);
-        margin-top: calc(var(--spacing) * 3);
-        padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
-        background-color: var(--color-paper);
-        color: var(--color-accent);
-        transition: transform 0.2s ease;
+        gap: 0.35rem;
+        padding: 1.1rem 1.5rem;
+        border: 1px solid var(--g-rule-strong);
+        background: var(--color-room-lift);
+        will-change: transform;
+        transition:
+            background-color 160ms var(--ease-out),
+            border-color 160ms var(--ease-out);
     }
-
-    .contact__action:hover {
-        transform: translateY(-2px);
+    .close__action:active {
+        transform: scale(0.97);
     }
-
-    .contact__action:active {
-        transform: translateY(0);
-    }
-
-    .contact__action-text {
+    .close__action-text {
         font-variation-settings:
-            "wdth" 86,
+            "wdth" 92,
             "wght" 700;
+        font-size: 1.25rem;
         text-transform: uppercase;
-        font-size: clamp(1.25rem, 3vw, 1.75rem);
-        line-height: 1;
-        white-space: nowrap;
+        letter-spacing: 0.02em;
     }
-
-    .contact__action-addr {
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
+    .close__action-addr {
+        text-transform: none;
         letter-spacing: 0.04em;
     }
-
-    .contact__links {
+    @media (hover: hover) and (pointer: fine) {
+        .close__action:hover {
+            border-color: var(--color-red-lit);
+            background: var(--color-red-lit);
+            color: var(--color-room);
+        }
+        .close__action:hover .label {
+            color: var(--color-room);
+        }
+    }
+    .close__links {
         list-style: none;
-        margin: calc(var(--spacing) * 4) 0 0;
-        padding: calc(var(--spacing) * 2) 0 0;
-        border-top: 1px solid rgba(241, 241, 239, 0.34);
+        margin: 0;
+        padding: 0;
         display: flex;
         flex-wrap: wrap;
-        gap: calc(var(--spacing) * 4);
-    }
-
-    .contact__links a {
+        gap: calc(var(--spacing) * 3);
         font-family: var(--font-mono);
-        font-size: 0.75rem;
-        letter-spacing: 0.12em;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        border-bottom: 1px solid transparent;
-        padding-bottom: 2px;
-        transition: border-color 0.2s ease;
+    }
+    .close__links a {
+        border-bottom: 1px solid var(--g-rule-strong);
+        padding-bottom: 0.2rem;
+    }
+    .close__colophon {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: calc(var(--spacing) * 3);
+        justify-content: space-between;
+        padding-block: calc(var(--spacing) * 2.5);
+        border-top: 1px solid var(--g-rule);
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--g-ink-soft);
     }
 
-    .contact__links a:hover {
-        border-bottom-color: var(--color-paper);
-    }
-
-    .contact :focus-visible {
-        outline-color: var(--color-paper);
+    @media (max-width: 767px) {
+        .close__frame {
+            padding-top: calc(var(--spacing) * 10);
+        }
+        .close__colophon {
+            flex-direction: column;
+            gap: calc(var(--spacing) * 1);
+        }
     }
 </style>

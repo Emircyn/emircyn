@@ -1,497 +1,424 @@
 ---
 import { Image } from "astro:assets";
 import { useTranslations, type Locale } from "@/i18n/utils";
-import profileImage from "@/assets/images/hero-portrait.png";
+import portrait from "@/assets/images/hero-portrait.png";
+import room from "@/assets/hero/room.jpg";
+import roomMobile from "@/assets/hero/room-m.jpg";
+import haze from "@/assets/hero/haze.jpg";
 
 const lang = (Astro.currentLocale || "en") as Locale;
 const t = useTranslations(lang);
 
-const scenes = t("hero.scenes") as { label: string; text: string }[];
 const name = t("meta.name") as string;
-const role = t("meta.role") as string;
-
-const [firstName, ...restName] = name.split(" ");
-const lastName = restName.join(" ");
-
-// Tick marks for the scale. Every fifth one is long and carries a reading.
-const ticks = Array.from({ length: 33 }, (_, i) => i);
+const [firstName, ...rest] = name.split(" ");
+const lastName = rest.join(" ");
+const ticker = t("hero.ticker") as string[];
+// Doubled so the strip can loop by translating half its own width.
+const strip = [...ticker, ...ticker];
 ---
 
-<section id="hero" class="hero" data-hero aria-labelledby="hero-name">
+<!-- Act 1. Four planes, one light. The room is the far plane, the name is
+     printed on the wall, the figure stands in front of the name, and the haze
+     drifts in front of everything. Scroll separates them; the pointer and an
+     idle loop keep them breathing when the wheel stops. -->
+<section
+    id="hero"
+    class="hero grain"
+    data-hero
+    data-thread-stop={t("thread.hero")}
+    aria-labelledby="hero-name"
+>
     <div class="hero__pin" data-hero-pin>
-        <div class="shell hero__frame">
-            <div class="hero__meta">
-                <hr class="rule-strong" />
-                <div class="hero__meta-row">
-                    <span class="label label-accent">{role}</span>
-                    <span class="label">{t("meta.location")}</span>
-                </div>
+        <!-- Far plane -->
+        <div class="hero__plane hero__plane--room" data-hero-room>
+            <div class="hero__amb hero__amb--room">
+                <Image
+                    src={room}
+                    alt=""
+                    widths={[900, 1400, 2000, 2400]}
+                    sizes="100vw"
+                    loading="eager"
+                    fetchpriority="high"
+                    class="hero__room hero__room--wide"
+                />
+                <Image
+                    src={roomMobile}
+                    alt=""
+                    widths={[540, 810, 1080]}
+                    sizes="100vw"
+                    loading="eager"
+                    class="hero__room hero__room--tall"
+                />
             </div>
+        </div>
 
-            <!-- The scale. The width axis of the display face is a real
-                 measurement, so the hero shows it the way an instrument would:
-                 a ruled scale with a travelling index and a live reading. It is
-                 the empty left edge doing work instead of sitting blank. -->
-            <div class="hero__scale" aria-hidden="true">
-                <div class="hero__scale-rail">
-                    {
-                        ticks.map((i) => (
-                            <span
-                                class={`hero__tick${i % 4 === 0 ? " hero__tick--major" : ""}`}
-                            />
-                        ))
-                    }
-                    <span class="hero__index" data-hero-index></span>
-                </div>
-                <span class="label hero__readout">
-                    <span class="hero__readout-key">wdth</span>
-                    <span class="hero__readout-val" data-hero-readout>62</span>
-                </span>
-            </div>
-
-            <ol class="hero__scenes" data-hero-scenes>
-                {
-                    scenes.map((scene, i) => (
-                        <li
-                            class="hero__scene"
-                            data-hero-scene
-                            data-scene-index={i}
-                        >
-                            <span class="label hero__scene-label">
-                                <span class="hero__scene-num">
-                                    {String(i + 1).padStart(2, "0")}
-                                </span>
-                                {scene.label}
-                            </span>
-                            <p class="hero__scene-text pretty">{scene.text}</p>
-                        </li>
-                    ))
-                }
-            </ol>
-
-            <!-- lang="tr" so uppercasing gives the Turkish forms on the English
-                 route too. The second line carries the accent, so the name is
-                 one mark printed from two plates. -->
-            <div class="hero__type">
-                <h1 id="hero-name" class="hero__name" lang="tr" data-hero-name>
-                    <span class="hero__line" data-hero-line>{firstName}</span>
-                    <span class="hero__line hero__line--accent" data-hero-line
-                        >{lastName}</span
-                    >
+        <!-- Mid plane: the name, printed on the wall -->
+        <div class="hero__plane hero__plane--type">
+            <div class="shell hero__type">
+                <h1 id="hero-name" class="hero__name" lang="tr">
+                    <span class="hero__line" data-hero-line="0">
+                        <span class="hero__line-in">{firstName}</span>
+                    </span>
+                    <span class="hero__line hero__line--lit" data-hero-line="1">
+                        <span class="hero__line-in">{lastName}</span>
+                    </span>
                 </h1>
             </div>
+        </div>
 
-            <!-- Above everything. The name passes behind the figure; nothing is
-                 ever printed across it.
-
-                 The figure is framed the way this page frames anything it is
-                 measuring: a hairline box with corner brackets and a plate tag.
-                 The crop tightens as the width axis opens, so the frame is
-                 reading the same scroll as everything else rather than sitting
-                 there as decoration. -->
-            <div class="hero__portrait" data-hero-portrait>
+        <!-- Near plane: the figure. Feet anchored to the bottom edge. -->
+        <div class="hero__plane hero__plane--figure" data-hero-figure>
+            <div class="hero__amb hero__amb--figure">
                 <Image
-                    src={profileImage}
+                    src={portrait}
                     alt=""
-                    widths={[420, 720, 1040]}
-                    sizes="(max-width: 767px) 62vw, 38vw"
+                    widths={[480, 720, 1040, 1400]}
+                    sizes="(max-width: 767px) 78vw, 44vw"
                     loading="eager"
-                    class="hero__portrait-img"
+                    fetchpriority="high"
+                    class="hero__figure"
                 />
+            </div>
+        </div>
+
+        <!-- Front plane: haze, screen-blended, only ever moving -->
+        <div class="hero__plane hero__plane--haze" data-hero-haze aria-hidden="true">
+            <div class="hero__amb hero__amb--haze">
+                <Image
+                    src={haze}
+                    alt=""
+                    widths={[900, 1400, 1800]}
+                    sizes="100vw"
+                    loading="eager"
+                    class="hero__haze hero__haze--img"
+                />
+                <div class="hero__haze hero__haze--a"></div>
+            </div>
+        </div>
+
+        <!-- Copy layer -->
+        <div class="hero__plane hero__plane--copy">
+            <div class="shell hero__copy">
+                <div class="hero__meta" data-hero-meta>
+                    <span class="label label-accent">{t("meta.role")}</span>
+                    <span class="label">{t("meta.location")}</span>
+                </div>
+
+                <p class="hero__beat" data-hero-beat>
+                    <span class="hero__beat-in">{t("hero.beat")}</span>
+                </p>
+            </div>
+
+            <div class="ticker hero__ticker" data-hero-ticker aria-hidden="true">
+                <div class="ticker__track">
+                    {
+                        strip.map((item) => (
+                            <span class="ticker__item label">
+                                <span class="hero__ticker-dot" />
+                                {item}
+                            </span>
+                        ))
+                    }
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <style>
-    .hero__pin {
-        min-height: 100dvh;
-        display: flex;
-    }
-
-    .hero__frame {
+    .hero {
         position: relative;
-        width: 100%;
-        display: grid;
-        grid-template-rows: auto 1fr auto;
-        row-gap: calc(var(--spacing) * 3);
-        padding-block: calc(var(--spacing) * 9) calc(var(--spacing) * 4);
+        background: var(--color-room);
+        /* Reserved scroll travel for the pin. Overridden by the scroll layer
+           through the pin spacer; kept here so the no-JS page still has a
+           full-height hero and nothing else. */
+        isolation: isolate;
     }
 
-    .hero__meta-row {
+    .hero__pin {
+        position: relative;
+        height: 100dvh;
+        min-height: 600px;
+        overflow: hidden;
+    }
+
+    .hero__plane {
+        position: absolute;
+        inset: 0;
+        will-change: transform;
+    }
+
+    /* Inner wrapper the idle loop and the pointer drive. Separate from the
+       plane, which the scroll timeline owns, so the two transforms never
+       overwrite each other. */
+    .hero__amb {
+        position: absolute;
+        inset: 0;
+        transform: translate3d(
+            calc((var(--px, 0) * var(--amb-px, 0) + var(--ax, 0) * var(--amb-ax, 0)) * 1px),
+            calc((var(--py, 0) * var(--amb-py, 0) + var(--ay, 0) * var(--amb-ay, 0)) * 1px),
+            0
+        );
+        will-change: transform;
+    }
+
+    /* --- Room ---------------------------------------------------------- */
+    .hero__amb--room {
+        --amb-px: -14;
+        --amb-py: -8;
+        --amb-ax: 6;
+        --amb-ay: 4;
+        inset: -4%;
+    }
+    .hero__room {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 50%;
+    }
+    .hero__room--tall {
+        display: none;
+    }
+
+    /* --- Name ---------------------------------------------------------- */
+    .hero__plane--type {
+        display: flex;
+        align-items: flex-end;
+    }
+    .hero__type {
+        padding-bottom: 10vh;
+    }
+    .hero__name {
+        margin: 0;
+        font-family: var(--font-display);
+        font-variation-settings:
+            "wdth" 76,
+            "wght" 800;
+        text-transform: uppercase;
+        font-size: clamp(5.5rem, 13.6vw, 15rem);
+        line-height: 0.84;
+        letter-spacing: -0.02em;
+        color: var(--color-bone);
+        display: grid;
+    }
+    .hero__line {
+        display: block;
+        white-space: nowrap;
+        will-change: transform;
+    }
+    .hero__line-in {
+        display: block;
+    }
+    .hero__line--lit {
+        color: var(--color-red-lit);
+        /* Sits a little in from the first line, like a second plate slipped. */
+        padding-inline-start: 0.14em;
+    }
+
+    /* --- Figure -------------------------------------------------------- */
+    .hero__plane--figure {
+        pointer-events: none;
+    }
+    .hero__amb--figure {
+        --amb-px: 10;
+        --amb-py: 4;
+        --amb-ax: -3;
+        --amb-ay: 2;
+    }
+    .hero__figure {
+        position: absolute;
+        right: 1.5vw;
+        bottom: -2%;
+        width: min(41vw, 600px);
+        height: auto;
+        transform-origin: 50% 100%;
+        /* The cutout's own alpha edge, drawn in red. Two shadows, one on each
+           axis, cached by the compositor while held still. */
+        filter: drop-shadow(2px 0 0 var(--color-red-lit))
+            drop-shadow(-2px 0 0 var(--color-red-lit))
+            drop-shadow(0 2px 0 var(--color-red-lit))
+            drop-shadow(0 -2px 0 var(--color-red-lit))
+            drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6));
+    }
+
+    /* --- Haze ---------------------------------------------------------- */
+    .hero__plane--haze {
+        pointer-events: none;
+        mix-blend-mode: screen;
+    }
+    .hero__amb--haze {
+        --amb-px: 26;
+        --amb-py: 16;
+        --amb-ax: 22;
+        --amb-ay: 10;
+        inset: -10%;
+    }
+    .hero__haze {
+        position: absolute;
+        inset: 0;
+        background-repeat: no-repeat;
+        will-change: transform, opacity;
+    }
+    .hero__haze--img {
+        width: 120%;
+        height: 120%;
+        inset: -10%;
+        object-fit: cover;
+        opacity: 0.85;
+        animation: haze-b 30s ease-in-out infinite alternate;
+    }
+    .hero__haze--a {
+        background-image:
+            radial-gradient(60% 45% at 18% 62%, rgba(255, 50, 71, 0.22), transparent 70%),
+            radial-gradient(40% 30% at 70% 30%, rgba(200, 200, 210, 0.08), transparent 70%);
+        animation: haze-a 18s ease-in-out infinite alternate;
+    }
+    @keyframes haze-a {
+        from {
+            transform: translate3d(-3%, 2%, 0) scale(1);
+        }
+        to {
+            transform: translate3d(3%, -2%, 0) scale(1.08);
+        }
+    }
+    @keyframes haze-b {
+        from {
+            transform: translate3d(2%, 3%, 0) scale(1.05);
+        }
+        to {
+            transform: translate3d(-4%, -1%, 0) scale(1);
+        }
+    }
+
+    /* --- Copy ---------------------------------------------------------- */
+    .hero__plane--copy {
+        pointer-events: none;
+        z-index: 3;
+    }
+    .hero__plane--copy a,
+    .hero__plane--copy .hero__ticker {
+        pointer-events: auto;
+    }
+    .hero__copy {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        padding-top: calc(var(--spacing) * 11);
+    }
+    .hero__meta {
         display: flex;
         justify-content: space-between;
         gap: calc(var(--spacing) * 2);
         padding-top: calc(var(--spacing) * 1.5);
+        border-top: 1px solid var(--g-rule-strong);
     }
-
-    /* --- The scale ------------------------------------------------------- */
-
-    .hero__scale {
-        position: absolute;
-        left: var(--gutter);
-        top: 22%;
-        bottom: 24%;
-        width: 3.5rem;
-        display: none;
-        flex-direction: column;
-        gap: calc(var(--spacing) * 1.5);
-        z-index: 2;
-    }
-
-    .hero__scale-rail {
-        position: relative;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        border-left: 1px solid var(--color-rule-strong);
-        padding-left: 0;
-    }
-
-    .hero__tick {
-        display: block;
-        width: 0.5rem;
-        height: 1px;
-        background-color: var(--color-rule);
-    }
-
-    .hero__tick--major {
-        width: 1.25rem;
-        background-color: var(--color-rule-strong);
-    }
-
-    /* Travelling index. The element is the full height of the rail and the
-       mark is drawn at its top edge, so the travel can be expressed as a
-       percentage of the element itself. That is the whole point: a percentage
-       cannot disagree with the rail, whereas a pixel figure measured once in
-       JS can, and did. It was read before the name band was given its fixed
-       height, so it carried the taller pre-layout rail for the rest of the
-       session and ran the index a third of the way off the bottom. */
-    .hero__index {
-        position: absolute;
-        left: -1px;
-        top: 0;
-        width: 2rem;
-        height: 100%;
-        pointer-events: none;
-        transform: translateY(calc(var(--hero-index, 0) * (100% - 2px)));
-        will-change: transform;
-    }
-
-    .hero__index::before {
-        content: "";
-        position: absolute;
-        inset: 0 0 auto 0;
-        height: 2px;
-        background-color: var(--color-accent);
-    }
-
-    .hero__readout {
-        display: grid;
-        gap: 2px;
-        line-height: 1.1;
-    }
-
-    .hero__readout-val {
-        color: var(--color-accent);
-        font-variant-numeric: tabular-nums;
-    }
-
-    /* --- Scenes ---------------------------------------------------------- */
-
-    .hero__scenes {
-        list-style: none;
-        margin: 0;
-        padding: 0;
+    .hero__beat {
         align-self: start;
-        display: grid;
-        max-width: 42rem;
-    }
-
-    .hero__scene {
-        display: grid;
-        gap: calc(var(--spacing) * 1.5);
-        padding-block: calc(var(--spacing) * 2);
-        border-top: 1px solid var(--color-rule);
-    }
-
-    .hero__scene:last-child {
-        border-bottom: 1px solid var(--color-rule);
-    }
-
-    .hero__scene-label {
-        display: flex;
-        gap: calc(var(--spacing) * 1.5);
-    }
-
-    .hero__scene-num {
-        color: var(--color-accent);
-    }
-
-    .hero__scene-text {
         margin: 0;
-        font-size: clamp(1.125rem, 2.2vw, 1.625rem);
-        font-variation-settings: "wdth" 100, "wght" 450;
-        line-height: 1.26;
-        max-width: 30ch;
-    }
-
-    /* --- The name -------------------------------------------------------- */
-
-    .hero__type {
-        position: relative;
-        min-width: 0;
-        z-index: 1;
-        display: flex;
-        align-items: flex-end;
-    }
-
-    .hero__name {
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        font-family: var(--font-display);
+        margin-top: 12vh;
+        max-width: 22ch;
+        font-size: clamp(1.5rem, 3vw, 2.75rem);
+        line-height: 1.12;
         font-variation-settings:
-            "wdth" var(--hero-wdth),
-            "wght" var(--hero-wght);
-        text-transform: uppercase;
-        /* Opened up. The two lines are one mark, but they need air between them
-           to read as a stacked composition rather than a solid block. The band
-           reserved in the scroll layer uses this exact figure. */
-        line-height: 1.04;
-        letter-spacing: -0.012em;
-        font-size: clamp(2.75rem, 13vw, 11rem);
-        pointer-events: none;
+            "wdth" 96,
+            "wght" 560;
+        text-wrap: balance;
+        opacity: 0;
+        transform: translate3d(0, 24px, 0);
     }
-
-    .hero__line {
+    .hero__beat-in {
         display: block;
-        white-space: nowrap;
     }
 
-    /* Two impressions of one mark: the given name in ink, the family name in
-       the accent. Both printed solid. Drawn as an outline it went thin and
-       unresolved at this size, and the weight of the composition fell out of
-       the bottom of the frame. */
-    .hero__line--accent {
-        color: var(--color-accent);
-    }
-
-    /* --- Portrait, above everything -------------------------------------- */
-
-    .hero__portrait {
+    /* The strip along the floor. Always moving, even when the page is not. */
+    .hero__ticker {
         position: absolute;
-        /* The contour follows the alpha channel, and the alpha channel ends
-           where the file does, so without this it draws a straight red rule
-           along the bottom crop of the figure. */
-        -webkit-mask-image: linear-gradient(
-            to bottom,
-            #000 calc(100% - 10px),
-            transparent calc(100% - 10px)
-        );
-        mask-image: linear-gradient(
-            to bottom,
-            #000 calc(100% - 10px),
-            transparent calc(100% - 10px)
-        );
-        z-index: 3;
+        left: 0;
         right: 0;
         bottom: 0;
-        width: 38%;
-        max-width: 28rem;
-        pointer-events: none;
-        will-change: transform;
-        /* Anchored, so the parallax scale grows inward instead of pushing the
-           figure past the right edge of the viewport. */
-        transform-origin: right bottom;
+        padding-block: calc(var(--spacing) * 1.5);
+        border-top: 1px solid var(--g-rule);
+        background: linear-gradient(180deg, transparent, rgba(11, 10, 10, 0.7));
+        --ticker-dur: 48s;
+    }
+    .hero__ticker .label {
+        color: var(--color-bone-soft);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.9rem;
+    }
+    .hero__ticker-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--color-red-lit);
+        flex: none;
     }
 
-    .hero__portrait-img {
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        height: auto;
-        display: block;
-        /* Applied after the filter, so the contour is drawn first and then
-           multiplied with the paper. Against a near-white sheet that leaves
-           the accent where it was, and puts the figure back on the page
-           rather than a shade brighter than it. */
-        mix-blend-mode: multiply;
-    }
-
-    /* --- The contour ------------------------------------------------------ */
-
-    /* A border that follows the figure rather than boxing it in. The portrait
-       is a cut-out with a real alpha channel, so stacking drop-shadows at zero
-       blur in eight directions traces its silhouette exactly: an outline that
-       wraps the person, drawn in the same accent the family name is printed in.
-
-       Eight directions rather than four, because four leaves the diagonals
-       thin and the contour reads as a cross rather than as a line. */
-    .hero__portrait-img {
-        /* Constant. Animating the width forces the browser to re-rasterise
-           eight drop-shadows on every frame of the scrub; held still, the
-           filter is drawn once and cached. Measured: a 227ms hitch on the
-           first scroll became nothing. */
-        --contour: 2px;
-        filter: drop-shadow(var(--contour) 0 0 var(--color-accent))
-            drop-shadow(calc(var(--contour) * -1) 0 0 var(--color-accent))
-            drop-shadow(0 var(--contour) 0 var(--color-accent))
-            drop-shadow(0 calc(var(--contour) * -1) 0 var(--color-accent))
-            drop-shadow(
-                calc(var(--contour) * 0.72) calc(var(--contour) * 0.72) 0
-                    var(--color-accent)
-            )
-            drop-shadow(
-                calc(var(--contour) * -0.72) calc(var(--contour) * 0.72) 0
-                    var(--color-accent)
-            )
-            drop-shadow(
-                calc(var(--contour) * 0.72) calc(var(--contour) * -0.72) 0
-                    var(--color-accent)
-            )
-            drop-shadow(
-                calc(var(--contour) * -0.72) calc(var(--contour) * -0.72) 0
-                    var(--color-accent)
-            );
-    }
-
-    /* --- Scroll composition ---------------------------------------------- */
-
-    .hero[data-scroll-ready] .hero__scenes {
-        grid-template-areas: "scene";
-        align-self: center;
-    }
-
-    .hero[data-scroll-ready] .hero__scene {
-        grid-area: scene;
-        border: 0;
-        padding-block: 0;
-        align-content: start;
-        opacity: 0;
-    }
-
-    .hero[data-scroll-ready] .hero__scene:last-child {
-        border-bottom: 0;
-    }
-
-    .hero[data-scroll-ready] .hero__scene-text {
-        border-top: 1px solid var(--color-rule-strong);
-        padding-top: calc(var(--spacing) * 2);
-    }
-
-    @media (min-width: 900px) {
-        .hero__scale {
-            display: flex;
-        }
-        /* The scene column clears the scale. */
-        /* Everything clears the scale, so it reads as a margin instrument
-           rather than something sitting on top of the text. */
-        .hero__scenes,
-        .hero__meta,
-        .hero__type {
-            margin-left: 6rem;
-        }
-
-        /* The name stops short of the portrait. The figure is on top and the
-           type passes behind it, but only grazing the edge: an h1 that loses
-           its last letters behind a picture is not a layering effect. */
-        .hero__type {
-            max-width: 62%;
-        }
-    }
-
-    /* --- Mobile ----------------------------------------------------------- */
-
+    /* --- Phone: the type sits above the figure, never behind it ---------- */
     @media (max-width: 767px) {
-        /* A phone gets its own composition rather than a squeezed copy of the
-           desktop one. Stacked in reading order with no spacer row: the strip,
-           the message, the name, and then the figure taking whatever is left.
-           Squeezing the desktop arrangement in here left 57% of the viewport
-           as dead air, most of it between the message and the letters. */
-        .hero__frame {
-            grid-template-rows: auto auto auto 1fr;
-            padding-block: calc(var(--spacing) * 9) calc(var(--spacing) * 4);
+        .hero__room--wide {
+            display: none;
         }
-
-        /* Under the rule, not floating in the middle of a 1fr row. */
-        .hero__scenes,
-        .hero[data-scroll-ready] .hero__scenes {
-            align-self: start;
+        .hero__room--tall {
+            display: block;
         }
-
-        /* The full measure. With the figure below the name rather than beside
-           it there is nothing to clear, and the name goes from 62px to about
-           107px: the largest thing on the screen, which is what it is for. */
-        .hero__type {
-            max-width: none;
+        .hero__plane--type {
             align-items: flex-start;
         }
-
-        /* The figure takes the whole bottom of the screen, as the last row of
-           the grid rather than as an absolute box. That way its height is
-           whatever is actually left after the name, on any handset: pinned to
-           a percentage it rode up over the letters on a 360x740 screen, where
-           there is less to go round. Right edge exactly on the viewport, since
-           anything past it is not a bleed but a horizontal scrollbar once the
-           hero unpins and the overhang starts counting toward the document. */
-        .hero__portrait {
-            position: relative;
-            grid-row: 4;
-            align-self: stretch;
-            justify-self: end;
-            width: 76%;
-            max-width: none;
-            right: auto;
-            bottom: auto;
-            margin-right: calc(var(--gutter) * -1);
+        .hero__type {
+            padding-top: 22vh;
+            padding-bottom: 0;
         }
-
-        .hero__portrait-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            object-position: bottom right;
+        .hero__name {
+            font-size: clamp(4.2rem, 22vw, 6.4rem);
         }
-
-        /* Handed over to the fixed bar at the top rather than duplicated by it.
-           Opacity only: the row keeps its height, so nothing moves. */
-        .hero__meta {
-            transition: opacity 0.45s ease;
+        .hero__figure {
+            right: 50%;
+            transform: translateX(50%);
+            width: min(78vw, 360px);
+            bottom: 7%;
         }
-
-        .hero[data-meta-lifted] .hero__meta {
-            opacity: 0;
-        }
-
-        .hero__scene-text {
-            max-width: none;
-            font-size: 1.25rem;
-        }
-
-        .hero__scenes {
-            max-width: none;
-            /* Clear of the identity strip. Stacked directly under it the rule,
-               the strip and the scene label read as one crowded block. */
-            margin-top: calc(var(--spacing) * 3);
-        }
-
-        .hero[data-scroll-ready] .hero__scene-text {
+        .hero__beat {
+            margin-top: 9vh;
+            max-width: 18ch;
             font-size: 1.5rem;
         }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .hero__meta {
-            transition: none;
+        .hero__copy {
+            padding-top: calc(var(--spacing) * 9);
         }
     }
 
-    @media (min-width: 768px) {
-        .hero__frame {
-            padding-block: calc(var(--spacing) * 10) calc(var(--spacing) * 7);
-            row-gap: calc(var(--spacing) * 5);
+    /* Static composition. The scroll layer never runs, so the second beat is
+       shown from the start rather than hidden forever. */
+    @media (prefers-reduced-motion: reduce) {
+        .hero__beat {
+            opacity: 1;
+            transform: none;
+        }
+        .hero__haze {
+            animation: none;
+        }
+        .hero__line--lit {
+            opacity: 0.9;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) and (max-width: 767px) {
+        /* Static phone composition: name, then the beat, then the figure,
+           each in its own band. */
+        .hero__type {
+            padding-top: 16vh;
+        }
+        .hero__beat {
+            margin-top: 36vh;
+            font-size: 1.25rem;
+        }
+        .hero__figure {
+            width: min(62vw, 300px);
+            bottom: -4%;
         }
     }
 </style>
