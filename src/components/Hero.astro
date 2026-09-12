@@ -405,19 +405,54 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
     /* --- Mobile ----------------------------------------------------------- */
 
     @media (max-width: 767px) {
-        /* Sized so the figure lands exactly on the viewport edge. Anything
-           past it is not a bleed, it is a horizontal scrollbar: once the hero
-           unpins, the overhang starts contributing to the document width. */
-        .hero__portrait {
-            width: 48%;
-            max-width: none;
-            right: 0;
+        /* A phone gets its own composition rather than a squeezed copy of the
+           desktop one. Stacked in reading order with no spacer row: the strip,
+           the message, the name, and then the figure taking whatever is left.
+           Squeezing the desktop arrangement in here left 57% of the viewport
+           as dead air, most of it between the message and the letters. */
+        .hero__frame {
+            grid-template-rows: auto auto auto 1fr;
+            padding-block: calc(var(--spacing) * 9) calc(var(--spacing) * 4);
         }
 
-        /* Same rule as desktop, for the same reason. An h1 that loses its last
-           letters behind a picture is not a layering effect. */
+        /* Under the rule, not floating in the middle of a 1fr row. */
+        .hero__scenes,
+        .hero[data-scroll-ready] .hero__scenes {
+            align-self: start;
+        }
+
+        /* The full measure. With the figure below the name rather than beside
+           it there is nothing to clear, and the name goes from 62px to about
+           107px: the largest thing on the screen, which is what it is for. */
         .hero__type {
-            max-width: 58%;
+            max-width: none;
+            align-items: flex-start;
+        }
+
+        /* The figure takes the whole bottom of the screen, as the last row of
+           the grid rather than as an absolute box. That way its height is
+           whatever is actually left after the name, on any handset: pinned to
+           a percentage it rode up over the letters on a 360x740 screen, where
+           there is less to go round. Right edge exactly on the viewport, since
+           anything past it is not a bleed but a horizontal scrollbar once the
+           hero unpins and the overhang starts counting toward the document. */
+        .hero__portrait {
+            position: relative;
+            grid-row: 4;
+            align-self: stretch;
+            justify-self: end;
+            width: 76%;
+            max-width: none;
+            right: auto;
+            bottom: auto;
+            margin-right: calc(var(--gutter) * -1);
+        }
+
+        .hero__portrait-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: bottom right;
         }
 
         /* Handed over to the fixed bar at the top rather than duplicated by it.
@@ -437,11 +472,9 @@ const ticks = Array.from({ length: 33 }, (_, i) => i);
 
         .hero__scenes {
             max-width: none;
-            margin-top: calc(var(--spacing) * 2);
-        }
-
-        .hero[data-scroll-ready] .hero__scenes {
-            align-self: center;
+            /* Clear of the identity strip. Stacked directly under it the rule,
+               the strip and the scene label read as one crowded block. */
+            margin-top: calc(var(--spacing) * 3);
         }
 
         .hero[data-scroll-ready] .hero__scene-text {

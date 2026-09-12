@@ -151,11 +151,24 @@ export function initScroll() {
 
     const available = nameEl!.parentElement?.clientWidth ?? window.innerWidth;
 
-    // Two lines at LEADING occupy 2 x LEADING x the font size. The name is
-    // given a fixed share of the frame so it can never grow into the scene
-    // band.
-    const band = pin!.clientHeight * (isMobile() ? 0.36 : 0.46);
-    const cap = band / (LEADING * 2);
+    // The name is widest, and therefore set smallest, at the open end of the
+    // axis; it is largest at the closed end. So the tallest the two lines can
+    // ever be is their size at WDTH_MIN, and that is exactly what the band has
+    // to reserve. Reserving a flat share of the frame instead over-reserved it
+    // by 2.3x on a phone, where the name is constrained by the measure rather
+    // than by the band: 304px held for 131px of letters, which was most of the
+    // dead air in the mobile hero.
+    const sizes = lines.map((_, i) => available / ratioAt(fits[i], state.wdth));
+    const tallest = lines.map((_, i) => available / ratioAt(fits[i], WDTH_MIN));
+    const needed = tallest.reduce((a, b) => a + b, 0) * LEADING;
+
+    // A ceiling, so a very short viewport cannot let the name take the screen.
+    // It bites on a wide desktop measure, where the fitted name would run
+    // taller than the frame; on a phone the measure sets the size long before
+    // this does.
+    const ceiling = pin!.clientHeight * 0.46;
+    const band = Math.min(needed, ceiling);
+    const squeeze = needed > ceiling ? ceiling / needed : 1;
 
     // The band is reserved as a fixed height. Refitting the name changes its
     // font size on every frame of the scrub, and in an auto-height row that
@@ -165,8 +178,7 @@ export function initScroll() {
     if (type) type.style.height = `${Math.round(band)}px`;
 
     lines.forEach((line, i) => {
-      const size = Math.min(available / ratioAt(fits[i], state.wdth), cap);
-      line.style.fontSize = `${size}px`;
+      line.style.fontSize = `${sizes[i] * squeeze}px`;
     });
 
     // The instrument reads out the axis it is actually driving. Rounded,
