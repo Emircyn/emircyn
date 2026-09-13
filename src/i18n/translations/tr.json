@@ -7,28 +7,28 @@
   "hero": {
     "scenes": [
       {
-        "label": "Hakkımda",
-        "text": "Ankara’da yaşıyorum, InspireIT’te frontend geliştiriciyim."
+        "label": "Kısaca",
+        "text": "Ankara’da yaşıyorum. InspireIT’te frontend geliştiriciyim."
       },
       {
         "label": "Arayüz",
-        "text": "Web siteleri ve uygulamalar geliştiriyorum."
+        "text": "Web siteleri ve uygulamalar için arayüz geliştiriyorum."
       },
       {
         "label": "Kod",
-        "text": "Tekrar eden parçaları bileşenlere ayırıyorum."
+        "text": "Kodun okunaklı ve değiştirilebilir kalmasına dikkat ediyorum."
       },
       {
         "label": "Performans",
-        "text": "Yavaşlayan sayfalarda sorunun kaynağını bulup düzeltiyorum."
+        "text": "Yavaş sayfaların nedenini bulup düzeltiyorum."
       },
       {
         "label": "Kullanım",
-        "text": "Sayfaları telefonda da rahat kullanılacak şekilde geliştiriyorum."
+        "text": "Arayüzün farklı ekranlarda rahat kullanılmasını sağlıyorum."
       }
     ],
     "staticIntro": "Ankara’da yaşayan bir frontend geliştiriciyim. InspireIT’te çalışıyorum.",
-    "beat": "Web siteleri ve uygulamalar için arayüz geliştiriyorum.",
+    "beat": "İyi görünen ve iyi çalışan web arayüzleri geliştiriyorum.",
     "ticker": [
       "Frontend Geliştirici",
       "Ankara",
@@ -47,9 +47,9 @@
   "about": {
     "label": "Hakkımda",
     "body": [
-      "Ankara’da yaşıyorum. InspireIT’te frontend geliştiriciyim; öncesinde GuruDesk’te çalıştım. Bilgeweb’de de web geliştirme stajı yaptım.",
-      "İşimin büyük kısmı mevcut arayüzleri düzenlemek. Tekrar eden kodu bileşenlere ayırıyorum; böylece bir değişiklik için aynı kodu birkaç yerde düzeltmek gerekmiyor. Yavaş açılan sayfalarla da uğraşıyorum.",
-      "Bu sitede kaydırmayla çalışan animasyonlar denedim. Sayfa ilerledikçe hareket eden katmanlar ve aşağıdaki kadran bu denemelerin bir parçası."
+      "Ankara’da yaşıyorum ve InspireIT’te frontend geliştirici olarak çalışıyorum. Daha önce GuruDesk’te çalıştım; web geliştirmeye Bilgeweb’deki stajımla başladım.",
+      "Bir tasarımın tarayıcıda iyi çalışan bir arayüze dönüşmesiyle ilgileniyorum. React, Vue ve Astro kullanarak yeni sayfalar geliştiriyor, mevcut arayüzleri düzenliyor ve performans sorunlarını çözüyorum.",
+      "Detaylara zaman ayırmayı seviyorum. Bir butonun tepkisi, sayfanın telefondaki kullanımı ve animasyonun doğru yerde bitmesi benim için işin parçası."
     ]
   },
   "record": {
@@ -88,15 +88,15 @@
   },
   "contact": {
     "label": "İletişim",
-    "heading": "Birlikte çalışalım.",
-    "body": "Projen hakkında konuşmak ya da tanışmak için bana e-posta yazabilirsin.",
+    "heading": "Bir fikrin mi var?",
+    "body": "Bir web sitesi, ürün arayüzü ya da sadece bir fikir hakkında konuşmak için bana yazabilirsin.",
     "action": "E-posta gönder",
     "github": "GitHub",
     "linkedin": "LinkedIn",
     "sourceCode": "Sitenin kaynak kodu",
     "headingLines": [
-      "Birlikte",
-      "çalışalım."
+      "Bir fikrin",
+      "mi var?"
     ]
   },
   "footer": {
@@ -107,7 +107,7 @@
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Geliştirici",
-    "description": "Ankara’da frontend geliştiriciyim. Web arayüzleri geliştiriyor, mevcut sayfaları hızlandırıyor ve web animasyonlarıyla çalışıyorum."
+    "description": "Ankara’da yaşayan frontend geliştirici Emircan Erdemci. React, Vue ve Astro ile web arayüzleri geliştiriyor; performans ve etkileşim üzerine çalışıyor."
   },
   "plates": {
     "instrument": "Ölçüm kadranı ve ibresi.",
@@ -115,8 +115,8 @@
     "caliper": "İnce bir kâğıt destesini ölçen kumpas."
   },
   "scrub": {
-    "label": "Kaydırma denemesi",
-    "caption": "Sayfayı kaydırdıkça ibre hareket ediyor."
+    "label": "Zaman",
+    "caption": "Zaman akarken ibre de yolunu buluyor."
   },
   "thread": {
     "label": "Sayfa bölümleri",
@@ -132,14 +132,14 @@
   },
   "craft": {
     "label": "Neler yapıyorum",
-    "heading": "Nasıl yardımcı olabilirim?",
-    "note": "Sıfırdan bir site geliştirebilir ya da mevcut projene katılabilirim.",
+    "heading": "Neler yapıyorum?",
+    "note": "Yeni arayüzler, mevcut ürünler ve web etkileşimleri.",
     "fields": {
-      "what": "Kapsam",
-      "how": "Nasıl çalışıyorum",
-      "when": "Ne zaman yardımcı olurum",
+      "what": "Ne",
+      "how": "Nasıl",
+      "when": "Ne zaman",
       "stack": "Araçlar",
-      "ask": "Konuşalım"
+      "ask": "İletişime geç"
     },
     "items": [
       {
@@ -147,30 +147,30 @@
         "name": "Arayüz",
         "tag": "Geliştirme",
         "what": "Tanıtım siteleri, web uygulamaları ve yönetim panelleri.",
-        "how": "Tasarımı tarayıcıda çalışan sayfalara dönüştürüyorum. Ortak parçalar için tekrar kullanılabilen bileşenler yazıyorum.",
-        "when": "Yeni bir siteye ya da uygulaman için bir arayüze ihtiyacın varsa.",
+        "how": "Tasarımı tarayıcıda çalışan sayfalara dönüştürüyorum. Ortak parçaları tekrar kullanılabilen bileşenler olarak kuruyorum.",
+        "when": "Yeni bir siteye veya uygulamana çalışan bir arayüz gerektiğinde.",
         "stack": "React, Vue, Astro, TypeScript, Tailwind",
-        "honesty": "Hazır bir tasarım üzerinden çalışabiliriz."
+        "honesty": "Tasarım hazırsa oradan ilerliyorum; değilse birlikte netleştiriyoruz."
       },
       {
         "index": "02",
         "name": "İyileştirme",
         "tag": "Bakım",
-        "what": "Yavaş açılan sayfalar ve değişiklik yapması zorlaşan arayüzler.",
-        "how": "Önce sayfayı neyin yavaşlattığını inceliyorum. Kodu düzenledikten sonra aynı ölçümleri tekrarlıyorum.",
-        "when": "Siten telefonda yavaşsa veya küçük değişiklikler fazla zaman alıyorsa.",
+        "what": "Yavaş açılan sayfalar ve zamanla karmaşıklaşan arayüzler.",
+        "how": "Önce sorunun kaynağını ölçüyorum. Sonra kodu düzenleyip sonucu yeniden kontrol ediyorum.",
+        "when": "Siten telefonda yavaş açılıyorsa veya küçük değişiklikler gereğinden uzun sürüyorsa.",
         "stack": "Lighthouse, Web Vitals, profil alma, erişilebilirlik denetimi",
-        "honesty": "Mevcut projen üzerinden başlayabiliriz."
+        "honesty": "Mevcut kodu anlamadan büyük bir değişiklik önermiyorum."
       },
       {
         "index": "03",
         "name": "Animasyon",
         "tag": "Etkileşim",
-        "what": "Kaydırmayla ilerleyen animasyonlar, sayfa geçişleri ve etkileşimli bölümler.",
-        "how": "Animasyonları mobilde de kontrol ediyorum. Hareketi azaltma tercihi açıkken sayfanın kullanılabilir kalmasına dikkat ediyorum.",
-        "when": "Bir ürünü ya da fikri animasyonla anlatmak istiyorsan.",
+        "what": "Kaydırmayla ilerleyen animasyonlar, sayfa geçişleri ve küçük etkileşimler.",
+        "how": "Hareketi içeriğin önüne geçirmeden kuruyorum. Mobilde ve hareket azaltma tercihi açıkken de kontrol ediyorum.",
+        "when": "Bir ürünü veya fikri sayfa hareketleriyle anlatmak istediğinde.",
         "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
-        "honesty": "Aşağıdaki kadranı kaydırarak deneyebilirsin."
+        "honesty": "Bu sayfadaki kadran, kullandığım yaklaşımın küçük bir örneği."
       }
     ]
   }

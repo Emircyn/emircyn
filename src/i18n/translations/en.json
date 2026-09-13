@@ -7,28 +7,28 @@
   "hero": {
     "scenes": [
       {
-        "label": "About",
-        "text": "I’m a frontend developer at InspireIT, based in Ankara."
+        "label": "A little about me",
+        "text": "I’m based in Ankara and work as a frontend developer at InspireIT."
       },
       {
         "label": "Interfaces",
-        "text": "I build websites and web apps."
+        "text": "I build interfaces for websites and web apps."
       },
       {
         "label": "Code",
-        "text": "Shared components keep changes in one place."
+        "text": "I try to keep code readable and easy to change."
       },
       {
         "label": "Performance",
-        "text": "Slow pages need a closer look."
+        "text": "I find out why a page is slow and fix it."
       },
       {
         "label": "Usability",
-        "text": "The interface needs to work on a phone, too."
+        "text": "The interface should feel good on every screen."
       }
     ],
     "staticIntro": "I’m a frontend developer based in Ankara, working at InspireIT.",
-    "beat": "I build interfaces for websites and web apps.",
+    "beat": "I build web interfaces that look good and work well.",
     "ticker": [
       "Frontend Developer",
       "Ankara",
@@ -47,9 +47,9 @@
   "about": {
     "label": "About me",
     "body": [
-      "I live in Ankara and work as a frontend developer at InspireIT. Previously, I worked at GuruDesk and did a web development internship at Bilgeweb.",
-      "Much of my work is on existing interfaces. I move repeated code into shared components so the same change doesn’t need making in several places. I also work on pages that take too long to load.",
-      "On this site, I experimented with scroll animation. The moving layers and the dial further down the page are part of that work."
+      "I live in Ankara and work as a frontend developer at InspireIT. Before that, I worked at GuruDesk and started out with a web development internship at Bilgeweb.",
+      "I’m interested in the point where a design becomes a working interface in the browser. I use React, Vue and Astro to build new pages, improve existing products and solve performance problems.",
+      "I like spending time on the details. The response of a button, the way a page works on a phone and where an animation ends all matter to me."
     ]
   },
   "record": {
@@ -88,15 +88,15 @@
   },
   "contact": {
     "label": "Contact",
-    "heading": "Let’s work together.",
-    "body": "Email me to talk about a project or introduce yourself.",
+    "heading": "Have an idea?",
+    "body": "Email me if you want to talk about a website, a product interface or an early idea.",
     "action": "Email me",
     "github": "GitHub",
     "linkedin": "LinkedIn",
     "sourceCode": "Site source code",
     "headingLines": [
-      "Let’s work",
-      "together."
+      "Have an",
+      "idea?"
     ]
   },
   "footer": {
@@ -107,7 +107,7 @@
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Developer",
-    "description": "I’m a frontend developer based in Ankara. I build web interfaces and work on page performance and animation."
+    "description": "Emircan Erdemci is a frontend developer based in Ankara. I build web interfaces with React, Vue and Astro, focusing on performance and interaction."
   },
   "plates": {
     "instrument": "A dial gauge and its needle.",
@@ -115,8 +115,8 @@
     "caliper": "Calipers measuring a thin stack of paper."
   },
   "scrub": {
-    "label": "Scroll experiment",
-    "caption": "The needle moves as you scroll."
+    "label": "Time",
+    "caption": "As time passes, the needle finds its way."
   },
   "thread": {
     "label": "Page sections",
@@ -132,14 +132,14 @@
   },
   "craft": {
     "label": "What I do",
-    "heading": "How can I help?",
-    "note": "I can build a site from scratch or join an existing project.",
+    "heading": "What I work on",
+    "note": "New interfaces, existing products and web interaction.",
     "fields": {
-      "what": "Scope",
-      "how": "My approach",
-      "when": "When I can help",
+      "what": "What",
+      "how": "How",
+      "when": "When",
       "stack": "Tools",
-      "ask": "Let’s talk"
+      "ask": "Get in touch"
     },
     "items": [
       {
@@ -147,30 +147,30 @@
         "name": "Interfaces",
         "tag": "Development",
         "what": "Marketing sites, web apps and dashboards.",
-        "how": "I turn designs into responsive pages. Shared elements become reusable components.",
-        "when": "You need a new website or an interface for your app.",
+        "how": "I turn designs into responsive pages and build shared elements as reusable components.",
+        "when": "You need a new website or a working interface for your app.",
         "stack": "React, Vue, Astro, TypeScript, Tailwind",
-        "honesty": "I can work from your existing designs."
+        "honesty": "If you have a design, I’ll build from it. If not, we can work it out together."
       },
       {
         "index": "02",
         "name": "Improvements",
         "tag": "Maintenance",
-        "what": "Slow pages and interfaces that have become difficult to update.",
-        "how": "First, I find what’s slowing the page down. After updating the code, I run the same measurements again.",
-        "when": "Your site is slow on mobile or small updates take too long.",
+        "what": "Slow pages and interfaces that have become difficult to maintain.",
+        "how": "I measure the problem first, then update the code and check the result again.",
+        "when": "Your site loads slowly on a phone or small changes take too long.",
         "stack": "Lighthouse, Web Vitals, profiling, accessibility audits",
-        "honesty": "We can start with your current project."
+        "honesty": "I look at the existing code before suggesting a large change."
       },
       {
         "index": "03",
         "name": "Animation",
         "tag": "Interaction",
-        "what": "Scroll animations, page transitions and interactive sections.",
-        "how": "I check animations on mobile too, and make sure the page stays usable with reduced motion enabled.",
-        "when": "You want to use animation to explain a product or idea.",
+        "what": "Scroll animations, page transitions and small interactions.",
+        "how": "I keep motion tied to the content, then check it on mobile and with reduced motion enabled.",
+        "when": "You want to explain a product or idea through movement on the page.",
         "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
-        "honesty": "Try scrolling through the dial below."
+        "honesty": "The dial on this page is a small example of the approach."
       }
     ]
   }
