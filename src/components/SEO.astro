@@ -7,6 +7,7 @@ interface Props {
 }
 
 import { useTranslations } from "@/i18n/utils";
+import { site } from "@/config";
 
 const lang = (Astro.currentLocale || "en") as "en" | "tr";
 const t = useTranslations(lang);
@@ -14,7 +15,7 @@ const t = useTranslations(lang);
 const {
     title = t("seo.title"),
     description = t("seo.description"),
-    image = "/og-image.jpg",
+    image = lang === "tr" ? "/og-image-tr.jpg" : "/og-image.jpg",
     canonicalURL = new URL(Astro.url.pathname, Astro.site),
 } = Astro.props;
 
@@ -22,16 +23,48 @@ const siteTitle =
     title === t("seo.title")
         ? title
         : `${title} | ${t("seo.title").split("|")[0].trim()}`;
+
+const ogLocale = lang === "tr" ? "tr_TR" : "en_US";
+const ogAlternate = lang === "tr" ? "en_US" : "tr_TR";
+const imageURL = new URL(image, Astro.site);
+
+// Structured data: one person, one site. Only facts the page itself states.
+const person = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": new URL("/#person", Astro.site).href,
+    name: t("meta.name"),
+    jobTitle: t("meta.role"),
+    url: Astro.site?.href,
+    image: new URL("/og-image.jpg", Astro.site).href,
+    email: `mailto:${site.email}`,
+    worksFor: { "@type": "Organization", name: "InspireIT" },
+    address: { "@type": "PostalAddress", addressLocality: "Ankara", addressCountry: "TR" },
+    sameAs: [site.github, site.linkedin],
+    knowsAbout: ["Frontend development", "React", "Vue", "Astro", "TypeScript", "Web performance", "Web animation"],
+};
+const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: Astro.site?.href,
+    name: t("meta.name"),
+    inLanguage: [lang === "tr" ? "tr-TR" : "en-US"],
+    author: { "@id": person["@id"] },
+};
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 <link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#0b0a0a" />
+<meta name="color-scheme" content="dark" />
 <meta name="generator" content={Astro.generator} />
+<meta name="author" content={t("meta.name")} />
+<meta name="robots" content="index,follow,max-image-preview:large" />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -43,22 +76,33 @@ const siteTitle =
 
 <!-- Primary Meta Tags -->
 <title>{siteTitle}</title>
-<meta name="title" content={siteTitle} />
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<!-- Open Graph -->
+<meta property="og:type" content="profile" />
+<meta property="og:site_name" content={t("meta.name")} />
+<meta property="og:locale" content={ogLocale} />
+<meta property="og:locale:alternate" content={ogAlternate} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={siteTitle} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={t("meta.name")} />
+<meta property="profile:first_name" content="Emircan" />
+<meta property="profile:last_name" content="Erdemci" />
 
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={siteTitle} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={siteTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />
+<meta name="twitter:image:alt" content={t("meta.name")} />
 
 <!-- Sitemap -->
 <link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- Structured data -->
+<script type="application/ld+json" set:html={JSON.stringify(person)} />
+<script type="application/ld+json" set:html={JSON.stringify(website)} />

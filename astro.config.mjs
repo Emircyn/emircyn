@@ -16,6 +16,9 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
+      // The root is a language gate, not a page. Only the two real pages are
+      // listed, so the index never advertises a redirect as content.
+      filter: (page) => page !== "https://emircyn.com/",
       i18n: {
         defaultLocale: "en",
         locales: {
