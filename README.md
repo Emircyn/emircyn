@@ -1,91 +1,59 @@
-# Emircan Erdemci - Personal Portfolio
+# emircyn.com
 
-This is a modern, responsive personal portfolio website built with **Astro**, **React**, and **Tailwind CSS**. It features a clean design, dark/light mode support, internationalization (i18n), and interactive UI components.
+Personal site of Emircan Erdemci, frontend developer in Ankara. Live at [emircyn.com](https://emircyn.com), in English and Turkish.
 
-## Features
+The page is built as a scroll-driven film: six acts on a dark ground with one hard cut to paper, continuous ambient motion, and a crimson thread down the left edge that is drawn by scroll and doubles as navigation.
 
--   **Framework**: Built with [Astro](https://astro.build/) for top-notch performance.
--   **Styling**: [Tailwind CSS](https://tailwindcss.com/) for utility-first styling.
--   **UI Components**: [shadcn/ui](https://ui.shadcn.com/) components for a polished look.
--   **Internationalization**: Multi-language support (English & Turkish) with automatic language detection.
--   **Dark Mode**: System-aware dark/light mode toggler with smooth transitions.
--   **Animations**:
-    -   `AuroraText` for gradient text effects.
-    -   `AnimatedGlow` for background ambiance.
-    -   `Highlighter` for emphasizing key text.
--   **Interactivity**:
-    -   `CompanyHoverCard` for previewing external links.
-    -   Responsive layout with a "responsive-first" approach.
+## Stack
 
-## Tech Stack
+- [Astro 5](https://astro.build/) static output, no client framework, zero islands
+- [Tailwind CSS 4](https://tailwindcss.com/) for the token layer, component styles scoped in `.astro` files
+- [GSAP ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/) for pinned acts and scrubbed timelines
+- [Lenis](https://github.com/darkroomengineering/lenis) for wheel smoothing (touch stays native)
+- Archivo Variable (width axis) and JetBrains Mono, self-hosted via Fontsource
+- Deployed as a Cloudflare Worker with static assets
 
--   **Astro**: Static Site Generator & Framework
--   **React**: UI Library for interactive components
--   **Tailwind CSS**: CSS Framework
--   **Framer Motion**: Animation Library
--   **Lucide React**: Icon Set
--   **TypeScript**: Type Safety
+## The acts
 
-## Getting Started
+| # | Section | Device |
+|---|---|---|
+| 1 | Hero | Four planes (room, name, alpha-cut figure, haze) driven by scroll, pointer and an idle loop |
+| 2 | Manifesto | Pinned frame, four sentences arriving word by word |
+| 3 | What I do | Horizontal rail on desktop, parallax stack on phones |
+| 4 | Measure | A dial clip scrubbed by the wheel, with a live readout |
+| 5 | Record | Hard cut to paper, reveals only, deliberately still |
+| 6 | Contact | Pointer-lit close with a magnetic mail link |
 
-### Prerequisites
+Every act has a complete static composition: with `prefers-reduced-motion` or without JavaScript, the page still reads top to bottom.
 
--   Node.js (v18 or higher)
--   npm, yarn, pnpm, or bun
-
-### Installation
-
-1.  Clone the repository:
-
-    ```bash
-    git clone https://github.com/Emircyn/emircyn.git
-    cd emircyn
-    ```
-
-2.  Install dependencies:
-
-    ```bash
-    npm install
-    # or
-    bun install
-    ```
-
-3.  Start the development server:
-
-    ```bash
-    npm run dev
-    # or
-    bun dev
-    ```
-
-4.  Open your browser and navigate to `http://localhost:4321`.
-
-## Building for Production
-
-To create a production build:
+## Development
 
 ```bash
-npm run build
-# or
-bun run build
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # static output in dist/
+npm run preview
 ```
 
-The output will be in the `dist/` directory.
+Pushes to `master` build and deploy to production through Cloudflare Workers Builds. Other branches get a preview version.
 
-## Project Structure
+## Layout
 
 ```
 src/
-├── assets/         # Images and static assets
-├── components/     # Reusable UI components
-│   ├── ui/         # shadcn/ui components
-│   └── ...         # Custom components (Hero, CompanyHoverCard, etc.)
-├── i18n/           # Translation files and utilities
-├── layouts/        # Page layouts
-├── pages/          # Astro pages and routing
-└── styles/         # Global styles
+├── assets/         # hero plates, portrait, paper plates
+├── components/     # one file per act, plus SEO, header, thread
+├── i18n/           # en.json, tr.json and the t() helper
+├── layouts/        # Layout.astro wires the scroll engine
+├── pages/          # / (language gate), /en/, /tr/, robots.txt
+├── scripts/        # scroll.ts (acts, ambient loop, thread), scrub.ts (video)
+└── styles/         # global.css: tokens, grounds, grain, ticker
+public/
+├── media/          # dial clips encoded for scrubbing
+├── tex/            # grain tile
+└── _headers        # edge caching and security headers
 ```
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+[MIT](LICENSE).
