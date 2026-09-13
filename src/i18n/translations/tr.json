@@ -7,28 +7,28 @@
   "hero": {
     "scenes": [
       {
-        "label": "Künye",
-        "text": "Ankara'da, InspireIT'te frontend geliştirici."
+        "label": "Hakkımda",
+        "text": "Ankara’da yaşıyorum, InspireIT’te frontend geliştiriciyim."
       },
       {
-        "label": "İş",
-        "text": "Web için arayüz geliştiriyorum."
+        "label": "Arayüz",
+        "text": "Web siteleri ve uygulamalar geliştiriyorum."
       },
       {
-        "label": "Sadelik",
-        "text": "Sadelik başlangıç noktası değil, sonuçtur."
+        "label": "Kod",
+        "text": "Tekrar eden parçaları bileşenlere ayırıyorum."
       },
       {
         "label": "Performans",
-        "text": "Performans ölçülebilen bir özelliktir."
+        "text": "Yavaşlayan sayfalarda sorunun kaynağını bulup düzeltiyorum."
       },
       {
-        "label": "İnsan",
-        "text": "İşe yarayıp yaramadığına kullanan kişi karar verir."
+        "label": "Kullanım",
+        "text": "Sayfaları telefonda da rahat kullanılacak şekilde geliştiriyorum."
       }
     ],
-    "staticIntro": "Ankara'da InspireIT'te frontend geliştirici. Web için arayüz geliştiriyorum.",
-    "beat": "Web için arayüz geliştiriyorum ve işe yarayıp yaramadığını ölçüyorum.",
+    "staticIntro": "Ankara’da yaşayan bir frontend geliştiriciyim. InspireIT’te çalışıyorum.",
+    "beat": "Web siteleri ve uygulamalar için arayüz geliştiriyorum.",
     "ticker": [
       "Frontend Geliştirici",
       "Ankara",
@@ -45,16 +45,16 @@
     ]
   },
   "about": {
-    "label": "Yaklaşım",
+    "label": "Hakkımda",
     "body": [
-      "Ankara'da InspireIT'te frontend geliştiriciyim. Yanı sıra İstanbul Üniversitesi'nde Yönetim Bilişim Sistemleri bölümünü bitiriyorum.",
-      "Yaptığım işin çoğu frontend'in gösterişsiz yarısı: çalışan bir şeyi alıp değiştirilmesini kolaylaştırmak. Bir sayfayı kendi başına durabilen parçalara ayırmak. Önemli olan belirginleşene kadar ekrandakini azaltmak.",
-      "Bu işin başındayım. Burada yazan her şey gerçekten yaptığım iş ve olduğu gibi anlatıldı."
+      "Ankara’da yaşıyorum. InspireIT’te frontend geliştiriciyim; öncesinde GuruDesk’te çalıştım. Bilgeweb’de de web geliştirme stajı yaptım.",
+      "İşimin büyük kısmı mevcut arayüzleri düzenlemek. Tekrar eden kodu bileşenlere ayırıyorum; böylece bir değişiklik için aynı kodu birkaç yerde düzeltmek gerekmiyor. Yavaş açılan sayfalarla da uğraşıyorum.",
+      "Bu sitede kaydırmayla çalışan animasyonlar denedim. Sayfa ilerledikçe hareket eden katmanlar ve aşağıdaki kadran bu denemelerin bir parçası."
     ]
   },
   "record": {
-    "label": "Kayıt",
-    "workHeading": "Çalışma",
+    "label": "Deneyim ve eğitim",
+    "workHeading": "İş deneyimi",
     "educationHeading": "Eğitim",
     "positions": [
       {
@@ -88,15 +88,15 @@
   },
   "contact": {
     "label": "İletişim",
-    "heading": "Ne inşa ettiğini anlat.",
-    "body": "Bana ulaşmanın en hızlı yolu e-posta. Hepsini okuyorum.",
+    "heading": "Birlikte çalışalım.",
+    "body": "Projen hakkında konuşmak ya da tanışmak için bana e-posta yazabilirsin.",
     "action": "E-posta gönder",
     "github": "GitHub",
     "linkedin": "LinkedIn",
-    "sourceCode": "Bu sitenin kaynağı",
+    "sourceCode": "Sitenin kaynak kodu",
     "headingLines": [
-      "Ne inşa ettiğini",
-      "anlat."
+      "Birlikte",
+      "çalışalım."
     ]
   },
   "footer": {
@@ -107,70 +107,70 @@
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Geliştirici",
-    "description": "Ankara'da InspireIT'te frontend geliştirici. Web için arayüz geliştiriyorum."
+    "description": "Ankara’da frontend geliştiriciyim. Web arayüzleri geliştiriyor, mevcut sayfaları hızlandırıyor ve web animasyonlarıyla çalışıyorum."
   },
   "plates": {
-    "instrument": "Halftone plaka: kadranlı komparatör, ibresi kazınmış skalanın üstünde duruyor.",
-    "surface": "Halftone plaka: neredeyse boş bir çizim masası, üstünde tek bir çelik cetvel.",
-    "caliper": "Halftone plaka: ince bir kağıt destesine kapanmış kumpas."
+    "instrument": "Ölçüm kadranı ve ibresi.",
+    "surface": "Çizim masasında çelik cetvel.",
+    "caliper": "İnce bir kâğıt destesini ölçen kumpas."
   },
   "scrub": {
-    "label": "Ölçüm",
-    "caption": "İbreyi scroll sürüyor. Sayfa bir aletin resmi değil, aletin kendisi."
+    "label": "Kaydırma denemesi",
+    "caption": "Sayfayı kaydırdıkça ibre hareket ediyor."
   },
   "thread": {
-    "label": "Yolculuk",
+    "label": "Sayfa bölümleri",
     "hero": "Emircan",
-    "manifesto": "İnançlar",
+    "manifesto": "Yaklaşım",
     "work": "Neler yapıyorum",
-    "measure": "Ölçüm",
-    "record": "Kayıt",
+    "measure": "Deneme",
+    "record": "Deneyim",
     "contact": "İletişim"
   },
   "manifesto": {
-    "label": "Neye inanıyorum"
+    "label": "Nasıl çalışıyorum"
   },
   "craft": {
     "label": "Neler yapıyorum",
-    "heading": "Bana getirebileceğin üç iş.",
-    "note": "Olduğu gibi anlatılmış. Henüz vaka çalışması yok, iş kendini anlatıyor.",
+    "heading": "Nasıl yardımcı olabilirim?",
+    "note": "Sıfırdan bir site geliştirebilir ya da mevcut projene katılabilirim.",
     "fields": {
-      "what": "Ne",
-      "how": "Nasıl",
-      "when": "Ne zaman uyar",
+      "what": "Kapsam",
+      "how": "Nasıl çalışıyorum",
+      "when": "Ne zaman yardımcı olurum",
       "stack": "Araçlar",
-      "ask": "Bunu bana getir"
+      "ask": "Konuşalım"
     },
     "items": [
       {
         "index": "01",
         "name": "Arayüz",
-        "tag": "Kur",
-        "what": "Sıfırdan bir web arayüzü: tanıtım sitesi, ürün ön yüzü, yönetim paneli.",
-        "how": "Kendi başına duran bileşenler, tekrar eden markup yerine veride tutulan içerik, altında gerçek rotalar ve gerçek HTML.",
-        "when": "Elinde bir tasarım ya da net bir fikir var ve her ekran boyutunda, ileride framework kavgasına girmeden tarayıcıda var olmasını istiyorsun.",
+        "tag": "Geliştirme",
+        "what": "Tanıtım siteleri, web uygulamaları ve yönetim panelleri.",
+        "how": "Tasarımı tarayıcıda çalışan sayfalara dönüştürüyorum. Ortak parçalar için tekrar kullanılabilen bileşenler yazıyorum.",
+        "when": "Yeni bir siteye ya da uygulaman için bir arayüze ihtiyacın varsa.",
         "stack": "React, Vue, Astro, TypeScript, Tailwind",
-        "honesty": "Tasarım sattığım şey değil. Tasarımı sen ver ya da sade tutmama izin ver."
+        "honesty": "Hazır bir tasarım üzerinden çalışabiliriz."
       },
       {
         "index": "02",
         "name": "İyileştirme",
-        "tag": "Düzelt",
-        "what": "Zaten çalışan ama yavaş, kırılgan ya da değiştirmesi zor bir şey.",
-        "how": "Önce ölç, sonra sayfayı parçalara ayır, gereksizi at, sayıların gösterdiği yeri düzelt.",
-        "when": "Her değişiklik beş yerde düzeltme istiyor, sayfa telefonda ağır geliyor ya da eski koda kimse dokunmaya cesaret edemiyor.",
+        "tag": "Bakım",
+        "what": "Yavaş açılan sayfalar ve değişiklik yapması zorlaşan arayüzler.",
+        "how": "Önce sayfayı neyin yavaşlattığını inceliyorum. Kodu düzenledikten sonra aynı ölçümleri tekrarlıyorum.",
+        "when": "Siten telefonda yavaşsa veya küçük değişiklikler fazla zaman alıyorsa.",
         "stack": "Lighthouse, Web Vitals, profil alma, erişilebilirlik denetimi",
-        "honesty": "Frontend'in gösterişsiz yarısı. Yaptığım işin çoğu bu."
+        "honesty": "Mevcut projen üzerinden başlayabiliriz."
       },
       {
         "index": "03",
-        "name": "Hareket",
-        "tag": "Canlandır",
-        "what": "Scroll'a ve imlece bağlı sayfalar: katmanlı hero'lar, sabitlenen sahneler, tekerleğin sürdüğü video.",
-        "how": "Yalnız transform ve opacity, hareketsiz de çalışan bir statik kompozisyon, masaüstü ve telefonda kare kare doğrulama.",
-        "when": "Belge gibi değil deneyim gibi hissettiren, ama hızlı kalan bir sayfa istiyorsun.",
+        "name": "Animasyon",
+        "tag": "Etkileşim",
+        "what": "Kaydırmayla ilerleyen animasyonlar, sayfa geçişleri ve etkileşimli bölümler.",
+        "how": "Animasyonları mobilde de kontrol ediyorum. Hareketi azaltma tercihi açıkken sayfanın kullanılabilir kalmasına dikkat ediyorum.",
+        "when": "Bir ürünü ya da fikri animasyonla anlatmak istiyorsan.",
         "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
-        "honesty": "Bu site örneğin kendisi. Üzerindeki her şey böyle yapıldı."
+        "honesty": "Aşağıdaki kadranı kaydırarak deneyebilirsin."
       }
     ]
   }

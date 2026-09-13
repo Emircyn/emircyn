@@ -7,28 +7,28 @@
   "hero": {
     "scenes": [
       {
-        "label": "Index",
-        "text": "Frontend developer at InspireIT, in Ankara."
+        "label": "About",
+        "text": "I’m a frontend developer at InspireIT, based in Ankara."
       },
       {
-        "label": "Practice",
-        "text": "I build interfaces for the web."
+        "label": "Interfaces",
+        "text": "I build websites and web apps."
       },
       {
-        "label": "Simplicity",
-        "text": "Simplicity is a result, not a starting point."
+        "label": "Code",
+        "text": "Shared components keep changes in one place."
       },
       {
         "label": "Performance",
-        "text": "Performance is a feature you can measure."
+        "text": "Slow pages need a closer look."
       },
       {
-        "label": "People",
-        "text": "The person using it decides if it worked."
+        "label": "Usability",
+        "text": "The interface needs to work on a phone, too."
       }
     ],
-    "staticIntro": "Frontend developer at InspireIT in Ankara, building interfaces for the web.",
-    "beat": "I build interfaces for the web, and I measure whether they work.",
+    "staticIntro": "I’m a frontend developer based in Ankara, working at InspireIT.",
+    "beat": "I build interfaces for websites and web apps.",
     "ticker": [
       "Frontend Developer",
       "Ankara",
@@ -45,22 +45,22 @@
     ]
   },
   "about": {
-    "label": "Approach",
+    "label": "About me",
     "body": [
-      "I am a frontend developer at InspireIT in Ankara. Alongside it I am finishing a management information systems degree at İstanbul University.",
-      "Most of what I do is the unglamorous half of frontend: taking something that already works and making it easier to change. Splitting a page into parts that stand on their own. Removing what is on screen until what matters is obvious.",
-      "I am early in this. Everything listed here is work I actually did, described as it is."
+      "I live in Ankara and work as a frontend developer at InspireIT. Previously, I worked at GuruDesk and did a web development internship at Bilgeweb.",
+      "Much of my work is on existing interfaces. I move repeated code into shared components so the same change doesn’t need making in several places. I also work on pages that take too long to load.",
+      "On this site, I experimented with scroll animation. The moving layers and the dial further down the page are part of that work."
     ]
   },
   "record": {
-    "label": "Record",
-    "workHeading": "Work",
+    "label": "Experience and education",
+    "workHeading": "Experience",
     "educationHeading": "Education",
     "positions": [
       {
         "org": "InspireIT Information Technologies Consultancy",
         "detail": "Frontend Developer, full time, Istanbul",
-        "period": "Apr 2024 to now"
+        "period": "Apr 2024 – present"
       },
       {
         "org": "GuruDesk.com",
@@ -76,7 +76,7 @@
     "education": [
       {
         "org": "İstanbul Üniversitesi",
-        "detail": "Management Information Systems, bachelor",
+        "detail": "Management Information Systems, bachelor’s degree",
         "period": "Sep 2022 to Jun 2026"
       },
       {
@@ -88,15 +88,15 @@
   },
   "contact": {
     "label": "Contact",
-    "heading": "Tell me what you are building.",
-    "body": "The fastest way to reach me is email. I read everything.",
+    "heading": "Let’s work together.",
+    "body": "Email me to talk about a project or introduce yourself.",
     "action": "Email me",
     "github": "GitHub",
     "linkedin": "LinkedIn",
-    "sourceCode": "Source of this site",
+    "sourceCode": "Site source code",
     "headingLines": [
-      "Tell me what",
-      "you are building."
+      "Let’s work",
+      "together."
     ]
   },
   "footer": {
@@ -107,70 +107,70 @@
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Developer",
-    "description": "Frontend developer at InspireIT in Ankara. I build interfaces for the web."
+    "description": "I’m a frontend developer based in Ankara. I build web interfaces and work on page performance and animation."
   },
   "plates": {
-    "instrument": "Halftone plate: a machinist dial gauge, its needle resting on the engraved scale.",
-    "surface": "Halftone plate: an almost empty drafting table with a single steel ruler across it.",
-    "caliper": "Halftone plate: vernier calipers closed on a thin stack of paper."
+    "instrument": "A dial gauge and its needle.",
+    "surface": "A steel ruler on a drafting table.",
+    "caliper": "Calipers measuring a thin stack of paper."
   },
   "scrub": {
-    "label": "Measure",
-    "caption": "Scroll drives the needle. The page is the instrument, not a picture of one."
+    "label": "Scroll experiment",
+    "caption": "The needle moves as you scroll."
   },
   "thread": {
-    "label": "Journey",
+    "label": "Page sections",
     "hero": "Emircan",
-    "manifesto": "Beliefs",
+    "manifesto": "Approach",
     "work": "What I do",
-    "measure": "Measure",
-    "record": "Record",
+    "measure": "Experiment",
+    "record": "Experience",
     "contact": "Contact"
   },
   "manifesto": {
-    "label": "What I believe"
+    "label": "How I work"
   },
   "craft": {
     "label": "What I do",
-    "heading": "Three things you can bring me.",
-    "note": "Described plainly. No case studies yet, so the work speaks in what it is.",
+    "heading": "How can I help?",
+    "note": "I can build a site from scratch or join an existing project.",
     "fields": {
-      "what": "What",
-      "how": "How",
-      "when": "When it fits",
+      "what": "Scope",
+      "how": "My approach",
+      "when": "When I can help",
       "stack": "Tools",
-      "ask": "Bring me this"
+      "ask": "Let’s talk"
     },
     "items": [
       {
         "index": "01",
         "name": "Interfaces",
-        "tag": "Build",
-        "what": "A web interface built from scratch: a marketing site, a product front end, a dashboard.",
-        "how": "Components that stand on their own, content kept in data rather than repeated markup, real routes and real HTML underneath.",
-        "when": "You have a design or a clear idea and need it to exist in a browser, on every screen size, without a framework fight later.",
+        "tag": "Development",
+        "what": "Marketing sites, web apps and dashboards.",
+        "how": "I turn designs into responsive pages. Shared elements become reusable components.",
+        "when": "You need a new website or an interface for your app.",
         "stack": "React, Vue, Astro, TypeScript, Tailwind",
-        "honesty": "Design is not what I sell. Give me a design, or let me keep it simple."
+        "honesty": "I can work from your existing designs."
       },
       {
         "index": "02",
-        "name": "Rework",
-        "tag": "Improve",
-        "what": "Something that already works but is slow, fragile or hard to change.",
-        "how": "Measure first, then split the page into parts, remove what is not needed, and fix what the numbers point at.",
-        "when": "Every change takes five edits, the page feels heavy on a phone, or nobody dares to touch the old code.",
+        "name": "Improvements",
+        "tag": "Maintenance",
+        "what": "Slow pages and interfaces that have become difficult to update.",
+        "how": "First, I find what’s slowing the page down. After updating the code, I run the same measurements again.",
+        "when": "Your site is slow on mobile or small updates take too long.",
         "stack": "Lighthouse, Web Vitals, profiling, accessibility audits",
-        "honesty": "The unglamorous half of frontend. It is most of what I do."
+        "honesty": "We can start with your current project."
       },
       {
         "index": "03",
-        "name": "Motion",
-        "tag": "Animate",
-        "what": "Scroll-driven and pointer-driven pages: layered heroes, pinned scenes, video the wheel controls.",
-        "how": "Transform and opacity only, a static composition that works with no motion at all, verified frame by frame on desktop and phone.",
-        "when": "You want a page that feels like an experience rather than a document, and you want it to stay fast.",
+        "name": "Animation",
+        "tag": "Interaction",
+        "what": "Scroll animations, page transitions and interactive sections.",
+        "how": "I check animations on mobile too, and make sure the page stays usable with reduced motion enabled.",
+        "when": "You want to use animation to explain a product or idea.",
         "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
-        "honesty": "This site is the sample. Everything on it is built this way."
+        "honesty": "Try scrolling through the dial below."
       }
     ]
   }
