@@ -30,17 +30,18 @@
     "staticIntro": "I’m a frontend developer based in Ankara, working at InspireIT.",
     "beat": "I build web interfaces that look good and work well.",
     "ticker": [
-      "Frontend Developer",
+      "Frontend development",
       "Ankara",
       "InspireIT",
-      "Astro",
       "React",
       "Vue",
+      "Astro",
       "TypeScript",
       "Tailwind",
       "GSAP",
-      "Performance",
+      "Web performance",
       "Accessibility",
+      "Interaction design",
       "Since 2019"
     ]
   },

@@ -30,18 +30,19 @@
     "staticIntro": "Ankara’da yaşayan bir frontend geliştiriciyim. InspireIT’te çalışıyorum.",
     "beat": "İyi görünen ve iyi çalışan web arayüzleri geliştiriyorum.",
     "ticker": [
-      "Frontend Geliştirici",
+      "Frontend geliştirme",
       "Ankara",
       "InspireIT",
-      "Astro",
       "React",
       "Vue",
+      "Astro",
       "TypeScript",
       "Tailwind",
       "GSAP",
-      "Performans",
+      "Web performansı",
       "Erişilebilirlik",
-      "2019'dan beri"
+      "Etkileşim tasarımı",
+      "2019’dan beri"
     ]
   },
   "about": {
