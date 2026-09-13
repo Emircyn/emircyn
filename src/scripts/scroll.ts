@@ -70,6 +70,16 @@ export function initPage() {
 
   ambient();
 
+  // In-page links ride the smooth scroll instead of jumping.
+  qa<HTMLAnchorElement>('a[href^="#"]:not(.thread__link)').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const target = document.querySelector<HTMLElement>(a.getAttribute("href") || "");
+      if (!target) return;
+      e.preventDefault();
+      lenis?.scrollTo(target, { duration: 1.4 });
+    });
+  });
+
   let lastWidth = window.innerWidth;
   window.addEventListener("resize", () => {
     if (window.innerWidth === lastWidth) return;

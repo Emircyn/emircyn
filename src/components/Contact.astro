@@ -1,36 +1,12 @@
 ---
 import { useTranslations, type Locale } from "@/i18n/utils";
 import { site } from "@/config";
-import { execSync } from "node:child_process";
 
 const lang = (Astro.currentLocale || "en") as Locale;
 const t = useTranslations(lang);
 
 const headingLines = t("contact.headingLines") as string[];
 
-function commit(): string | null {
-    const fromHost =
-        import.meta.env.CF_PAGES_COMMIT_SHA ?? process.env.CF_PAGES_COMMIT_SHA;
-    if (fromHost) return String(fromHost).slice(0, 7);
-    try {
-        return (
-            execSync("git rev-parse --short=7 HEAD", {
-                stdio: ["ignore", "pipe", "ignore"],
-            })
-                .toString()
-                .trim() || null
-        );
-    } catch {
-        return null;
-    }
-}
-const built = new Date();
-const stamp = new Intl.DateTimeFormat(lang === "tr" ? "tr-TR" : "en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-}).format(built);
-const sha = commit();
 ---
 
 <!-- Act 6, the close. The page stops moving and starts answering: the light
@@ -88,12 +64,7 @@ const sha = commit();
         </div>
 
         <footer class="shell close__colophon">
-            <span>{built.getFullYear()} {t("footer.rights")}</span>
-            <span>{t("footer.setIn")}</span>
-            <span>{t("footer.builtWith")}</span>
-            <span>
-                {t("footer.updated")} {stamp}{sha ? ` · ${sha}` : ""}
-            </span>
+            <span>{new Date().getFullYear()} {t("footer.rights")}</span>
         </footer>
     </div>
 </section>

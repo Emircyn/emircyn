@@ -44,57 +44,6 @@
       "2019'dan beri"
     ]
   },
-  "work": {
-    "label": "Seçilmiş işler",
-    "heading": "Yaptığım üç iş, olduğu gibi anlatılmış.",
-    "fields": {
-      "role": "Rol",
-      "problem": "Problem",
-      "approach": "Yaklaşım",
-      "stack": "Teknoloji",
-      "outcome": "Sonuç",
-      "source": "Kaynağa git"
-    },
-    "deadDemoNote": "Canlı demolar kapalı. Kaynak kod GitHub'da.",
-    "projects": [
-      {
-        "index": "01",
-        "name": "XOFram",
-        "year": "2022",
-        "role": "Tek geliştirici",
-        "problem": "Hazır bir tarım şablonu statik HTML, CSS ve jQuery olarak geliyordu. Aynı işaretleme beş sayfada tekrarlandığı için her değişikliği beş kez yapmak gerekiyordu.",
-        "approach": "Projeyi React bileşen ağacı olarak yeniden kurdum. Sayfa içeriğini tek bir veri modülüne taşıdım, böylece bölümler tekrarlanan işaretleme yerine veriden render ediliyor. Hash bağlantılarının yerine gerçek rotalar geldi.",
-        "stack": "React 18, React Router 6, Tailwind CSS 3, Swiper",
-        "outcome": "Tek bir ortak bileşen setinden beş rotalı sayfa. Bir bölümü değiştirmek artık tek dosyada tek düzenleme.",
-        "honesty": "Tasarımını benim yapmadığım bir şablonun yeniden inşası. Buradaki iş mimari, görsel tasarım değil.",
-        "href": "https://github.com/Emircyn/xofram"
-      },
-      {
-        "index": "02",
-        "name": "Netflix Clone",
-        "year": "2022",
-        "role": "Tek geliştirici",
-        "problem": "Bir arayüz sabit içerik yerine tamamen canlı bir API ile sürüldüğünde nelerin değiştiğini görmek istedim.",
-        "approach": "TheMovieDB üzerine kategori gezinme, arama ve tembel yüklenen görsellerle bir katalog kurdum. Durum Pinia'da tutuluyor, böylece her görünüm tek bir kaynağı okuyor. Uygulama tarayıcı dilini alıyor ve API'de karşılığı yoksa İngilizceye düşüyor.",
-        "stack": "Vue 3, Pinia, Vue Router, Swiper, TheMovieDB API",
-        "outcome": "Hâlâ yeniden kullandığım kısım dil yedeği. Bu sitenin Türkçe ve İngilizce ile çözdüğü problemin aynısı.",
-        "honesty": "Yığını öğrenmek için yapıldı. Arayüz Netflix'inkini takip ediyor.",
-        "href": "https://github.com/Emircyn/netflix-clone-vue3"
-      },
-      {
-        "index": "03",
-        "name": "Agentic Starter Kit",
-        "year": "2026",
-        "role": "Yazar",
-        "problem": "Her yapay zekâ kodlama aracı kendi talimat dosyasını okuyor. Sekiz tanesini elle uyumlu tutmak, bir hafta içinde birbirinden ayrılmaları demekti.",
-        "approach": "Kuralları tek bir AGENTS.md tutuyor. Claude, Gemini, Cursor, Copilot, Windsurf, Aider ve Junie için olan dosyalar ona işaret eden ince göstergeler, böylece düzenlenecek tek bir yer var.",
-        "stack": "Markdown, derleme adımı yok",
-        "outcome": "Projeye başlamak, sekiz talimat dosyası yazmak yerine tek klasör kopyalamak demek.",
-        "honesty": "Çalışan bir kural seti, bir uygulama değil.",
-        "href": "https://github.com/Emircyn/agentic-setup-starter-kit"
-      }
-    ]
-  },
   "about": {
     "label": "Yaklaşım",
     "body": [
@@ -151,10 +100,7 @@
     ]
   },
   "footer": {
-    "rights": "Emircan Erdemci",
-    "setIn": "Archivo ve JetBrains Mono ile dizildi",
-    "builtWith": "Astro ile kuruldu, Cloudflare üzerinde",
-    "updated": "Güncellendi"
+    "rights": "Emircan Erdemci"
   },
   "header": {
     "sourceCode": "Projenin kaynak kodu"
@@ -176,12 +122,56 @@
     "label": "Yolculuk",
     "hero": "Emircan",
     "manifesto": "İnançlar",
-    "work": "İşler",
+    "work": "Neler yapıyorum",
     "measure": "Ölçüm",
     "record": "Kayıt",
     "contact": "İletişim"
   },
   "manifesto": {
     "label": "Neye inanıyorum"
+  },
+  "craft": {
+    "label": "Neler yapıyorum",
+    "heading": "Bana getirebileceğin üç iş.",
+    "note": "Olduğu gibi anlatılmış. Henüz vaka çalışması yok, iş kendini anlatıyor.",
+    "fields": {
+      "what": "Ne",
+      "how": "Nasıl",
+      "when": "Ne zaman uyar",
+      "stack": "Araçlar",
+      "ask": "Bunu bana getir"
+    },
+    "items": [
+      {
+        "index": "01",
+        "name": "Arayüz",
+        "tag": "Kur",
+        "what": "Sıfırdan bir web arayüzü: tanıtım sitesi, ürün ön yüzü, yönetim paneli.",
+        "how": "Kendi başına duran bileşenler, tekrar eden markup yerine veride tutulan içerik, altında gerçek rotalar ve gerçek HTML.",
+        "when": "Elinde bir tasarım ya da net bir fikir var ve her ekran boyutunda, ileride framework kavgasına girmeden tarayıcıda var olmasını istiyorsun.",
+        "stack": "React, Vue, Astro, TypeScript, Tailwind",
+        "honesty": "Tasarım sattığım şey değil. Tasarımı sen ver ya da sade tutmama izin ver."
+      },
+      {
+        "index": "02",
+        "name": "İyileştirme",
+        "tag": "Düzelt",
+        "what": "Zaten çalışan ama yavaş, kırılgan ya da değiştirmesi zor bir şey.",
+        "how": "Önce ölç, sonra sayfayı parçalara ayır, gereksizi at, sayıların gösterdiği yeri düzelt.",
+        "when": "Her değişiklik beş yerde düzeltme istiyor, sayfa telefonda ağır geliyor ya da eski koda kimse dokunmaya cesaret edemiyor.",
+        "stack": "Lighthouse, Web Vitals, profil alma, erişilebilirlik denetimi",
+        "honesty": "Frontend'in gösterişsiz yarısı. Yaptığım işin çoğu bu."
+      },
+      {
+        "index": "03",
+        "name": "Hareket",
+        "tag": "Canlandır",
+        "what": "Scroll'a ve imlece bağlı sayfalar: katmanlı hero'lar, sabitlenen sahneler, tekerleğin sürdüğü video.",
+        "how": "Yalnız transform ve opacity, hareketsiz de çalışan bir statik kompozisyon, masaüstü ve telefonda kare kare doğrulama.",
+        "when": "Belge gibi değil deneyim gibi hissettiren, ama hızlı kalan bir sayfa istiyorsun.",
+        "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
+        "honesty": "Bu site örneğin kendisi. Üzerindeki her şey böyle yapıldı."
+      }
+    ]
   }
 }

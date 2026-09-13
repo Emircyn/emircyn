@@ -44,57 +44,6 @@
       "Since 2019"
     ]
   },
-  "work": {
-    "label": "Selected work",
-    "heading": "Three things I built, described as they are.",
-    "fields": {
-      "role": "Role",
-      "problem": "Problem",
-      "approach": "Approach",
-      "stack": "Stack",
-      "outcome": "Outcome",
-      "source": "View source"
-    },
-    "deadDemoNote": "Live demos are offline. Source is on GitHub.",
-    "projects": [
-      {
-        "index": "01",
-        "name": "XOFram",
-        "year": "2022",
-        "role": "Sole developer",
-        "problem": "A third-party agriculture template shipped as static HTML, CSS and jQuery. The same markup was duplicated across five pages, so any change had to be made five times.",
-        "approach": "Rebuilt it as a React component tree. Moved the page content into a single data module so sections render from data instead of repeated markup, and replaced hash links with real routes.",
-        "stack": "React 18, React Router 6, Tailwind CSS 3, Swiper",
-        "outcome": "Five routed pages from one shared component set. Changing a section is now one edit in one file.",
-        "honesty": "A rebuild of a template I did not design. The work here is the architecture, not the visual design.",
-        "href": "https://github.com/Emircyn/xofram"
-      },
-      {
-        "index": "02",
-        "name": "Netflix Clone",
-        "year": "2022",
-        "role": "Sole developer",
-        "problem": "I wanted to find out what changes when an interface is driven entirely by a live API instead of fixed content.",
-        "approach": "Built a catalogue on TheMovieDB with category browsing, search and lazy-loaded artwork. State lives in Pinia so every view reads one source of truth. The app picks up the browser language and falls back to English when the API has no match for it.",
-        "stack": "Vue 3, Pinia, Vue Router, Swiper, TheMovieDB API",
-        "outcome": "The language fallback is the part I still reuse. It is the same problem this site solves in Turkish and English.",
-        "honesty": "Built to learn the stack. The interface follows Netflix's.",
-        "href": "https://github.com/Emircyn/netflix-clone-vue3"
-      },
-      {
-        "index": "03",
-        "name": "Agentic Starter Kit",
-        "year": "2026",
-        "role": "Author",
-        "problem": "Every AI coding tool reads its own instruction file. Keeping eight of them in agreement by hand meant they drifted apart within a week.",
-        "approach": "One canonical AGENTS.md holds the rules. The client-specific files for Claude, Gemini, Cursor, Copilot, Windsurf, Aider and Junie are thin pointers back to it, so there is one place to edit.",
-        "stack": "Markdown, no build step",
-        "outcome": "Starting a project means copying one folder instead of writing eight instruction files.",
-        "honesty": "A working convention, not an application.",
-        "href": "https://github.com/Emircyn/agentic-setup-starter-kit"
-      }
-    ]
-  },
   "about": {
     "label": "Approach",
     "body": [
@@ -151,10 +100,7 @@
     ]
   },
   "footer": {
-    "rights": "Emircan Erdemci",
-    "setIn": "Set in Archivo and JetBrains Mono",
-    "builtWith": "Built with Astro, on Cloudflare",
-    "updated": "Updated"
+    "rights": "Emircan Erdemci"
   },
   "header": {
     "sourceCode": "Project source code"
@@ -176,12 +122,56 @@
     "label": "Journey",
     "hero": "Emircan",
     "manifesto": "Beliefs",
-    "work": "Work",
+    "work": "What I do",
     "measure": "Measure",
     "record": "Record",
     "contact": "Contact"
   },
   "manifesto": {
     "label": "What I believe"
+  },
+  "craft": {
+    "label": "What I do",
+    "heading": "Three things you can bring me.",
+    "note": "Described plainly. No case studies yet, so the work speaks in what it is.",
+    "fields": {
+      "what": "What",
+      "how": "How",
+      "when": "When it fits",
+      "stack": "Tools",
+      "ask": "Bring me this"
+    },
+    "items": [
+      {
+        "index": "01",
+        "name": "Interfaces",
+        "tag": "Build",
+        "what": "A web interface built from scratch: a marketing site, a product front end, a dashboard.",
+        "how": "Components that stand on their own, content kept in data rather than repeated markup, real routes and real HTML underneath.",
+        "when": "You have a design or a clear idea and need it to exist in a browser, on every screen size, without a framework fight later.",
+        "stack": "React, Vue, Astro, TypeScript, Tailwind",
+        "honesty": "Design is not what I sell. Give me a design, or let me keep it simple."
+      },
+      {
+        "index": "02",
+        "name": "Rework",
+        "tag": "Improve",
+        "what": "Something that already works but is slow, fragile or hard to change.",
+        "how": "Measure first, then split the page into parts, remove what is not needed, and fix what the numbers point at.",
+        "when": "Every change takes five edits, the page feels heavy on a phone, or nobody dares to touch the old code.",
+        "stack": "Lighthouse, Web Vitals, profiling, accessibility audits",
+        "honesty": "The unglamorous half of frontend. It is most of what I do."
+      },
+      {
+        "index": "03",
+        "name": "Motion",
+        "tag": "Animate",
+        "what": "Scroll-driven and pointer-driven pages: layered heroes, pinned scenes, video the wheel controls.",
+        "how": "Transform and opacity only, a static composition that works with no motion at all, verified frame by frame on desktop and phone.",
+        "when": "You want a page that feels like an experience rather than a document, and you want it to stay fast.",
+        "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
+        "honesty": "This site is the sample. Everything on it is built this way."
+      }
+    ]
   }
 }

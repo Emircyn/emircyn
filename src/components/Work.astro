@@ -9,29 +9,25 @@ import plateInstrument from "@/assets/plates/instrument.jpg";
 const lang = (Astro.currentLocale || "en") as Locale;
 const t = useTranslations(lang);
 
-type Project = {
+type Item = {
     index: string;
     name: string;
-    year: string;
-    role: string;
-    problem: string;
-    approach: string;
+    tag: string;
+    what: string;
+    how: string;
+    when: string;
     stack: string;
-    outcome: string;
     honesty: string;
-    href: string;
 };
 
-const projects = t("work.projects") as Project[];
-const f = t("work.fields") as Record<string, string>;
+const items = t("craft.items") as Item[];
+const f = t("craft.fields") as Record<string, string>;
 
-// No real screenshots exist (see the memory note), so the plates stand in as
-// textures behind the type, never as fake product shots. Each card names its
-// own honesty line, which is the label schema.
+// The plates are textures behind the type, one per card.
 const textures: ImageMetadata[] = [plateSurface, plateCaliper, plateInstrument];
 ---
 
-<!-- Act 3. Vertical scroll, lateral travel: the three works cross the frame
+<!-- Act 3. Vertical scroll, lateral travel: the three offers cross the frame
      from the right while the frame holds. On a phone the rail becomes a
      stack and the plates travel against the scroll instead. -->
 <section
@@ -44,17 +40,17 @@ const textures: ImageMetadata[] = [plateSurface, plateCaliper, plateInstrument];
     <div class="work__pin" data-work-pin>
         <header class="shell work__head">
             <div class="work__title">
-                <span class="label">{t("work.label")}</span>
+                <span class="label">{t("craft.label")}</span>
                 <h2 id="work-heading" class="display work__heading balance">
-                    {t("work.heading")}
+                    {t("craft.heading")}
                 </h2>
             </div>
-            <p class="label work__note">{t("work.deadDemoNote")}</p>
+            <p class="label work__note">{t("craft.note")}</p>
         </header>
 
         <div class="work__rail" data-work-rail>
             {
-                projects.map((p, i) => (
+                items.map((p, i) => (
                     <article class="card" data-work-card>
                         <div class="card__plate" data-work-plate>
                             <Image
@@ -72,24 +68,22 @@ const textures: ImageMetadata[] = [plateSurface, plateCaliper, plateInstrument];
                             <span class="card__index display">{p.index}</span>
                             <div>
                                 <h3 class="display card__name">{p.name}</h3>
-                                <span class="label">
-                                    {p.year} · {p.role}
-                                </span>
+                                <span class="label">{p.tag}</span>
                             </div>
                         </div>
 
                         <dl class="card__body">
                             <div>
-                                <dt class="label">{f.problem}</dt>
-                                <dd class="pretty">{p.problem}</dd>
+                                <dt class="label">{f.what}</dt>
+                                <dd class="pretty">{p.what}</dd>
                             </div>
                             <div>
-                                <dt class="label">{f.approach}</dt>
-                                <dd class="pretty">{p.approach}</dd>
+                                <dt class="label">{f.how}</dt>
+                                <dd class="pretty">{p.how}</dd>
                             </div>
                             <div>
-                                <dt class="label">{f.outcome}</dt>
-                                <dd class="pretty">{p.outcome}</dd>
+                                <dt class="label">{f.when}</dt>
+                                <dd class="pretty">{p.when}</dd>
                             </div>
                             <div>
                                 <dt class="label">{f.stack}</dt>
@@ -99,13 +93,8 @@ const textures: ImageMetadata[] = [plateSurface, plateCaliper, plateInstrument];
 
                         <p class="card__honesty label">{p.honesty}</p>
 
-                        <a
-                            class="card__link"
-                            href={p.href}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            <span class="label label-accent">{f.source}</span>
+                        <a class="card__link" href="#contact" data-thread-jump>
+                            <span class="label label-accent">{f.ask}</span>
                             <svg class="card__link-arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                                 <path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>

@@ -47,6 +47,12 @@ const localeHref = (l: string) => `/${l}/`;
         color: var(--bar-ink);
         transition: color 300ms var(--ease-out);
         pointer-events: none;
+        /* A short fall-off of the ground behind the bar, so passing copy does
+           not print through the wordmark. Redrawn per ground. */
+        background: linear-gradient(180deg, rgba(11, 10, 10, 0.92) 0%, rgba(11, 10, 10, 0.55) 60%, transparent 100%);
+    }
+    .bar[data-bar-paper] {
+        background: linear-gradient(180deg, rgba(241, 241, 239, 0.94) 0%, rgba(241, 241, 239, 0.6) 60%, transparent 100%);
     }
     .bar[data-bar-paper] {
         --bar-ink: var(--color-ink);
