@@ -19,11 +19,16 @@ export default defineConfig({
       // The root is a language gate, not a page. Only the two real pages are
       // listed, so the index never advertises a redirect as content.
       filter: (page) => page !== "https://emircyn.com/",
+      // These have to match the hreflang values in SEO.astro. They used to say
+      // en-US / tr-TR while the pages announced plain en / tr, so the sitemap and
+      // the markup disagreed about the same two URLs. Region-less codes are also
+      // the right target here: the site is for English and Turkish readers
+      // anywhere, not for the US and Turkey specifically.
       i18n: {
         defaultLocale: "en",
         locales: {
-          en: "en-US",
-          tr: "tr-TR",
+          en: "en",
+          tr: "tr",
         },
       },
     }),
