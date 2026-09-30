@@ -5,7 +5,7 @@
     "location": "Ankara, Türkiye"
   },
   "hero": {
-    "beat": "Web’in insanların dokunduğu tarafını geliştiriyorum.",
+    "beat": "Hızlı, kullanımı kolay web arayüzleri geliştiriyorum.",
     "ticker": [
       "Frontend geliştirme",
       "Ankara",
@@ -25,9 +25,9 @@
   "about": {
     "label": "Hakkımda",
     "body": [
-      "Ankara’da yaşıyorum, InspireIT’te frontend geliştiriciyim. Öncesinde bir yılı aşkın süre GuruDesk’te çalıştım; bu işe 2019’da Bilgeweb’de stajyer olarak başladım.",
-      "İşin en sevdiğim anı, bir tasarımın resim olmaktan çıkıp tarayıcıda çalışmaya başladığı an. Çoğu gün bu React, Vue ya da Astro demek: yeni sayfalar, var olan ürünlerde düzeltmeler ve bir şeyin neden yavaş olduğunu bulmak.",
-      "Küçük şeylere çok vakit ayırırım. Bir butonun dokunuşa nasıl cevap verdiği, sayfanın telefonda nasıl davrandığı, bir animasyonun nerede durduğu."
+      "Ankara’da yaşayan bir frontend geliştiriciyim. Şu anda InspireIT’te çalışıyorum. Mesleğe 2019’da Bilgeweb’de staj yaparak başladım; ardından GuruDesk’te bir yılı aşkın süre frontend geliştirme üzerine çalıştım.",
+      "Bir tasarımın tarayıcıda çalışan bir ürüne dönüşmesini seviyorum. React, Vue ve Astro ile yeni arayüzler geliştiriyor, mevcut ürünlerdeki sorunları gideriyorum. Yavaş açılan bir sayfanın nedenini bulup iyileştirmek de bu işin bir parçası.",
+      "Arayüzün kullanım sırasında nasıl hissettirdiğine önem veriyorum. Telefonda rahatça kullanılan bir sayfa, dokunuşa doğru tepki veren bir buton ya da yerinde biten bir animasyon için ayrıntılar üzerinde çalışıyorum."
     ]
   },
   "record": {
@@ -66,15 +66,15 @@
   },
   "contact": {
     "label": "İletişim",
-    "heading": "Bir fikrin mi var?",
-    "body": "Bir web sitesi, bir ürün arayüzü ya da henüz tam oturmamış bir fikir. Anlat, konuşalım.",
+    "heading": "Projenizi konuşalım.",
+    "body": "Yeni bir web sitesi veya mevcut ürününüz için frontend desteği arıyorsanız bana yazın. Fikriniz henüz şekilleniyorsa da nereden başlayabileceğimizi birlikte konuşabiliriz.",
     "action": "E-posta gönder",
     "github": "GitHub",
     "linkedin": "LinkedIn",
     "sourceCode": "Sitenin kaynak kodu",
     "headingLines": [
-      "Bir fikrin",
-      "mi var?"
+      "Projenizi",
+      "konuşalım."
     ]
   },
   "footer": {
@@ -85,17 +85,17 @@
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Geliştirici",
-    "description": "Ankara’da frontend geliştirici Emircan Erdemci. React, Vue ve Astro ile hızlı, özenli animasyonlu web arayüzleri. Son işlerine göz at, iletişime geç.",
+    "description": "Ankara’da frontend geliştirici Emircan Erdemci. React, Vue ve Astro ile web siteleri ve ürün arayüzleri geliştiriyorum. Projelerimi ve deneyimimi inceleyin.",
     "imageAlt": "Ankara’da frontend geliştirici Emircan Erdemci ve çizim portresi",
-    "socialDescription": "Ankara’da frontend geliştirici. Hızlı, özenli animasyonlu web arayüzleri. Son işlerime göz at."
+    "socialDescription": "React, Vue ve Astro ile web siteleri ve ürün arayüzleri geliştiriyorum. Projelerimi inceleyin, birlikte çalışmak için iletişime geçin."
   },
   "plates": {
     "instrument": "Ölçüm kadranı ve ibresi."
   },
   "scrub": {
-    "label": "Ölçüm",
-    "caption": "Sıfat değil, sayı.",
-    "note": "Lighthouse 12 masaüstü performans puanı, üç ölçümün medyanı, Eylül 2026.",
+    "label": "Performans",
+    "caption": "Projelerin ölçülen performansı.",
+    "note": "Lighthouse 12 masaüstü performans puanları. Her proje için üç ölçümün medyanı, Eylül 2026.",
     "readings": [
       {
         "site": "emircyn.com",
@@ -118,20 +118,20 @@
   "thread": {
     "label": "Sayfa bölümleri",
     "hero": "Emircan",
-    "work": "İşler",
-    "measure": "Ölçüm",
+    "work": "Projeler",
+    "measure": "Performans",
     "record": "Deneyim",
     "contact": "İletişim"
   },
   "craft": {
-    "label": "Neler yapıyorum",
+    "label": "Çalışma alanlarım",
     "items": [
       {
         "slug": "interfaces",
         "index": "01",
         "name": "Arayüz",
         "tag": "Geliştirme",
-        "line": "Tanıtım sitesinden yönetim paneline, tasarımı her ekranda düzgün duran sayfalara çeviriyorum.",
+        "line": "Tanıtım siteleri ve yönetim panelleri için, tasarıma sadık kalan ve farklı ekranlara uyum sağlayan arayüzler geliştiriyorum.",
         "stack": "React · Vue · Astro · TypeScript · Tailwind"
       },
       {
@@ -139,31 +139,31 @@
         "index": "02",
         "name": "İyileştirme",
         "tag": "Bakım",
-        "line": "Önce ölçüyorum, gerçekten yavaş olan yeri düzeltiyorum, sonra tekrar ölçüyorum.",
-        "stack": "Lighthouse · Web Vitals · profil alma · erişilebilirlik denetimi",
-        "proof": "Sayılara bak",
+        "line": "Sayfayı yavaşlatan sorunları ölçümlerle tespit edip gideriyorum. Yaptığım değişikliğin etkisini yeniden ölçerek kontrol ediyorum.",
+        "stack": "Lighthouse · Web Vitals · performans analizi · erişilebilirlik denetimi",
+        "proof": "Ölçümleri inceleyin",
         "href": "#measure"
       },
       {
         "slug": "motion",
         "index": "03",
-        "name": "Hareket",
+        "name": "Animasyon",
         "tag": "Etkileşim",
-        "line": "Bir şey anlatan, hareket kapalıyken de okunan scroll animasyonları ve küçük etkileşimler.",
+        "line": "Sayfa akışını destekleyen kaydırma animasyonları ve etkileşimler geliştiriyorum. Hareket azaltıldığında da içerik okunabilir kalıyor.",
         "stack": "GSAP ScrollTrigger · Lenis · CSS scroll-driven animation"
       }
     ]
   },
   "projects": {
-    "label": "İşler",
-    "heading": "Ne yapıyorum, nerede görürsün",
-    "note": "Üçü de yayında, tıklayıp gezebilirsin.",
+    "label": "Projeler",
+    "heading": "Seçili projeler",
+    "note": "Üç proje de yayında. Bağlantılardan inceleyebilirsiniz.",
     "fields": {
       "year": "Yıl",
       "role": "Rol",
       "stack": "Teknolojiler"
     },
-    "visit": "Siteyi ziyaret et",
+    "visit": "Siteyi inceleyin",
     "source": "Kaynak kodu",
     "items": [
       {
@@ -181,8 +181,8 @@
         ],
         "kind": "Link sayfası oluşturucu",
         "role": "Tasarım ve geliştirme",
-        "summary": "Bir link-in-bio sayfa oluşturucu: kayıt ol, fotoğrafını, linklerini ve bir tema ekle, tek bir kısa adres paylaş. Editör her değişikliği yazarken telefon önizlemesinde gösteriyor.",
-        "detail": "Fikirden çalışan ürüne; Next.js, Supabase ve Stripe ile, Cloudflare Workers üzerinde. Plan limitlerini veritabanı uyguluyor, planı sadece Stripe webhook’ları değiştirebiliyor, herkese açık sayfalar mobil Lighthouse’ta 98 alıyor.",
+        "summary": "Porch, bağlantılarınızı tek bir kişisel sayfada toplamanızı sağlayan bir uygulama. Hesap açıp fotoğrafınızı ve bağlantılarınızı ekleyebilir, temanızı seçerek sayfanızı kısa bir adresle paylaşabilirsiniz. Düzenlemeler anında telefon önizlemesine yansır.",
+        "detail": "Fikir aşamasından yayına kadar tasarımını ve geliştirmesini üstlendim. Next.js, Supabase ve Stripe ile geliştirdiğim uygulama Cloudflare Workers üzerinde çalışıyor. Abonelik limitleri veritabanında uygulanıyor; plan değişiklikleri yalnızca Stripe webhook’ları üzerinden yapılıyor. Herkese açık sayfaların mobil Lighthouse puanı 98.",
         "alt": "Porch ana sayfası: “One link for everything you make” başlığının yanında link-in-bio sayfası gösteren üç telefon.",
         "altMobile": "Telefonda bir Porch sayfası: öne çıkan bir link ve dört link daha olan bir seramikçi profili."
       },
@@ -193,8 +193,8 @@
         "kind": "Yapay zekâ sohbet uygulaması",
         "year": "2026",
         "role": "Tasarım ve geliştirme",
-        "summary": "Sadece metinle cevap vermeyen bir yapay zekâ sohbeti. Hava durumunu sorunca tahmin kartı çıkıyor, bir hesap sorunca kesin sonuç geliyor. Cevaplar yazıldıkça ekrana düşüyor.",
-        "detail": "Nuxt 4 ve Nuxt UI ile geliştirildi, tamamen Cloudflare’ın ücretsiz katmanında çalışıyor. Turnstile, imzalı oturumlar ve istek sınırları botları yapay zekâ kotasından uzak tutuyor.",
+        "summary": "Parley, hava durumu ve hesaplama gibi soruları sonuç kartlarıyla yanıtlayan bir yapay zekâ sohbet uygulaması. Hava tahminlerini kart üzerinde gösteriyor, hesaplamalarda kesin sonuç veriyor. Yanıtları oluşturuldukları sırada okuyabiliyorsunuz.",
+        "detail": "Nuxt 4 ve Nuxt UI ile tasarlayıp geliştirdim. Uygulama tamamen Cloudflare’ın ücretsiz katmanında çalışıyor. Yapay zekâ kotasını bot trafiğine karşı korumak için Turnstile, imzalı oturumlar ve istek sınırları kullandım.",
         "stack": "Nuxt 4 · Nuxt UI · AI SDK · Workers AI · TypeScript",
         "url": "https://parley.emircan-erdemci.workers.dev",
         "host": "parley.emircan-erdemci.workers.dev",
@@ -213,8 +213,8 @@
         "kind": "Kurumsal web sitesi",
         "year": "2026",
         "role": "Frontend geliştirme",
-        "summary": "Çalıştığım şirket InspireIT’in web sitesi. InspireIT, 2003’ten beri kurumsal firmalara veri, bulut ve BT altyapı hizmetleri veriyor.",
-        "detail": "İki dil, her ürün ve sektör için ayrı sayfa; özel bir WordPress teması ve siteye özel yazılmış eklentilerle.",
+        "summary": "Çalıştığım şirket InspireIT’in Türkçe ve İngilizce web sitesi. Şirket, 2003’ten bu yana kurumsal müşterilere veri, bulut ve BT altyapı hizmetleri sunuyor.",
+        "detail": "Frontend geliştirmesini üstlendiğim sitede her ürün ve sektörün ayrı bir sayfası var. WordPress ve Elementor üzerine kurulu yapı, özel tema ve siteye özgü eklentiler kullanıyor.",
         "stack": "WordPress · Elementor · PHP · özel tema ve eklentiler",
         "url": "https://inspireit.com.tr/",
         "host": "inspireit.com.tr",

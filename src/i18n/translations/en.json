@@ -5,7 +5,7 @@
     "location": "Ankara, Turkey"
   },
   "hero": {
-    "beat": "I build the part of the web people actually touch.",
+    "beat": "I build web interfaces that are fast and easy to use.",
     "ticker": [
       "Frontend development",
       "Ankara",
@@ -25,9 +25,9 @@
   "about": {
     "label": "About me",
     "body": [
-      "I’m a frontend developer at InspireIT, and I live in Ankara. Before that I spent over a year at GuruDesk, and I got my start in 2019 as an intern at Bilgeweb.",
-      "My favourite moment in the work is when a design stops being a picture and starts working in the browser. Most days that means React, Vue or Astro: new pages, fixes to products that already exist, and finding out why something is slow.",
-      "I spend a lot of time on small things. How a button answers a tap, how a page behaves on a phone, where an animation comes to rest."
+      "I’m a frontend developer based in Ankara, currently working at InspireIT. I started as an intern at Bilgeweb in 2019 and later spent over a year at GuruDesk working in frontend development.",
+      "I enjoy turning a design into a working product in the browser. I use React, Vue and Astro to build new interfaces and improve existing ones. That includes tracking down why a page is slow and fixing the cause.",
+      "I care about how an interface feels to use. I spend time getting the details right, from a page that works comfortably on a phone to the way a button responds or an animation comes to a stop."
     ]
   },
   "record": {
@@ -66,15 +66,15 @@
   },
   "contact": {
     "label": "Contact",
-    "heading": "Have an idea?",
-    "body": "A website, a product interface, or an idea that hasn’t quite settled yet. Tell me about it.",
+    "heading": "Let’s talk.",
+    "body": "If you need a new website or frontend support for an existing product, send me an email. If your idea is still taking shape, we can work out where to start.",
     "action": "Email me",
     "github": "GitHub",
     "linkedin": "LinkedIn",
     "sourceCode": "Site source code",
     "headingLines": [
-      "Have an",
-      "idea?"
+      "Let’s",
+      "talk."
     ]
   },
   "footer": {
@@ -85,17 +85,17 @@
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Developer",
-    "description": "Emircan Erdemci, frontend developer in Ankara. Fast, carefully animated web interfaces with React, Vue and Astro. See recent work and get in touch.",
+    "description": "Emircan Erdemci, frontend developer in Ankara. I build websites and product interfaces with React, Vue and Astro. Explore my projects and experience.",
     "imageAlt": "Emircan Erdemci, frontend developer in Ankara, beside an illustrated portrait",
-    "socialDescription": "Frontend developer in Ankara. Fast, carefully animated web interfaces. See my recent work."
+    "socialDescription": "I build websites and product interfaces with React, Vue and Astro. Explore my projects and get in touch to work together."
   },
   "plates": {
     "instrument": "A dial gauge and its needle."
   },
   "scrub": {
-    "label": "Measured",
-    "caption": "Numbers, not adjectives.",
-    "note": "Lighthouse 12 performance score on desktop, median of three runs, September 2026.",
+    "label": "Performance",
+    "caption": "How the projects perform.",
+    "note": "Lighthouse 12 desktop performance scores. Median of three runs per project, September 2026.",
     "readings": [
       {
         "site": "emircyn.com",
@@ -118,8 +118,8 @@
   "thread": {
     "label": "Page sections",
     "hero": "Emircan",
-    "work": "Work",
-    "measure": "Measure",
+    "work": "Projects",
+    "measure": "Performance",
     "record": "Experience",
     "contact": "Contact"
   },
@@ -131,7 +131,7 @@
         "index": "01",
         "name": "Interfaces",
         "tag": "Building",
-        "line": "From a marketing site to an admin panel, I turn a design into pages that hold up on every screen.",
+        "line": "I build interfaces for marketing sites and admin panels, staying true to the design across screen sizes.",
         "stack": "React · Vue · Astro · TypeScript · Tailwind"
       },
       {
@@ -139,9 +139,9 @@
         "index": "02",
         "name": "Improvements",
         "tag": "Maintenance",
-        "line": "I measure first, fix the part that is actually slow, then measure again.",
+        "line": "I use performance measurements to find and fix what slows a page down, then measure again to check the result.",
         "stack": "Lighthouse · Web Vitals · profiling · accessibility audits",
-        "proof": "See the numbers",
+        "proof": "View the results",
         "href": "#measure"
       },
       {
@@ -149,21 +149,21 @@
         "index": "03",
         "name": "Motion",
         "tag": "Interaction",
-        "line": "Scroll animations and small interactions that explain something, and still read with motion turned off.",
+        "line": "I build scroll animations and interactions that guide people through a page. Content stays readable when motion is reduced.",
         "stack": "GSAP ScrollTrigger · Lenis · CSS scroll-driven animation"
       }
     ]
   },
   "projects": {
-    "label": "Work",
-    "heading": "What I do, and where to see it",
-    "note": "All three are live. Go and click around.",
+    "label": "Projects",
+    "heading": "Selected projects",
+    "note": "All three projects are live and available to explore.",
     "fields": {
       "year": "Year",
       "role": "Role",
-      "stack": "Stack"
+      "stack": "Technologies"
     },
-    "visit": "Visit the site",
+    "visit": "Explore the site",
     "source": "Source code",
     "items": [
       {
@@ -181,8 +181,8 @@
         ],
         "kind": "Link-in-bio SaaS",
         "role": "Design and development",
-        "summary": "A link-in-bio page builder: sign up, add a photo, links and a theme, and share one short address. The editor shows every change on a phone preview as you type.",
-        "detail": "Built from idea to working product with Next.js, Supabase and Stripe on Cloudflare Workers. Plan limits live in the database, only Stripe webhooks can change a plan, and public pages score 98 on mobile Lighthouse.",
+        "summary": "Porch brings your links together on a personal page. Create an account, add your photo and links, choose a theme, and share a short address. A live phone preview shows your changes as you edit.",
+        "detail": "I designed and developed Porch from the initial idea through to launch, using Next.js, Supabase and Stripe on Cloudflare Workers. The database enforces subscription limits, and only Stripe webhooks can change a plan. Public pages score 98 on mobile Lighthouse.",
         "alt": "The Porch home page: the headline “One link for everything you make” beside three phones showing link-in-bio pages.",
         "altMobile": "A Porch public page on a phone: a potter’s profile with a featured link and four more."
       },
@@ -193,8 +193,8 @@
         "kind": "AI chat app",
         "year": "2026",
         "role": "Design and development",
-        "summary": "An AI chat that answers with more than text. Ask for the weather and a forecast card appears; ask for a sum and you get the exact number. Replies show up as they are being written.",
-        "detail": "Built with Nuxt 4 and Nuxt UI, it runs entirely on Cloudflare’s free tier. Turnstile, signed sessions and rate limits keep bots away from the AI quota.",
+        "summary": "Parley is an AI chat app that presents weather forecasts and calculation results as cards. It returns exact answers to calculations, and you can read replies as they are generated.",
+        "detail": "I designed and built it with Nuxt 4 and Nuxt UI. It runs entirely on Cloudflare’s free tier, with Turnstile, signed sessions and rate limits to protect the AI quota from bot traffic.",
         "stack": "Nuxt 4 · Nuxt UI · AI SDK · Workers AI · TypeScript",
         "url": "https://parley.emircan-erdemci.workers.dev",
         "host": "parley.emircan-erdemci.workers.dev",
@@ -213,8 +213,8 @@
         "kind": "Corporate website",
         "year": "2026",
         "role": "Frontend development",
-        "summary": "The website of InspireIT, the company I work for. Since 2003 it has provided data, cloud and IT infrastructure services to enterprises.",
-        "detail": "Two languages, a page for every product and sector, on a custom WordPress theme with plugins made for the site.",
+        "summary": "The Turkish and English website for InspireIT, where I work. The company has provided data, cloud and IT infrastructure services to enterprise clients since 2003.",
+        "detail": "I handled frontend development for the site, with dedicated pages for each product and industry. It uses WordPress and Elementor with a custom theme and plugins built for the site.",
         "stack": "WordPress · Elementor · PHP · custom theme and plugins",
         "url": "https://inspireit.com.tr/",
         "host": "inspireit.com.tr",
