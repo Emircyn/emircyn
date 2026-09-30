@@ -1,31 +1,22 @@
 <a href="https://emircyn.com"><img src="public/og-image.jpg" alt="Emircan Erdemci, frontend developer, Ankara" width="100%"></a>
 
-# Hi, I’m Emircan
+### Frontend developer in Ankara. I build the part of the web people actually touch.
 
-I’m a frontend developer in Ankara, working at [InspireIT](https://inspireit.com.tr/). I build the part of the web people actually touch: websites and web apps that load fast, hold up on every screen, and move only when the motion explains something.
+Currently at [InspireIT](https://inspireit.com.tr/). Websites and web apps that load fast, hold up on every screen, and move only when the motion explains something. I measure before I fix, and again after.
 
 **[emircyn.com](https://emircyn.com)** · [LinkedIn](https://www.linkedin.com/in/emircyn/) · [emircan.erdemci@hotmail.com](mailto:emircan.erdemci@hotmail.com) · [Türkçe](https://emircyn.com/tr/)
 
-## What I do
+**Recent work**
 
-- **Interfaces.** From a marketing site to an admin panel, I turn a design into pages that work on every screen size.
-- **Improvements.** I measure first, fix the part that is actually slow, then measure again.
-- **Motion.** Scroll animations and small interactions that explain something, and still read with motion turned off.
+- **[Porch](https://github.com/Emircyn/porch)**: a link-in-bio SaaS, from idea to working product. Drag-and-drop editor with a live phone preview, Stripe subscriptions, plan limits enforced in Postgres. [Live](https://porch.emircan-erdemci.workers.dev) · [one-click demo](https://porch.emircan-erdemci.workers.dev/demo) · `Next.js` `Supabase` `Stripe`
+- **[Parley](https://github.com/Emircyn/parley)**: an AI chat that answers with cards, not just text, running entirely on Cloudflare’s free tier. [Live](https://parley.emircan-erdemci.workers.dev) · `Nuxt` `AI SDK` `Workers AI`
+- **[emircyn.com](https://emircyn.com)**: this repo. A scroll-driven portfolio, 100 on desktop Lighthouse. `Astro` `GSAP` `Cloudflare Workers`
+- **[InspireIT](https://inspireit.com.tr/)**: the bilingual website of the company I work for. `WordPress` `Elementor`
 
-React · Next.js · Vue · Nuxt · Astro · TypeScript · Tailwind CSS · GSAP · Supabase · Stripe · Cloudflare Workers
+**Stack:** TypeScript · React / Next.js · Vue / Nuxt · Astro · Tailwind CSS · Cloudflare Workers
 
-## Recent work
-
-| Project | What it is | Built with |
-|---|---|---|
-| **[Porch](https://github.com/Emircyn/porch)** · [live](https://porch.emircan-erdemci.workers.dev) · [demo](https://porch.emircan-erdemci.workers.dev/demo) | A link-in-bio page builder, from idea to working product: a drag-and-drop editor with a live phone preview, 11 themes with dark mode, click analytics and Stripe subscriptions. Plan limits are enforced by the database. | Next.js 16, Supabase, Stripe, shadcn/ui, Cloudflare Workers |
-| **[Parley](https://github.com/Emircyn/parley)** · [live](https://parley.emircan-erdemci.workers.dev) | An AI chat that answers with more than text: ask for the weather and a forecast card appears, ask for a sum and you get the exact number. Runs entirely on Cloudflare’s free tier. | Nuxt 4, Nuxt UI, AI SDK, Workers AI |
-| **[InspireIT](https://inspireit.com.tr/)** | The bilingual website of the company I work for, an IT firm serving enterprises since 2003. | WordPress, Elementor, custom theme and plugins |
-| **[emircyn.com](https://emircyn.com)** · this repo | My personal site, described below. | Astro, GSAP, Lenis, Cloudflare Workers |
-
----
-
-## About this repository
+<details>
+<summary><b>About this repository</b>: the source of emircyn.com, how it works and how to run it</summary>
 
 This is the source of [emircyn.com](https://emircyn.com), in English and Turkish. The page is built as a scroll-driven film: five acts on a dark ground with one hard cut to paper, and a crimson thread down the left edge that is drawn by scroll and doubles as navigation.
 
@@ -41,7 +32,7 @@ Every act has a complete static composition. With `prefers-reduced-motion` or wi
 
 **Lighthouse performance:** 100 on desktop, 91 on a throttled phone (median of three runs, September 2026).
 
-### Stack
+#### Stack
 
 - [Astro 5](https://astro.build/), static output, no client framework
 - [Tailwind CSS 4](https://tailwindcss.com/) for the tokens, component styles scoped in `.astro` files
@@ -50,7 +41,7 @@ Every act has a complete static composition. With `prefers-reduced-motion` or wi
 - Archivo Variable and JetBrains Mono, self-hosted through Fontsource
 - A Cloudflare Worker with static assets, which also folds `http://` and `www.` into one canonical host
 
-### Run it locally
+#### Run it locally
 
 ```bash
 npm install        # or: bun install
@@ -61,7 +52,7 @@ npx wrangler dev   # the built site behind the Worker, as in production
 
 Pushes to `master` build and deploy through Cloudflare Workers Builds. Preview URLs are off; review a build locally with `npx wrangler dev`.
 
-### Layout
+#### Layout
 
 ```
 src/
@@ -79,6 +70,8 @@ public/
 worker/index.js     # canonical host redirect, noindex on preview URLs
 ```
 
-### License
+#### License
 
 The code is [MIT](LICENSE). The portrait, photographs, project screenshots and the site’s copy are mine and are not covered by that license; please don’t reuse them.
+
+</details>
