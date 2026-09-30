@@ -23,8 +23,6 @@ React · Next.js · Vue · Nuxt · Astro · TypeScript · Tailwind CSS · GSAP �
 | **[InspireIT](https://inspireit.com.tr/)** | The bilingual website of the company I work for, an IT firm serving enterprises since 2003. | WordPress, Elementor, custom theme and plugins |
 | **[emircyn.com](https://emircyn.com)** · this repo | My personal site, described below. | Astro, GSAP, Lenis, Cloudflare Workers |
 
-The next one is on the workbench.
-
 ---
 
 ## About this repository

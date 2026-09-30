@@ -193,10 +193,6 @@ const list = {
                 </li>
             ))
         }
-        <li class="label projects__next">
-            <span class="projects__next-dot" aria-hidden="true"></span>
-            {t("projects.next")}
-        </li>
     </ol>
     </div>
 
@@ -404,24 +400,6 @@ const list = {
         transition: transform 180ms var(--ease-out);
     }
 
-    .projects__next {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-top: calc(var(--spacing) * 2);
-    }
-    .projects__next-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        border: 1.5px solid var(--color-red-lit);
-        animation: projects-pulse 2.4s ease-in-out infinite;
-    }
-    @keyframes projects-pulse {
-        50% {
-            background: var(--color-red-lit);
-        }
-    }
 
     @media (hover: hover) and (pointer: fine) {
         .project__link:hover .project__arrow {
