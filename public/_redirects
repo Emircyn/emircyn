@@ -1,0 +1,3 @@
+# The root is a language gate. A real 301 lets Google fold the root's links
+# into /en/ instead of reading a noindex page with a meta refresh.
+/ /en/ 301

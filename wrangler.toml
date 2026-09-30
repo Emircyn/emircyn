@@ -1,5 +1,10 @@
 name = "emircyn-portfolio"
 compatibility_date = "2025-11-25"
+main = "./worker/index.js"
 
 [assets]
 directory = "./dist"
+binding = "ASSETS"
+# The host check in worker/index.js has to see every request, not only the
+# ones that miss a static file.
+run_worker_first = true

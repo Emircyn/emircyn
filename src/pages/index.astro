@@ -3,6 +3,8 @@
 // around it, so a crawler or a visitor without JS got an empty response. This
 // renders a real document, sends the meta refresh for the no-JS path, and only
 // upgrades to the Turkish route when the browser actually asks for Turkish.
+// In production public/_redirects answers / with a 301 first; this page only
+// serves where that file is not applied (astro dev, astro preview).
 ---
 
 <!doctype html>
