@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 /* ---------------------------------------------------------------------------
    The scroll layer, build 3.
 
-   Six acts, one smooth-scroll instance, one ScrollTrigger per act. Two kinds
+   Seven acts, one smooth-scroll instance, one ScrollTrigger per act. Two kinds
    of motion live here and they are kept apart on purpose:
 
      scroll-driven   GSAP timelines, scrubbed. Own the outer plane elements.
@@ -55,6 +55,7 @@ export function initPage() {
       hero();
       manifesto();
       work();
+      projects();
       close();
     });
     ScrollTrigger.refresh();
@@ -281,7 +282,78 @@ function work() {
   );
 }
 
-/* --- Act 6: the close ----------------------------------------------------- */
+/* --- Act 5: projects ------------------------------------------------------ */
+
+function projects() {
+  const rows = qa("[data-project]");
+  if (!rows.length) return;
+  const mobile = isMobile();
+
+  rows.forEach((row, i) => {
+    const frame = q("[data-project-frame]", row);
+    const img = q("[data-project-img]", row);
+    const phone = q("[data-project-phone]", row);
+    const name = q("[data-project-name]", row);
+    const info = q("[data-project-info]", row);
+    // Alternate rows mirror the layout, so the name slides in from the other side.
+    const fromLeft = i % 2 === 1;
+
+    if (frame)
+      gsap.fromTo(
+        frame,
+        // Opens from the left edge, the side the thread is drawn on.
+        { clipPath: "inset(0% 100% 0% 0%)" },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          ease: "power2.out",
+          scrollTrigger: { trigger: row, start: "top 80%", end: mobile ? "top 30%" : "top 15%", scrub: 0.6 },
+        },
+      );
+
+    // Inside the frame the screen drifts against the scroll: depth, not travel.
+    if (img)
+      gsap.fromTo(
+        img,
+        { yPercent: -4 },
+        { yPercent: 4, ease: "none", scrollTrigger: { trigger: row, start: "top bottom", end: "bottom top", scrub: true } },
+      );
+
+    // The phone is the near plane and runs faster than the page.
+    if (phone)
+      gsap.fromTo(
+        phone,
+        { y: mobile ? 50 : 140 },
+        { y: mobile ? -20 : -60, ease: "none", scrollTrigger: { trigger: row, start: "top bottom", end: "bottom top", scrub: true } },
+      );
+
+    if (name)
+      gsap.fromTo(
+        name,
+        { xPercent: fromLeft ? 6 : -6, opacity: 0.15 },
+        {
+          xPercent: 0,
+          opacity: 1,
+          ease: "power2.out",
+          scrollTrigger: { trigger: row, start: "top 90%", end: "top 45%", scrub: 0.6 },
+        },
+      );
+
+    if (info)
+      gsap.fromTo(
+        Array.from(info.children),
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.08,
+          ease: "power2.out",
+          scrollTrigger: { trigger: info, start: "top 85%", end: "top 45%", scrub: 0.6 },
+        },
+      );
+  });
+}
+
+/* --- Act 7: the close ----------------------------------------------------- */
 
 function close() {
   const root = q("[data-close]");

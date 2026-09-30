@@ -125,6 +125,7 @@
     "manifesto": "Yaklaşım",
     "work": "Neler yapıyorum",
     "measure": "Deneme",
+    "projects": "Projeler",
     "record": "Deneyim",
     "contact": "İletişim"
   },
@@ -172,6 +173,52 @@
         "when": "Bir ürünü veya fikri sayfa hareketleriyle anlatmak istediğinde.",
         "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
         "honesty": "Bu sayfadaki kadran, kullandığım yaklaşımın küçük bir örneği."
+      }
+    ]
+  },
+  "projects": {
+    "label": "Seçili işler",
+    "heading": "Geliştirdiğim projeler",
+    "note": "Hepsi yayında, göz atabilirsiniz.",
+    "fields": {
+      "year": "Yıl",
+      "role": "Rol",
+      "stack": "Teknolojiler"
+    },
+    "visit": "Siteyi ziyaret et",
+    "source": "Kaynak kodu",
+    "next": "Sıradaki proje yapım aşamasında.",
+    "items": [
+      {
+        "index": "01",
+        "slug": "parley",
+        "name": "Parley",
+        "kind": "Yapay zekâ sohbet uygulaması",
+        "year": "2026",
+        "role": "Tasarım ve geliştirme",
+        "summary": "Sadece metinle cevap vermeyen bir yapay zekâ sohbeti. Hava durumunu sorunca tahmin kartı, bir hesap sorunca kesin sonuç geliyor. Cevaplar yazıldıkça ekrana akıyor.",
+        "detail": "Nuxt 4 ve Nuxt UI ile geliştirildi, tamamen Cloudflare’ın ücretsiz katmanında çalışıyor. Turnstile, imzalı oturumlar ve istek sınırları yapay zekâ kotasını gerçek ziyaretçilere saklıyor.",
+        "stack": "Nuxt 4 · Nuxt UI · AI SDK · Workers AI · TypeScript",
+        "url": "https://parley.emircan-erdemci.workers.dev",
+        "host": "parley.emircan-erdemci.workers.dev",
+        "source": "https://github.com/Emircyn/parley",
+        "alt": "Parley, İstanbul’daki hava durumu sorusunu bir tahmin kartı ve bir hesap kartıyla yanıtlıyor.",
+        "altMobile": "Telefonda Parley, Tokyo’daki yerel saati gösteriyor."
+      },
+      {
+        "index": "02",
+        "slug": "inspireit",
+        "name": "InspireIT",
+        "kind": "Kurumsal web sitesi",
+        "year": "2026",
+        "role": "Frontend geliştirme",
+        "summary": "Çalıştığım şirket InspireIT’in web sitesi. InspireIT, 2003’ten beri kurumsal firmalara veri, bulut ve altyapı hizmetleri veren bir bilişim şirketi.",
+        "detail": "Türkçe ve İngilizce; ürünler, sektörler ve kaynaklar için sayfalar, özel bir tema ve özel eklentilerle.",
+        "stack": "WordPress · Elementor · PHP · özel tema ve eklentiler",
+        "url": "https://inspireit.com.tr/",
+        "host": "inspireit.com.tr",
+        "alt": "InspireIT ana sayfası: dijital dönüşüm başlığının yanında dört baklava biçimli görsel.",
+        "altMobile": "Telefonda InspireIT ana sayfası."
       }
     ]
   }

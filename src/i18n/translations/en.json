@@ -125,6 +125,7 @@
     "manifesto": "Approach",
     "work": "What I do",
     "measure": "Experiment",
+    "projects": "Projects",
     "record": "Experience",
     "contact": "Contact"
   },
@@ -172,6 +173,52 @@
         "when": "You want to explain a product or idea through movement on the page.",
         "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
         "honesty": "The dial on this page is a small example of the approach."
+      }
+    ]
+  },
+  "projects": {
+    "label": "Selected work",
+    "heading": "Things I have built",
+    "note": "Live, and open to look at.",
+    "fields": {
+      "year": "Year",
+      "role": "Role",
+      "stack": "Stack"
+    },
+    "visit": "Visit the site",
+    "source": "Source code",
+    "next": "The next one is in production.",
+    "items": [
+      {
+        "index": "01",
+        "slug": "parley",
+        "name": "Parley",
+        "kind": "AI chat app",
+        "year": "2026",
+        "role": "Design and development",
+        "summary": "An AI chat that answers with more than text. Ask about the weather and a forecast card appears; ask for a calculation and you get the exact result. Replies stream in as they are written.",
+        "detail": "Built with Nuxt 4 and Nuxt UI, it runs entirely on Cloudflare’s free tier. Turnstile, signed sessions and rate limits keep the AI quota for real visitors.",
+        "stack": "Nuxt 4 · Nuxt UI · AI SDK · Workers AI · TypeScript",
+        "url": "https://parley.emircan-erdemci.workers.dev",
+        "host": "parley.emircan-erdemci.workers.dev",
+        "source": "https://github.com/Emircyn/parley",
+        "alt": "Parley answering a question about the weather in Istanbul with a forecast card and a calculation card.",
+        "altMobile": "Parley on a phone, showing the local time in Tokyo."
+      },
+      {
+        "index": "02",
+        "slug": "inspireit",
+        "name": "InspireIT",
+        "kind": "Corporate website",
+        "year": "2026",
+        "role": "Frontend development",
+        "summary": "The website of InspireIT, the company I work at: an IT firm that has served enterprises with data, cloud and infrastructure services since 2003.",
+        "detail": "Turkish and English, with pages for products, sectors and resources, built on a custom theme and custom plugins.",
+        "stack": "WordPress · Elementor · PHP · custom theme and plugins",
+        "url": "https://inspireit.com.tr/",
+        "host": "inspireit.com.tr",
+        "alt": "The InspireIT home page: a headline about digital transformation next to a grid of four diamond-shaped images.",
+        "altMobile": "The InspireIT home page on a phone."
       }
     ]
   }

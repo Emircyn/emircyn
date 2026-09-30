@@ -4,6 +4,7 @@ import Hero from "@/components/Hero.astro";
 import Manifesto from "@/components/Manifesto.astro";
 import Work from "@/components/Work.astro";
 import ScrubStage from "@/components/ScrubStage.astro";
+import Projects from "@/components/Projects.astro";
 import Record from "@/components/Record.astro";
 import Contact from "@/components/Contact.astro";
 
@@ -28,6 +29,7 @@ const t = useTranslations(lang);
         caption={t("scrub.caption")}
         stop={t("thread.measure")}
     />
+    <Projects />
     <Record />
     <Contact />
 </Layout>
