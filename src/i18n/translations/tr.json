@@ -93,27 +93,18 @@
   "scrub": {
     "label": "Ölçüm",
     "caption": "Sıfat değil, sayı.",
-    "note": "Lighthouse 12 performans puanı, üç ölçümün medyanı, Eylül 2026. İlk satır bu sitenin son düzeltmelerden önceki ve sonraki hali.",
+    "note": "Lighthouse 12 masaüstü performans puanı, üç ölçümün medyanı, Eylül 2026.",
     "readings": [
       {
         "site": "emircyn.com",
-        "device": "Mobil",
-        "from": 87,
-        "value": 91
-      },
-      {
-        "site": "emircyn.com",
-        "device": "Masaüstü",
         "value": 100
       },
       {
         "site": "Parley",
-        "device": "Masaüstü",
         "value": 98
       },
       {
         "site": "InspireIT",
-        "device": "Masaüstü",
         "value": 92
       }
     ]

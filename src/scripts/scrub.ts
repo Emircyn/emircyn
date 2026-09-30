@@ -49,7 +49,7 @@ type Clip = {
   active: number;
 };
 
-type Reading = { site: string; device: string; value: number; from?: number };
+type Reading = { site: string; device?: string; value: number; from?: number };
 
 /** Which reading the dial is on, and the number the readout should settle
  *  on. The middle 80% of the stage is split evenly between the readings; a
@@ -235,7 +235,7 @@ export function initScrub() {
           c.active = i;
           c.rows.forEach((row, k) => row.toggleAttribute("data-current", k === i));
           const r = c.readings[i];
-          if (c.readingLabel) c.readingLabel.textContent = `${r.site} · ${r.device}`;
+          if (c.readingLabel) c.readingLabel.textContent = r.device ? `${r.site} · ${r.device}` : r.site;
         }
       } else if (c.readout) {
         // The reading the wheel is producing, as the instrument would show it.

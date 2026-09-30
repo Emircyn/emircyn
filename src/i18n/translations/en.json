@@ -93,27 +93,18 @@
   "scrub": {
     "label": "Measured",
     "caption": "Numbers, not adjectives.",
-    "note": "Lighthouse 12 performance score, median of three runs, September 2026. The first line is this site before and after the last round of fixes.",
+    "note": "Lighthouse 12 performance score on desktop, median of three runs, September 2026.",
     "readings": [
       {
         "site": "emircyn.com",
-        "device": "Mobile",
-        "from": 87,
-        "value": 91
-      },
-      {
-        "site": "emircyn.com",
-        "device": "Desktop",
         "value": 100
       },
       {
         "site": "Parley",
-        "device": "Desktop",
         "value": 98
       },
       {
         "site": "InspireIT",
-        "device": "Desktop",
         "value": 92
       }
     ]
