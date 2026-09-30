@@ -486,22 +486,23 @@ const list = {
         box-shadow: 0 0 12px rgba(255, 50, 71, 0.7);
     }
 
-    /* Wide screens: the index is a column that holds still beside the work.
-       The first 12rem stays empty for the stamps of the thread. */
+    /* Wide screens: the index is a column flush with the page edge that holds
+       still beside the work. While this act is on screen the thread shows its
+       dots only (see scroll.ts), so its labels never sit on the index. */
     @media (min-width: 1200px) {
         .works {
             display: grid;
-            grid-template-columns: 12rem 16rem minmax(0, 1fr);
-            column-gap: calc(var(--spacing) * 6);
+            grid-template-columns: 17rem minmax(0, 1fr);
+            column-gap: calc(var(--spacing) * 8);
             align-items: start;
         }
         .works__index {
-            grid-column: 2;
+            grid-column: 1;
             position: sticky;
             top: 16vh;
         }
         .projects__list {
-            grid-column: 3;
+            grid-column: 2;
         }
         .works__label {
             margin: 0 0 calc(var(--spacing) * 2);

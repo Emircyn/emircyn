@@ -115,6 +115,13 @@ const t = useTranslations(lang);
     .thread[data-thread-paper] .thread__link {
         color: var(--color-ink-soft);
     }
+    .thread__link {
+        transition: opacity 240ms var(--ease-out);
+    }
+    .thread[data-thread-quiet] .thread__link {
+        opacity: 0;
+        pointer-events: none;
+    }
     .thread__stop[data-current] .thread__link {
         color: var(--color-red-lit);
     }

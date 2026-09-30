@@ -392,6 +392,7 @@ function thread() {
   const list = q("[data-thread-stops]");
   const bar = q("[data-bar]");
   const paper = q("[data-paper]");
+  const works = q("[data-works]");
   if (!nav || !line || !list) return;
 
   const stops = qa("[data-thread-stop]");
@@ -444,6 +445,13 @@ function thread() {
       if (stamped) current = r;
     });
     rows.forEach((r) => r.li.toggleAttribute("data-current", r === current));
+
+    // Over the work act the index sits at the page edge, so the thread keeps
+    // its line and dots and drops its labels until the act has passed.
+    if (works) {
+      const rect = works.getBoundingClientRect();
+      nav.toggleAttribute("data-thread-quiet", rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.3);
+    }
 
     // Ground: the thread and the bar re-ink over the paper act.
     if (paper) {
