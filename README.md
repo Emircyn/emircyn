@@ -12,12 +12,13 @@ I’m a frontend developer in Ankara, working at [InspireIT](https://inspireit.c
 - **Improvements.** I measure first, fix the part that is actually slow, then measure again.
 - **Motion.** Scroll animations and small interactions that explain something, and still read with motion turned off.
 
-React · Vue · Nuxt · Astro · TypeScript · Tailwind CSS · GSAP · Cloudflare Workers
+React · Next.js · Vue · Nuxt · Astro · TypeScript · Tailwind CSS · GSAP · Supabase · Stripe · Cloudflare Workers
 
 ## Recent work
 
 | Project | What it is | Built with |
 |---|---|---|
+| **[Porch](https://github.com/Emircyn/porch)** · [live](https://porch.emircan-erdemci.workers.dev) · [demo](https://porch.emircan-erdemci.workers.dev/demo) | A link-in-bio page builder, from idea to working product: a drag-and-drop editor with a live phone preview, 11 themes with dark mode, click analytics and Stripe subscriptions. Plan limits are enforced by the database. | Next.js 16, Supabase, Stripe, shadcn/ui, Cloudflare Workers |
 | **[Parley](https://github.com/Emircyn/parley)** · [live](https://parley.emircan-erdemci.workers.dev) | An AI chat that answers with more than text: ask for the weather and a forecast card appears, ask for a sum and you get the exact number. Runs entirely on Cloudflare’s free tier. | Nuxt 4, Nuxt UI, AI SDK, Workers AI |
 | **[InspireIT](https://inspireit.com.tr/)** | The bilingual website of the company I work for, an IT firm serving enterprises since 2003. | WordPress, Elementor, custom theme and plugins |
 | **[emircyn.com](https://emircyn.com)** · this repo | My personal site, described below. | Astro, GSAP, Lenis, Cloudflare Workers |

@@ -102,6 +102,10 @@
         "value": 100
       },
       {
+        "site": "Porch",
+        "value": 98
+      },
+      {
         "site": "Parley",
         "value": 98
       },
@@ -153,7 +157,7 @@
   "projects": {
     "label": "İşler",
     "heading": "Ne yapıyorum, nerede görürsün",
-    "note": "İki proje de yayında, tıklayıp gezebilirsin.",
+    "note": "Üçü de yayında, tıklayıp gezebilirsin.",
     "fields": {
       "year": "Yıl",
       "role": "Rol",
@@ -165,6 +169,26 @@
     "items": [
       {
         "index": "01",
+        "slug": "porch",
+        "name": "Porch",
+        "year": "2026",
+        "stack": "Next.js 16 · Supabase · Stripe · shadcn/ui · Cloudflare Workers",
+        "url": "https://porch.emircan-erdemci.workers.dev",
+        "host": "porch.emircan-erdemci.workers.dev",
+        "source": "https://github.com/Emircyn/porch",
+        "services": [
+          "interfaces",
+          "improvements"
+        ],
+        "kind": "Link sayfası oluşturucu",
+        "role": "Tasarım ve geliştirme",
+        "summary": "Bir link-in-bio sayfa oluşturucu: kayıt ol, fotoğrafını, linklerini ve bir tema ekle, tek bir kısa adres paylaş. Editör her değişikliği yazarken telefon önizlemesinde gösteriyor.",
+        "detail": "Fikirden çalışan ürüne; Next.js, Supabase ve Stripe ile, Cloudflare Workers üzerinde. Plan limitlerini veritabanı uyguluyor, planı sadece Stripe webhook’ları değiştirebiliyor, herkese açık sayfalar mobil Lighthouse’ta 98 alıyor.",
+        "alt": "Porch ana sayfası: “One link for everything you make” başlığının yanında link-in-bio sayfası gösteren üç telefon.",
+        "altMobile": "Telefonda bir Porch sayfası: öne çıkan bir link ve dört link daha olan bir seramikçi profili."
+      },
+      {
+        "index": "02",
         "slug": "parley",
         "name": "Parley",
         "kind": "Yapay zekâ sohbet uygulaması",
@@ -184,7 +208,7 @@
         ]
       },
       {
-        "index": "02",
+        "index": "03",
         "slug": "inspireit",
         "name": "InspireIT",
         "kind": "Kurumsal web sitesi",
