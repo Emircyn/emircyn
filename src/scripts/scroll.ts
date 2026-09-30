@@ -5,7 +5,7 @@ import Lenis from "lenis";
 gsap.registerPlugin(ScrollTrigger);
 
 /* ---------------------------------------------------------------------------
-   The scroll layer, build 3.
+   The scroll layer.
 
    Five acts, one smooth-scroll instance, one ScrollTrigger per act. Two kinds
    of motion live here and they are kept apart on purpose:

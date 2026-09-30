@@ -35,8 +35,8 @@ const lang = Astro.currentLocale || "en";
     // The page is complete without this: every act has a static composition.
     // So the scroll engine (GSAP, ScrollTrigger, Lenis) is not even fetched
     // until the first paint is done and the browser is idle. On a throttled
-    // phone its parse and setup used to sit between the hero image arriving
-    // and the hero image being painted.
+    // phone its parse and setup would otherwise sit between the hero image
+    // arriving and the hero image being painted.
     const start = () =>
         Promise.all([import("@/scripts/scroll"), import("@/scripts/scrub")]).then(([scroll, scrub]) => {
             scroll.initPage();

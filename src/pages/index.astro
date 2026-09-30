@@ -1,10 +1,9 @@
 ---
-// Language gate. The previous version shipped a bare script with no document
-// around it, so a crawler or a visitor without JS got an empty response. This
-// renders a real document, sends the meta refresh for the no-JS path, and only
-// upgrades to the Turkish route when the browser actually asks for Turkish.
-// In production public/_redirects answers / with a 301 first; this page only
-// serves where that file is not applied (astro dev, astro preview).
+// Language gate, for local use only. In production public/_redirects answers /
+// with a 301 to /en/ before this page is reached. Under astro dev and astro
+// preview it renders a real document (so a crawler or a visitor without JS
+// still gets links), sends a meta refresh, and moves to /tr/ when the browser
+// asks for Turkish.
 ---
 
 <!doctype html>
