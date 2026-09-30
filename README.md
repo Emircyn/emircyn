@@ -12,7 +12,7 @@ Currently at [InspireIT](https://inspireit.com.tr/). Websites and web apps that 
 - **[Parley](https://github.com/Emircyn/parley)**: an AI chat that answers with cards, not just text, running entirely on Cloudflare’s free tier. [Live](https://parley.emircan-erdemci.workers.dev) · `Nuxt` `AI SDK` `Workers AI`
 - **[emircyn.com](https://emircyn.com)**: this repo. A scroll-driven portfolio, 100 on desktop Lighthouse. `Astro` `GSAP` `Cloudflare Workers`
 - **[InspireIT](https://inspireit.com.tr/)**: the bilingual website of the company I work for. `WordPress` `Elementor`
-- **[Formadaş](https://formadas.com/)**: find footballers who played for both clubs, compare a country and club, or explore player profiles. Combines Wikidata and API-Football data with a local SQLite cache. `Nuxt` `Nuxt UI` `SQLite`
+- **[Formadaş](https://formadas.com/)**: find footballers who played for both clubs, compare a country and club, or explore and share player profiles. Installable on your phone, with player-specific share cards. Combines Wikidata and API-Football data with a local SQLite cache. `Nuxt` `Nuxt UI` `SQLite`
 
 **Stack:** TypeScript · React / Next.js · Vue / Nuxt · Astro · Tailwind CSS · Cloudflare Workers
 
