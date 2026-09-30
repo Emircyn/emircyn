@@ -2,10 +2,6 @@
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { useTranslations, type Locale } from "@/i18n/utils";
-import parleyDesktop from "@/assets/projects/parley-desktop.png";
-import parleyMobile from "@/assets/projects/parley-mobile.png";
-import inspireitDesktop from "@/assets/projects/inspireit-desktop.png";
-import inspireitMobile from "@/assets/projects/inspireit-mobile.png";
 
 const lang = (Astro.currentLocale || "en") as Locale;
 const t = useTranslations(lang);
@@ -30,9 +26,13 @@ type Item = {
 const items = t("projects.items") as Item[];
 const f = t("projects.fields") as Record<string, string>;
 
-const shots: Record<string, { desktop: ImageMetadata; mobile: ImageMetadata }> = {
-    parley: { desktop: parleyDesktop, mobile: parleyMobile },
-    inspireit: { desktop: inspireitDesktop, mobile: inspireitMobile },
+// Screenshots live in assets/projects as <slug>-<desktop|mobile>.png. A site
+// with its own English version adds <slug>-<desktop|mobile>-en.png, which the
+// English page picks up; everything else falls back to the default shot.
+const files = import.meta.glob<{ default: ImageMetadata }>("/src/assets/projects/*.png", { eager: true });
+const shot = (slug: string, kind: "desktop" | "mobile") => {
+    const base = `/src/assets/projects/${slug}-${kind}`;
+    return (files[`${base}-${lang}.png`] ?? files[`${base}.png`]).default;
 };
 
 // Only what the section itself shows: each project, its address, its author.
@@ -101,7 +101,7 @@ const list = {
                             </span>
                             <span class="project__screen">
                                 <Image
-                                    src={shots[p.slug].desktop}
+                                    src={shot(p.slug, "desktop")}
                                     alt={p.alt}
                                     widths={[720, 1100, 1600]}
                                     sizes="(max-width: 899px) 92vw, 62vw"
@@ -114,7 +114,7 @@ const list = {
                         </a>
                         <div class="project__phone" data-project-phone>
                             <Image
-                                src={shots[p.slug].mobile}
+                                src={shot(p.slug, "mobile")}
                                 alt={p.altMobile}
                                 widths={[260, 420]}
                                 sizes="(max-width: 899px) 30vw, 14vw"
