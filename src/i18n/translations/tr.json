@@ -157,7 +157,7 @@
   "projects": {
     "label": "Projeler",
     "heading": "Seçili projeler",
-    "note": "Üç proje de yayında. Bağlantılardan inceleyebilirsiniz.",
+    "note": "Projeler yayında. Bağlantılardan inceleyebilirsiniz.",
     "fields": {
       "year": "Yıl",
       "role": "Rol",
@@ -183,8 +183,8 @@
         "role": "Tasarım ve geliştirme",
         "summary": "Porch, bağlantılarınızı tek bir kişisel sayfada toplamanızı sağlayan bir uygulama. Hesap açıp fotoğrafınızı ve bağlantılarınızı ekleyebilir, temanızı seçerek sayfanızı kısa bir adresle paylaşabilirsiniz. Düzenlemeler anında telefon önizlemesine yansır.",
         "detail": "Fikir aşamasından yayına kadar tasarımını ve geliştirmesini üstlendim. Next.js, Supabase ve Stripe ile geliştirdiğim uygulama Cloudflare Workers üzerinde çalışıyor. Abonelik limitleri veritabanında uygulanıyor; plan değişiklikleri yalnızca Stripe webhook’ları üzerinden yapılıyor. Herkese açık sayfaların mobil Lighthouse puanı 98.",
-        "alt": "Porch ana sayfası: “One link for everything you make” başlığının yanında link-in-bio sayfası gösteren üç telefon.",
-        "altMobile": "Telefonda bir Porch sayfası: öne çıkan bir link ve dört link daha olan bir seramikçi profili."
+        "alt": "Koyu tema, masaüstü: Porch ana sayfası: “One link for everything you make” başlığının yanında link-in-bio sayfası gösteren üç telefon.",
+        "altMobile": "Açık tema, mobil: Telefonda bir Porch sayfası: öne çıkan bir link ve dört link daha olan bir seramikçi profili."
       },
       {
         "index": "02",
@@ -199,8 +199,8 @@
         "url": "https://parley.emircan-erdemci.workers.dev",
         "host": "parley.emircan-erdemci.workers.dev",
         "source": "https://github.com/Emircyn/parley",
-        "alt": "Parley, İstanbul’daki hava durumu sorusunu bir tahmin kartı ve bir hesap kartıyla yanıtlıyor.",
-        "altMobile": "Telefonda Parley, Tokyo’daki yerel saati gösteriyor.",
+        "alt": "Koyu tema, masaüstü: Parley, İstanbul’daki hava durumu sorusunu bir tahmin kartı ve bir hesap kartıyla yanıtlıyor.",
+        "altMobile": "Açık tema, mobil: Telefonda Parley, Tokyo’daki yerel saati gösteriyor.",
         "services": [
           "interfaces",
           "motion"
@@ -224,6 +224,25 @@
           "interfaces",
           "improvements"
         ]
+      },
+      {
+        "index": "04",
+        "slug": "formadas",
+        "name": "Formadaş",
+        "year": "2026",
+        "stack": "Nuxt 4 · Nuxt UI · TypeScript · SQLite · Wikidata",
+        "url": "https://formadas.com/",
+        "host": "formadas.com",
+        "services": [
+          "interfaces",
+          "improvements"
+        ],
+        "kind": "Futbolcu keşif uygulaması",
+        "role": "Tasarım ve geliştirme",
+        "summary": "Galatasaray ve Fenerbahçe’de kimler oynadı? Formadaş, iki kulübün ortak futbolcularını forma giydikleri dönemler, maç ve gol bilgileriyle listeliyor. Ülke ve kulüp eşleştirmesiyle arama yapabilir, futbolcuların profillerini inceleyebilirsiniz.",
+        "detail": "Nuxt 4 ve Nuxt UI ile geliştirdim. Wikidata ve API-Football verilerini bir araya getiren uygulama, sonuçları SQLite’ta önbelleğe alıyor. Canlı kaynaklara ulaşılamadığında yerel oyuncu indeksini kullanıyor.",
+        "alt": "Koyu tema, masaüstü: Formadaş’ta Galatasaray ve Fenerbahçe karşılaştırması; ortak futbolcuların dönem, maç ve gol bilgilerinin yer aldığı tablo.",
+        "altMobile": "Açık tema, mobil: Formadaş’ın mobil arayüzünde Galatasaray ve Fenerbahçe seçimi, popüler karşılaştırmalar ve ortak oyuncu sayısı."
       }
     ]
   }

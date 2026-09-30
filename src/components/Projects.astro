@@ -30,13 +30,19 @@ const services = t("craft.items") as Service[];
 const items = t("projects.items") as Item[];
 const f = t("projects.fields") as Record<string, string>;
 
-// Screenshots live in assets/projects as <slug>-<desktop|mobile>.png. A site
-// with its own English version adds <slug>-<desktop|mobile>-en.png, which the
-// English page picks up; everything else falls back to the default shot.
+// Theme-specific shots use dark desktop and light mobile previews. Keep the
+// theme in the filename so changing it also changes cached preview URLs.
+// Localized screenshots take priority over language-neutral ones.
 const files = import.meta.glob<{ default: ImageMetadata }>("/src/assets/projects/*.png", { eager: true });
 const shot = (slug: string, kind: "desktop" | "mobile") => {
     const base = `/src/assets/projects/${slug}-${kind}`;
-    return (files[`${base}-${lang}.png`] ?? files[`${base}.png`]).default;
+    const theme = kind === "desktop" ? "dark" : "light";
+    return (
+        files[`${base}-${theme}-${lang}.png`] ??
+        files[`${base}-${lang}.png`] ??
+        files[`${base}-${theme}.png`] ??
+        files[`${base}.png`]
+    ).default;
 };
 
 // Only what the section itself shows: each project, its address, its author.

@@ -157,7 +157,7 @@
   "projects": {
     "label": "Projects",
     "heading": "Selected projects",
-    "note": "All three projects are live and available to explore.",
+    "note": "Explore the live projects below.",
     "fields": {
       "year": "Year",
       "role": "Role",
@@ -183,8 +183,8 @@
         "role": "Design and development",
         "summary": "Porch brings your links together on a personal page. Create an account, add your photo and links, choose a theme, and share a short address. A live phone preview shows your changes as you edit.",
         "detail": "I designed and developed Porch from the initial idea through to launch, using Next.js, Supabase and Stripe on Cloudflare Workers. The database enforces subscription limits, and only Stripe webhooks can change a plan. Public pages score 98 on mobile Lighthouse.",
-        "alt": "The Porch home page: the headline “One link for everything you make” beside three phones showing link-in-bio pages.",
-        "altMobile": "A Porch public page on a phone: a potter’s profile with a featured link and four more."
+        "alt": "Dark theme, desktop: The Porch home page: the headline “One link for everything you make” beside three phones showing link-in-bio pages.",
+        "altMobile": "Light theme, mobile: A Porch public page on a phone: a potter’s profile with a featured link and four more."
       },
       {
         "index": "02",
@@ -199,8 +199,8 @@
         "url": "https://parley.emircan-erdemci.workers.dev",
         "host": "parley.emircan-erdemci.workers.dev",
         "source": "https://github.com/Emircyn/parley",
-        "alt": "Parley answering a question about the weather in Istanbul with a forecast card and a calculation card.",
-        "altMobile": "Parley on a phone, showing the local time in Tokyo.",
+        "alt": "Dark theme, desktop: Parley answering a question about the weather in Istanbul with a forecast card and a calculation card.",
+        "altMobile": "Light theme, mobile: Parley on a phone, showing the local time in Tokyo.",
         "services": [
           "interfaces",
           "motion"
@@ -224,6 +224,25 @@
           "interfaces",
           "improvements"
         ]
+      },
+      {
+        "index": "04",
+        "slug": "formadas",
+        "name": "Formadaş",
+        "year": "2026",
+        "stack": "Nuxt 4 · Nuxt UI · TypeScript · SQLite · Wikidata",
+        "url": "https://formadas.com/",
+        "host": "formadas.com",
+        "services": [
+          "interfaces",
+          "improvements"
+        ],
+        "kind": "Football player discovery",
+        "role": "Design and development",
+        "summary": "Who has played for both Galatasaray and Fenerbahçe? Formadaş finds the players two clubs have in common, with their seasons, appearances and goals. You can also search by country and club, or explore individual player profiles.",
+        "detail": "I built the app with Nuxt 4 and Nuxt UI. It combines Wikidata and API-Football data and caches results in SQLite. A local player index provides results when live sources are unavailable.",
+        "alt": "Dark theme, desktop: Formadaş comparing Galatasaray and Fenerbahçe, with a table of shared players, seasons, appearances and goals.",
+        "altMobile": "Light theme, mobile: Formadaş on a phone, showing Galatasaray and Fenerbahçe selected, popular comparisons and the shared player count."
       }
     ]
   }

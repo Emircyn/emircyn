@@ -31,3 +31,6 @@ pnpm-debug.log*
 # local verification harness and generation scratch
 lab/
 scrollcraft/
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
