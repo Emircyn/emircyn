@@ -239,10 +239,10 @@
         ],
         "kind": "Football player discovery",
         "role": "Design and development",
-        "summary": "Who has played for both Galatasaray and Fenerbahçe? Formadaş finds the players two clubs have in common, with their seasons, appearances and goals. Search by country and club, explore player careers and share their profiles. You can also install it on your phone.",
+        "summary": "Who has played for both Beşiktaş and Galatasaray? Formadaş finds the players two clubs have in common, with their seasons, appearances and goals. Search by country and club, explore player careers and share their profiles. You can also install it on your phone.",
         "detail": "I built the app with Nuxt 4 and Nuxt UI. It caches Wikidata and API-Football data in SQLite and falls back to a local player index when live sources are unavailable. I improved the mobile experience with an installable app, player-specific share cards and preloaded photos.",
-        "alt": "Dark theme, desktop: Formadaş comparing Galatasaray and Fenerbahçe, with a table of shared players, seasons, appearances and goals.",
-        "altMobile": "Light theme, mobile: Emre Belözoğlu’s Formadaş profile, with his photo, career statistics, player details and a share button."
+        "alt": "Dark theme, desktop: Formadaş comparing Beşiktaş and Galatasaray, with a table of shared players, seasons, appearances and goals.",
+        "altMobile": "Light theme, mobile: Burak Yılmaz’s Formadaş profile, with his photo, career statistics, player details and a share button."
       }
     ]
   }

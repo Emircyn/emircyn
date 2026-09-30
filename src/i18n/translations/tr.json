@@ -239,10 +239,10 @@
         ],
         "kind": "Futbolcu keşif uygulaması",
         "role": "Tasarım ve geliştirme",
-        "summary": "Galatasaray ve Fenerbahçe’de kimler oynadı? Formadaş, iki kulübün ortak futbolcularını dönem, maç ve gol bilgileriyle listeliyor. Ülke ve kulübe göre arama yapabilir, futbolcuların kariyerlerini inceleyip profillerini paylaşabilirsiniz. Telefonunuza da uygulama olarak ekleyebilirsiniz.",
+        "summary": "Beşiktaş ve Galatasaray’da kimler oynadı? Formadaş, iki kulübün ortak futbolcularını dönem, maç ve gol bilgileriyle listeliyor. Ülke ve kulübe göre arama yapabilir, futbolcuların kariyerlerini inceleyip profillerini paylaşabilirsiniz. Telefonunuza da uygulama olarak ekleyebilirsiniz.",
         "detail": "Nuxt 4 ve Nuxt UI ile geliştirdim. Wikidata ve API-Football verilerini SQLite’ta önbelleğe alıyor; canlı kaynaklara ulaşılamadığında yerel oyuncu indeksini kullanıyor. Kurulabilir uygulama, futbolcuya özel paylaşım kartları ve önceden yüklenen fotoğraflarla mobil deneyimi geliştirdim.",
-        "alt": "Koyu tema, masaüstü: Formadaş’ta Galatasaray ve Fenerbahçe karşılaştırması; ortak futbolcuların dönem, maç ve gol bilgilerinin yer aldığı tablo.",
-        "altMobile": "Açık tema, mobil: Formadaş’ta Emre Belözoğlu’nun fotoğrafı, kariyer istatistikleri, futbolcu bilgileri ve profil paylaşma düğmesi."
+        "alt": "Koyu tema, masaüstü: Formadaş’ta Beşiktaş ve Galatasaray karşılaştırması; ortak futbolcuların dönem, maç ve gol bilgilerinin yer aldığı tablo.",
+        "altMobile": "Açık tema, mobil: Formadaş’ta Burak Yılmaz’ın fotoğrafı, kariyer istatistikleri, futbolcu bilgileri ve profil paylaşma düğmesi."
       }
     ]
   }
