@@ -1,6 +1,9 @@
 name = "emircyn-portfolio"
 compatibility_date = "2025-11-25"
 main = "./worker/index.js"
+# No per-version preview URLs. Review happens locally (wrangler dev) and the
+# site has one public address.
+preview_urls = false
 
 [assets]
 directory = "./dist"

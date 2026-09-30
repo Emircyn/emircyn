@@ -60,7 +60,7 @@ npm run build      # static output in dist/
 npx wrangler dev   # the built site behind the Worker, as in production
 ```
 
-Pushes to `master` build and deploy through Cloudflare Workers Builds.
+Pushes to `master` build and deploy through Cloudflare Workers Builds. Preview URLs are off; review a build locally with `npx wrangler dev`.
 
 ### Layout
 
