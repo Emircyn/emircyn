@@ -26,7 +26,11 @@ const siteTitle =
 
 const ogLocale = lang === "tr" ? "tr_TR" : "en_US";
 const ogAlternate = lang === "tr" ? "en_US" : "tr_TR";
-const imageURL = new URL(image, Astro.site);
+// Bump the version when the card image changes: social networks cache link
+// previews by image URL and otherwise keep showing the old card.
+const imageURL = new URL(`${image}?v=2`, Astro.site);
+// Link previews show about 125 characters; search results about 155.
+const socialDescription = t("seo.socialDescription");
 
 // Structured data: one person, one site. Only facts the page itself states.
 const person = {
@@ -88,7 +92,7 @@ const website = {
 <meta property="og:locale:alternate" content={ogAlternate} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={siteTitle} />
-<meta property="og:description" content={description} />
+<meta property="og:description" content={socialDescription} />
 <meta property="og:image" content={imageURL} />
 <meta property="og:image:type" content="image/jpeg" />
 <meta property="og:image:width" content="1200" />
@@ -100,7 +104,7 @@ const website = {
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={siteTitle} />
-<meta name="twitter:description" content={description} />
+<meta name="twitter:description" content={socialDescription} />
 <meta name="twitter:image" content={imageURL} />
 <meta name="twitter:image:alt" content={t("seo.imageAlt")} />
 
