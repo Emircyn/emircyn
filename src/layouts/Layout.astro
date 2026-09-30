@@ -10,8 +10,6 @@ import "@fontsource/jetbrains-mono/500.css";
 
 import archivoLatin from "@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url";
 import archivoLatinExt from "@fontsource-variable/archivo/files/archivo-latin-ext-wdth-normal.woff2?url";
-import monoLatin from "@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2?url";
-import monoLatinExt from "@fontsource/jetbrains-mono/files/jetbrains-mono-latin-ext-400-normal.woff2?url";
 
 const lang = Astro.currentLocale || "en";
 ---
@@ -22,8 +20,6 @@ const lang = Astro.currentLocale || "en";
         <SEO />
         <link rel="preload" as="font" type="font/woff2" href={archivoLatin} crossorigin />
         <link rel="preload" as="font" type="font/woff2" href={archivoLatinExt} crossorigin />
-        <link rel="preload" as="font" type="font/woff2" href={monoLatin} crossorigin />
-        <link rel="preload" as="font" type="font/woff2" href={monoLatinExt} crossorigin />
     </head>
     <body>
         <a class="skip-link" href="#work">Skip to content</a>
@@ -36,11 +32,20 @@ const lang = Astro.currentLocale || "en";
 </html>
 
 <script>
-    import { initPage } from "@/scripts/scroll";
-    import { initScrub } from "@/scripts/scrub";
-
-    initPage();
-    initScrub();
+    // The page is complete without this: every act has a static composition.
+    // So the scroll engine (GSAP, ScrollTrigger, Lenis) is not even fetched
+    // until the first paint is done and the browser is idle. On a throttled
+    // phone its parse and setup used to sit between the hero image arriving
+    // and the hero image being painted.
+    const start = () =>
+        Promise.all([import("@/scripts/scroll"), import("@/scripts/scrub")]).then(([scroll, scrub]) => {
+            scroll.initPage();
+            scrub.initScrub();
+        });
+    const idle = () =>
+        "requestIdleCallback" in window ? requestIdleCallback(start, { timeout: 700 }) : setTimeout(start, 1);
+    if (document.readyState === "complete") idle();
+    else window.addEventListener("load", idle, { once: true });
 </script>
 
 <style is:global>

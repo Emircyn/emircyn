@@ -6,6 +6,9 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
   site: "https://emircyn.com",
+  // One page, about 23 KB of CSS. Inlined, it arrives with the HTML instead of
+  // blocking the first paint on a second request.
+  build: { inlineStylesheets: "always" },
   vite: {
     plugins: [tailwindcss()],
     // Both servers are reviewed over a Tailscale hostname, which Vite blocks by

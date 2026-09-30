@@ -46,6 +46,8 @@ const strip = [...ticker, ...ticker];
                     alt=""
                     widths={[540, 810, 1080]}
                     sizes="100vw"
+                    format="avif"
+                    quality={55}
                     loading="eager"
                     class="hero__room hero__room--tall"
                 />
@@ -72,8 +74,10 @@ const strip = [...ticker, ...ticker];
                 <Image
                     src={portrait}
                     alt={name}
-                    widths={[480, 720, 1040, 1400]}
+                    widths={[400, 560, 720, 1040, 1400]}
                     sizes="(max-width: 767px) 78vw, 44vw"
+                    format="avif"
+                    quality={60}
                     loading="eager"
                     fetchpriority="high"
                     class="hero__figure"
