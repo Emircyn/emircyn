@@ -42,7 +42,27 @@ type Clip = {
   painted: boolean;
   visible: boolean;
   readout: HTMLElement | null;
+  readings: Reading[];
+  rows: HTMLElement[];
+  readingLabel: HTMLElement | null;
+  shown: number;
+  active: number;
 };
+
+type Reading = { site: string; device: string; value: number; from?: number };
+
+/** Which reading the dial is on, and the number the readout should settle
+ *  on. The middle 80% of the stage is split evenly between the readings; a
+ *  reading with a "from" shows the old value for the first part of its slot
+ *  and the new one for the second, so a before/after reads as a change, not a jump. */
+function readingAt(readings: Reading[], p: number) {
+  const q = Math.min(0.9999, Math.max(0, (p - 0.1) / 0.8));
+  const i = Math.floor(q * readings.length);
+  const local = q * readings.length - i;
+  const r = readings[i];
+  const target = r.from !== undefined && local < 0.5 ? r.from : r.value;
+  return { i, target };
+}
 
 /** Remap linear progress so the clip moves quickly at the edges and settles in
  *  the middle, where the copy sits. Paired with the visible-life mapping: the
@@ -100,6 +120,11 @@ export function initScrub() {
       painted: false,
       visible: false,
       readout: stage.querySelector<HTMLElement>("[data-scrub-pct]"),
+      readings: stage.dataset.scrubReadings ? JSON.parse(stage.dataset.scrubReadings) : [],
+      rows: Array.from(stage.querySelectorAll<HTMLElement>("[data-scrub-reading]")),
+      readingLabel: stage.querySelector<HTMLElement>("[data-scrub-reading-label]"),
+      shown: 0,
+      active: -1,
     };
 
     // Fetched as a Blob so seeking does not depend on the host honouring HTTP
@@ -201,7 +226,18 @@ export function initScrub() {
 
       c.current += (c.target - c.current) * LERP;
       const t = c.current * c.duration;
-      if (c.readout) {
+      if (c.readout && c.readings.length) {
+        // A real score. The number ticks toward it, like a needle settling.
+        const { i, target } = readingAt(c.readings, c.current);
+        c.shown += (target - c.shown) * 0.12;
+        c.readout.textContent = String(Math.round(c.shown)).padStart(3, "0");
+        if (i !== c.active) {
+          c.active = i;
+          c.rows.forEach((row, k) => row.toggleAttribute("data-current", k === i));
+          const r = c.readings[i];
+          if (c.readingLabel) c.readingLabel.textContent = `${r.site} · ${r.device}`;
+        }
+      } else if (c.readout) {
         // The reading the wheel is producing, as the instrument would show it.
         c.readout.textContent = String(Math.round(c.current * 1000)).padStart(3, "0");
       }

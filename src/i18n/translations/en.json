@@ -88,19 +88,41 @@
     "description": "Emircan Erdemci is a frontend developer in Ankara. He builds fast, carefully animated web interfaces with React, Vue and Astro. See recent projects and get in touch."
   },
   "plates": {
-    "instrument": "A dial gauge and its needle.",
-    "surface": "A steel ruler on a drafting table.",
-    "caliper": "Calipers measuring a thin stack of paper."
+    "instrument": "A dial gauge and its needle."
   },
   "scrub": {
-    "label": "Try it",
-    "caption": "The needle only moves when you scroll."
+    "label": "Measured",
+    "caption": "Numbers, not adjectives.",
+    "note": "Lighthouse 12 performance score, median of three runs, September 2026. The first line is this site before and after the last round of fixes.",
+    "readings": [
+      {
+        "site": "emircyn.com",
+        "device": "Mobile",
+        "from": 87,
+        "value": 91
+      },
+      {
+        "site": "emircyn.com",
+        "device": "Desktop",
+        "value": 100
+      },
+      {
+        "site": "Parley",
+        "device": "Desktop",
+        "value": 98
+      },
+      {
+        "site": "InspireIT",
+        "device": "Desktop",
+        "value": 92
+      }
+    ]
   },
   "thread": {
     "label": "Page sections",
     "hero": "Emircan",
     "work": "What I do",
-    "measure": "Experiment",
+    "measure": "Measure",
     "projects": "Projects",
     "record": "Experience",
     "contact": "Contact"
@@ -108,44 +130,34 @@
   "craft": {
     "label": "What I do",
     "heading": "What I work on",
-    "note": "Three kinds of work, usually mixed together.",
-    "fields": {
-      "what": "What",
-      "how": "How",
-      "when": "When",
-      "stack": "Tools",
-      "ask": "Get in touch"
-    },
+    "note": "Three kinds of work, and where to see each one.",
     "items": [
       {
         "index": "01",
         "name": "Interfaces",
         "tag": "Building",
-        "what": "Marketing sites, web apps and admin panels.",
-        "how": "I turn a design into pages that hold up on every screen, and build the parts that repeat once, as components.",
-        "when": "You have a design, or at least an idea, and you need it working in the browser.",
-        "stack": "React, Vue, Astro, TypeScript, Tailwind",
-        "honesty": "No design yet? We can sketch it together before I write any code."
+        "line": "From a marketing site to an admin panel, I turn a design into pages that hold up on every screen.",
+        "stack": "React · Vue · Astro · TypeScript · Tailwind",
+        "proof": "See it in the projects",
+        "href": "#projects"
       },
       {
         "index": "02",
         "name": "Improvements",
         "tag": "Maintenance",
-        "what": "Pages that load slowly, and code that has grown hard to change.",
-        "how": "I measure first, fix the part that is actually slow, then measure again.",
-        "when": "Your site crawls on a phone, or small changes keep taking days.",
-        "stack": "Lighthouse, Web Vitals, profiling, accessibility audits",
-        "honesty": "I read the existing code before I suggest rewriting any of it."
+        "line": "I measure first, fix the part that is actually slow, then measure again.",
+        "stack": "Lighthouse · Web Vitals · profiling · accessibility audits",
+        "proof": "See the numbers",
+        "href": "#measure"
       },
       {
         "index": "03",
         "name": "Motion",
         "tag": "Interaction",
-        "what": "Scroll animations, page transitions and small interactions.",
-        "how": "Motion has to explain something. I test it on phones and with reduced motion turned on.",
-        "when": "You want a product or an idea to unfold as people scroll.",
-        "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
-        "honesty": "This page is the example: it all moves, and it all still reads with motion turned off."
+        "line": "Scroll animations and small interactions that explain something, and still read with motion turned off.",
+        "stack": "GSAP ScrollTrigger · Lenis · CSS scroll-driven animation",
+        "proof": "Try the dial",
+        "href": "#measure"
       }
     ]
   },

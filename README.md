@@ -18,9 +18,9 @@ The page is built as a scroll-driven film: six acts on a dark ground with one ha
 | # | Section | Device |
 |---|---|---|
 | 1 | Hero | Four planes (room, name, alpha-cut figure, haze) driven by scroll, pointer and an idle loop |
-| 2 | What I do | Horizontal rail on desktop, parallax stack on phones |
+| 2 | What I do | Three offers, one line each, each pointing at the act that proves it |
 | 3 | Projects | Each project on two planes: a browser frame clipped open from the thread side, a phone riding over it at its own speed |
-| 4 | Measure | A dial clip scrubbed by the wheel, with a live readout |
+| 4 | Measure | A dial clip scrubbed by the wheel; the readout steps through real Lighthouse scores |
 | 5 | Record | Hard cut to paper, reveals only, deliberately still |
 | 6 | Contact | Pointer-lit close with a magnetic mail link |
 
@@ -41,7 +41,7 @@ Pushes to `master` build and deploy to production through Cloudflare Workers Bui
 
 ```
 src/
-├── assets/         # hero plates, portrait, paper plates, project screenshots
+├── assets/         # hero plates, portrait, dial poster, project screenshots
 ├── components/     # one file per act, plus SEO, header, thread
 ├── i18n/           # en.json, tr.json and the t() helper
 ├── layouts/        # Layout.astro wires the scroll engine

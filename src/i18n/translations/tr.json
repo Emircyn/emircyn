@@ -88,19 +88,41 @@
     "description": "Ankara’da frontend geliştirici Emircan Erdemci. React, Vue ve Astro ile hızlı ve özenli animasyonlu web arayüzleri geliştiriyor. Projelerine göz at, iletişime geç."
   },
   "plates": {
-    "instrument": "Ölçüm kadranı ve ibresi.",
-    "surface": "Çizim masasında çelik cetvel.",
-    "caliper": "İnce bir kâğıt destesini ölçen kumpas."
+    "instrument": "Ölçüm kadranı ve ibresi."
   },
   "scrub": {
-    "label": "Dene",
-    "caption": "İbre, sadece sen kaydırınca ilerliyor."
+    "label": "Ölçüm",
+    "caption": "Sıfat değil, sayı.",
+    "note": "Lighthouse 12 performans puanı, üç ölçümün medyanı, Eylül 2026. İlk satır bu sitenin son düzeltmelerden önceki ve sonraki hali.",
+    "readings": [
+      {
+        "site": "emircyn.com",
+        "device": "Mobil",
+        "from": 87,
+        "value": 91
+      },
+      {
+        "site": "emircyn.com",
+        "device": "Masaüstü",
+        "value": 100
+      },
+      {
+        "site": "Parley",
+        "device": "Masaüstü",
+        "value": 98
+      },
+      {
+        "site": "InspireIT",
+        "device": "Masaüstü",
+        "value": 92
+      }
+    ]
   },
   "thread": {
     "label": "Sayfa bölümleri",
     "hero": "Emircan",
     "work": "Neler yapıyorum",
-    "measure": "Deneme",
+    "measure": "Ölçüm",
     "projects": "Projeler",
     "record": "Deneyim",
     "contact": "İletişim"
@@ -108,44 +130,34 @@
   "craft": {
     "label": "Neler yapıyorum",
     "heading": "Neler yapıyorum?",
-    "note": "Üç tür iş; çoğu zaman iç içe.",
-    "fields": {
-      "what": "Ne",
-      "how": "Nasıl",
-      "when": "Ne zaman",
-      "stack": "Araçlar",
-      "ask": "İletişime geç"
-    },
+    "note": "Üç tür iş, her birini nerede görebileceğin.",
     "items": [
       {
         "index": "01",
         "name": "Arayüz",
         "tag": "Geliştirme",
-        "what": "Tanıtım siteleri, web uygulamaları ve yönetim panelleri.",
-        "how": "Tasarımı her ekranda düzgün duran sayfalara çeviriyorum; tekrar eden parçaları bir kez, bileşen olarak kuruyorum.",
-        "when": "Elinde bir tasarım ya da en azından bir fikir var ve bunun tarayıcıda çalışması gerekiyor.",
-        "stack": "React, Vue, Astro, TypeScript, Tailwind",
-        "honesty": "Tasarım yok mu? Kod yazmadan önce birlikte çizebiliriz."
+        "line": "Tanıtım sitesinden yönetim paneline, tasarımı her ekranda düzgün duran sayfalara çeviriyorum.",
+        "stack": "React · Vue · Astro · TypeScript · Tailwind",
+        "proof": "Projelerde gör",
+        "href": "#projects"
       },
       {
         "index": "02",
         "name": "İyileştirme",
         "tag": "Bakım",
-        "what": "Yavaş açılan sayfalar ve zamanla değiştirmesi zorlaşmış kod.",
-        "how": "Önce ölçüyorum, gerçekten yavaş olan yeri düzeltiyorum, sonra tekrar ölçüyorum.",
-        "when": "Siten telefonda sürünüyorsa ya da küçük değişiklikler günler sürüyorsa.",
-        "stack": "Lighthouse, Web Vitals, profil alma, erişilebilirlik denetimi",
-        "honesty": "Bir şeyi baştan yazmayı önermeden önce mevcut kodu okurum."
+        "line": "Önce ölçüyorum, gerçekten yavaş olan yeri düzeltiyorum, sonra tekrar ölçüyorum.",
+        "stack": "Lighthouse · Web Vitals · profil alma · erişilebilirlik denetimi",
+        "proof": "Sayılara bak",
+        "href": "#measure"
       },
       {
         "index": "03",
         "name": "Hareket",
         "tag": "Etkileşim",
-        "what": "Kaydırmayla ilerleyen animasyonlar, sayfa geçişleri ve küçük etkileşimler.",
-        "how": "Hareket bir şey anlatmalı. Telefonda ve hareket azaltma açıkken de deniyorum.",
-        "when": "Bir ürünün ya da fikrin, kaydırdıkça açılmasını istiyorsan.",
-        "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
-        "honesty": "Örneği bu sayfa: her şey hareket ediyor ama hareket kapalıyken de okunuyor."
+        "line": "Bir şey anlatan, hareket kapalıyken de okunan scroll animasyonları ve küçük etkileşimler.",
+        "stack": "GSAP ScrollTrigger · Lenis · CSS scroll-driven animation",
+        "proof": "İbreyi dene",
+        "href": "#measure"
       }
     ]
   },

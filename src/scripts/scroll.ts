@@ -155,70 +155,25 @@ function hero() {
   }
 }
 
-/* --- Act 2: the work rail ------------------------------------------------- */
+/* --- Act 2: what I do ----------------------------------------------------- */
 
 function work() {
-  const root = q("[data-work]");
-  const pin = q("[data-work-pin]");
-  const rail = q("[data-work-rail]");
-  if (!root || !pin || !rail) return;
-
-  const cards = qa("[data-work-card]", rail);
-  const plates = qa<HTMLImageElement>(".card__plate-img", rail);
-
-  if (isMobile()) {
-    // A stack. The plates travel against the scroll inside their frames and
-    // each card rises as it arrives.
-    plates.forEach((img) => {
+  const rows = qa("[data-work-row]");
+  rows.forEach((row) => {
+    const rule = q("[data-work-rule]", row);
+    const name = q("[data-work-name]", row);
+    const body = q("[data-work-body]", row);
+    const st = { trigger: row, start: "top 85%", end: "top 45%", scrub: 0.6 };
+    // The rule is drawn from the thread's side, the name follows it in.
+    if (rule) gsap.fromTo(rule, { scaleX: 0 }, { scaleX: 1, ease: "power2.out", scrollTrigger: st });
+    if (name) gsap.fromTo(name, { xPercent: -4, opacity: 0.15 }, { xPercent: 0, opacity: 1, ease: "power2.out", scrollTrigger: st });
+    if (body)
       gsap.fromTo(
-        img,
-        { yPercent: -8 },
-        {
-          yPercent: 8,
-          ease: "none",
-          scrollTrigger: { trigger: img, start: "top bottom", end: "bottom top", scrub: true },
-        },
+        Array.from(body.children),
+        { y: 18, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.08, ease: "power2.out", scrollTrigger: { ...st, start: "top 80%" } },
       );
-    });
-    cards.forEach((card) => {
-      gsap.fromTo(
-        card,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: "power3.out",
-          scrollTrigger: { trigger: card, start: "top 88%", once: true },
-        },
-      );
-    });
-    return;
-  }
-
-  const travel = () => Math.max(0, rail.scrollWidth - window.innerWidth);
-
-  const tl = gsap.timeline({
-    defaults: { ease: "none" },
-    scrollTrigger: {
-      trigger: root,
-      start: "top top",
-      end: () => `+=${travel() + window.innerHeight * 0.4}`,
-      pin,
-      pinSpacing: true,
-      scrub: 0.7,
-      invalidateOnRefresh: true,
-      anticipatePin: 1,
-    },
   });
-
-  tl.to(rail, { x: () => -travel(), duration: 1 }, 0);
-  // The plates slide inside their frames at a different rate to the rail, so
-  // each card has depth of its own while it crosses.
-  plates.forEach((img) => tl.fromTo(img, { xPercent: 6 }, { xPercent: -6, duration: 1 }, 0));
-  cards.forEach((card, i) =>
-    tl.fromTo(card, { y: i % 2 ? 24 : 0 }, { y: i % 2 ? -24 : 20, duration: 1 }, 0),
-  );
 }
 
 /* --- Act 3: projects ------------------------------------------------------ */
