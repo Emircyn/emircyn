@@ -2,7 +2,7 @@
 
 Personal site of Emircan Erdemci, frontend developer in Ankara. Live at [emircyn.com](https://emircyn.com), in English and Turkish.
 
-The page is built as a scroll-driven film: six acts on a dark ground with one hard cut to paper, continuous ambient motion, and a crimson thread down the left edge that is drawn by scroll and doubles as navigation.
+The page is built as a scroll-driven film: five acts on a dark ground with one hard cut to paper, continuous ambient motion, and a crimson thread down the left edge that is drawn by scroll and doubles as navigation.
 
 ## Stack
 
@@ -18,11 +18,10 @@ The page is built as a scroll-driven film: six acts on a dark ground with one ha
 | # | Section | Device |
 |---|---|---|
 | 1 | Hero | Four planes (room, name, alpha-cut figure, haze) driven by scroll, pointer and an idle loop |
-| 2 | What I do | Three offers, one line each, each pointing at the act that proves it |
-| 3 | Projects | Each project on two planes: a browser frame clipped open from the thread side, a phone riding over it at its own speed |
-| 4 | Measure | A dial clip scrubbed by the wheel; the readout steps through real Lighthouse scores |
-| 5 | Record | Hard cut to paper, reveals only, deliberately still |
-| 6 | Contact | Pointer-lit close with a magnetic mail link |
+| 2 | Work | The three services hold still in a column while the projects pass beside them; the services each project used light up. Each project is a browser frame clipped open from the thread side with a phone riding over it |
+| 3 | Measure | A dial clip scrubbed by the wheel; the readout steps through real Lighthouse scores |
+| 4 | Record | Hard cut to paper, reveals only, deliberately still |
+| 5 | Contact | Pointer-lit close with a magnetic mail link |
 
 Every act has a complete static composition: with `prefers-reduced-motion` or without JavaScript, the page still reads top to bottom.
 

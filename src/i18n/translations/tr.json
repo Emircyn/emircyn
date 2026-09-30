@@ -112,27 +112,24 @@
   "thread": {
     "label": "Sayfa bölümleri",
     "hero": "Emircan",
-    "work": "Neler yapıyorum",
+    "work": "İşler",
     "measure": "Ölçüm",
-    "projects": "Projeler",
     "record": "Deneyim",
     "contact": "İletişim"
   },
   "craft": {
     "label": "Neler yapıyorum",
-    "heading": "Neler yapıyorum?",
-    "note": "Üç tür iş, her birini nerede görebileceğin.",
     "items": [
       {
+        "slug": "interfaces",
         "index": "01",
         "name": "Arayüz",
         "tag": "Geliştirme",
         "line": "Tanıtım sitesinden yönetim paneline, tasarımı her ekranda düzgün duran sayfalara çeviriyorum.",
-        "stack": "React · Vue · Astro · TypeScript · Tailwind",
-        "proof": "Projelerde gör",
-        "href": "#projects"
+        "stack": "React · Vue · Astro · TypeScript · Tailwind"
       },
       {
+        "slug": "improvements",
         "index": "02",
         "name": "İyileştirme",
         "tag": "Bakım",
@@ -142,20 +139,19 @@
         "href": "#measure"
       },
       {
+        "slug": "motion",
         "index": "03",
         "name": "Hareket",
         "tag": "Etkileşim",
         "line": "Bir şey anlatan, hareket kapalıyken de okunan scroll animasyonları ve küçük etkileşimler.",
-        "stack": "GSAP ScrollTrigger · Lenis · CSS scroll-driven animation",
-        "proof": "İbreyi dene",
-        "href": "#measure"
+        "stack": "GSAP ScrollTrigger · Lenis · CSS scroll-driven animation"
       }
     ]
   },
   "projects": {
-    "label": "Seçili işler",
-    "heading": "Son işler",
-    "note": "İkisi de yayında, tıklayıp gezebilirsin.",
+    "label": "İşler",
+    "heading": "Ne yapıyorum, nerede görürsün",
+    "note": "İki proje de yayında, tıklayıp gezebilirsin.",
     "fields": {
       "year": "Yıl",
       "role": "Rol",
@@ -179,7 +175,11 @@
         "host": "parley.emircan-erdemci.workers.dev",
         "source": "https://github.com/Emircyn/parley",
         "alt": "Parley, İstanbul’daki hava durumu sorusunu bir tahmin kartı ve bir hesap kartıyla yanıtlıyor.",
-        "altMobile": "Telefonda Parley, Tokyo’daki yerel saati gösteriyor."
+        "altMobile": "Telefonda Parley, Tokyo’daki yerel saati gösteriyor.",
+        "services": [
+          "interfaces",
+          "motion"
+        ]
       },
       {
         "index": "02",
@@ -194,7 +194,11 @@
         "url": "https://inspireit.com.tr/",
         "host": "inspireit.com.tr",
         "alt": "InspireIT ana sayfası: dijital dönüşüm başlığının yanında dört baklava biçimli görsel.",
-        "altMobile": "Telefonda InspireIT ana sayfası."
+        "altMobile": "Telefonda InspireIT ana sayfası.",
+        "services": [
+          "interfaces",
+          "improvements"
+        ]
       }
     ]
   }

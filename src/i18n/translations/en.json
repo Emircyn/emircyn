@@ -112,27 +112,24 @@
   "thread": {
     "label": "Page sections",
     "hero": "Emircan",
-    "work": "What I do",
+    "work": "Work",
     "measure": "Measure",
-    "projects": "Projects",
     "record": "Experience",
     "contact": "Contact"
   },
   "craft": {
     "label": "What I do",
-    "heading": "What I work on",
-    "note": "Three kinds of work, and where to see each one.",
     "items": [
       {
+        "slug": "interfaces",
         "index": "01",
         "name": "Interfaces",
         "tag": "Building",
         "line": "From a marketing site to an admin panel, I turn a design into pages that hold up on every screen.",
-        "stack": "React · Vue · Astro · TypeScript · Tailwind",
-        "proof": "See it in the projects",
-        "href": "#projects"
+        "stack": "React · Vue · Astro · TypeScript · Tailwind"
       },
       {
+        "slug": "improvements",
         "index": "02",
         "name": "Improvements",
         "tag": "Maintenance",
@@ -142,20 +139,19 @@
         "href": "#measure"
       },
       {
+        "slug": "motion",
         "index": "03",
         "name": "Motion",
         "tag": "Interaction",
         "line": "Scroll animations and small interactions that explain something, and still read with motion turned off.",
-        "stack": "GSAP ScrollTrigger · Lenis · CSS scroll-driven animation",
-        "proof": "Try the dial",
-        "href": "#measure"
+        "stack": "GSAP ScrollTrigger · Lenis · CSS scroll-driven animation"
       }
     ]
   },
   "projects": {
-    "label": "Selected work",
-    "heading": "Recent work",
-    "note": "Both are live. Go and click around.",
+    "label": "Work",
+    "heading": "What I do, and where to see it",
+    "note": "Both projects are live. Go and click around.",
     "fields": {
       "year": "Year",
       "role": "Role",
@@ -179,7 +175,11 @@
         "host": "parley.emircan-erdemci.workers.dev",
         "source": "https://github.com/Emircyn/parley",
         "alt": "Parley answering a question about the weather in Istanbul with a forecast card and a calculation card.",
-        "altMobile": "Parley on a phone, showing the local time in Tokyo."
+        "altMobile": "Parley on a phone, showing the local time in Tokyo.",
+        "services": [
+          "interfaces",
+          "motion"
+        ]
       },
       {
         "index": "02",
@@ -194,7 +194,11 @@
         "url": "https://inspireit.com.tr/",
         "host": "inspireit.com.tr",
         "alt": "The InspireIT home page: a headline about digital transformation next to a grid of four diamond-shaped images.",
-        "altMobile": "The InspireIT home page on a phone."
+        "altMobile": "The InspireIT home page on a phone.",
+        "services": [
+          "interfaces",
+          "improvements"
+        ]
       }
     ]
   }

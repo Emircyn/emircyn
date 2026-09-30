@@ -21,7 +21,11 @@ type Item = {
     source?: string;
     alt: string;
     altMobile: string;
+    services: string[];
 };
+
+type Service = { slug: string; index: string; name: string; line: string; stack: string; proof?: string; href?: string };
+const services = t("craft.items") as Service[];
 
 const items = t("projects.items") as Item[];
 const f = t("projects.fields") as Record<string, string>;
@@ -54,30 +58,57 @@ const list = {
 };
 ---
 
-<!-- Act 3. The proof after the promise. Each project is two screens on two
-     planes: the desktop frame opens from the thread's side as it enters, the
-     phone rides over its corner at its own speed. Static without JS. -->
+<!-- Act 2. What I do and the work that shows it, in one frame. The three
+     services hold still in a column while the projects pass beside them, and
+     the services each project used light up as it crosses the middle of the
+     screen. On narrower screens the column becomes a strip under the bar. -->
 <section
-    id="projects"
+    id="work"
     class="projects grain"
     data-projects
-    data-thread-stop={t("thread.projects")}
-    aria-labelledby="projects-heading"
+    data-thread-stop={t("thread.work")}
+    aria-labelledby="work-heading"
 >
     <header class="shell projects__head">
         <div class="projects__title">
             <span class="label">{t("projects.label")}</span>
-            <h2 id="projects-heading" class="display projects__heading balance">
+            <h2 id="work-heading" class="display projects__heading balance">
                 {t("projects.heading")}
             </h2>
         </div>
         <p class="label projects__note">{t("projects.note")}</p>
     </header>
 
-    <ol class="shell projects__list">
+    <div class="shell works" data-works>
+        <aside class="works__index" aria-labelledby="services-heading" data-services>
+            <h3 id="services-heading" class="label works__label">{t("craft.label")}</h3>
+            <ol class="works__services">
+                {
+                    services.map((sv) => (
+                        <li class="service" data-service={sv.slug}>
+                            <span class="service__dot" aria-hidden="true" />
+                            <span class="service__index">{sv.index}</span>
+                            <span class="service__name">{sv.name}</span>
+                            <p class="service__line pretty">{sv.line}</p>
+                            <p class="service__stack">{sv.stack}</p>
+                            {sv.proof && sv.href && (
+                                <a class="service__proof" href={sv.href}>
+                                    <span class="label label-accent">{sv.proof}</span>
+                                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                        <path d="M12 4v15M5 13l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </a>
+                            )}
+                        </li>
+                    ))
+                }
+            </ol>
+        </aside>
+
+    <ol class="projects__list" id="projects">
         {
             items.map((p, i) => (
-                <li class:list={["project", i % 2 === 1 && "project--flip"]} data-project>
+                <li class:list={["project", i % 2 === 1 && "project--flip"]} data-project data-uses={p.services.join(" ")}>
                     <div class="project__name-row">
                         <span class="display project__index">{p.index}</span>
                         <h3 class="display project__name" data-project-name>
@@ -162,12 +193,12 @@ const list = {
                 </li>
             ))
         }
+        <li class="label projects__next">
+            <span class="projects__next-dot" aria-hidden="true"></span>
+            {t("projects.next")}
+        </li>
     </ol>
-
-    <p class="shell label projects__next">
-        <span class="projects__next-dot" aria-hidden="true"></span>
-        {t("projects.next")}
-    </p>
+    </div>
 
     <script type="application/ld+json" set:html={JSON.stringify(list)} />
 </section>
@@ -377,7 +408,7 @@ const list = {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        margin: calc(var(--spacing) * 14) auto 0;
+        margin-top: calc(var(--spacing) * 2);
     }
     .projects__next-dot {
         width: 7px;
@@ -405,41 +436,178 @@ const list = {
         }
     }
 
-    /* Desktop: the paper act's grid. A 12rem label column on the left keeps
-       the thread's stamps off the work; frame and copy share the rest and
-       swap sides on every other project. */
-    @media (min-width: 900px) {
-        .project {
-            grid-template-columns: 12rem minmax(0, 8fr) minmax(0, 4fr);
-            column-gap: calc(var(--spacing) * 6);
-            row-gap: calc(var(--spacing) * 5);
-        }
-        .project--flip {
-            grid-template-columns: 12rem minmax(0, 4fr) minmax(0, 8fr);
-        }
-        .project__name-row {
-            grid-column: 1 / -1;
+    /* --- The services index ------------------------------------------ */
+    .service__dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: 1.5px solid var(--color-red-lit);
+        flex: none;
+        transition:
+            background-color 240ms var(--ease-out),
+            box-shadow 240ms var(--ease-out);
+    }
+    .service__index {
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        letter-spacing: 0.14em;
+        color: var(--g-accent);
+    }
+    .service__name {
+        font-family: var(--font-display);
+        font-variation-settings: "wdth" 88, "wght" 760;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+    }
+    .service__line,
+    .service__stack {
+        margin: 0;
+    }
+    .service__proof {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--g-accent);
+    }
+    /* With JS the index follows the work: the services used by the project in
+       the middle of the screen are lit, the rest step back. Without it all
+       three read at full strength. */
+    .service {
+        transition: opacity 320ms var(--ease-out);
+    }
+    .works[data-live] .service {
+        opacity: 0.32;
+    }
+    .works[data-live] .service[data-on] {
+        opacity: 1;
+    }
+    .service[data-on] .service__dot {
+        background: var(--color-red-lit);
+        box-shadow: 0 0 12px rgba(255, 50, 71, 0.7);
+    }
+
+    /* Wide screens: the index is a column that holds still beside the work.
+       The first 12rem stays empty for the stamps of the thread. */
+    @media (min-width: 1200px) {
+        .works {
             display: grid;
-            grid-template-columns: 12rem minmax(0, 1fr) auto;
+            grid-template-columns: 12rem 16rem minmax(0, 1fr);
             column-gap: calc(var(--spacing) * 6);
+            align-items: start;
         }
-        .project__stage {
+        .works__index {
             grid-column: 2;
+            position: sticky;
+            top: 16vh;
         }
+        .projects__list {
+            grid-column: 3;
+        }
+        .works__label {
+            margin: 0 0 calc(var(--spacing) * 2);
+        }
+        .works__services {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .service {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+            column-gap: 0.75rem;
+            row-gap: 0.6rem;
+            padding-block: calc(var(--spacing) * 2.5);
+            border-top: 1px solid var(--g-rule);
+        }
+        .service__name {
+            grid-column: 1 / -1;
+            font-size: 1.9rem;
+            line-height: 0.9;
+        }
+        .service__line {
+            grid-column: 1 / -1;
+            font-size: 0.92rem;
+            line-height: 1.45;
+            color: var(--g-ink-soft);
+        }
+        .service__stack {
+            grid-column: 1 / -1;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            line-height: 1.6;
+            color: var(--g-ink-soft);
+        }
+        .service__proof {
+            grid-column: 1 / -1;
+            justify-self: start;
+        }
+        .project__name {
+            font-size: clamp(3.4rem, 6.4vw, 7.5rem);
+        }
+    }
+
+    /* Below that, the index is a strip under the bar that stays while the
+       work scrolls, names only. */
+    @media (max-width: 1199px) {
+        .works__index {
+            position: sticky;
+            top: 3.75rem;
+            z-index: 6;
+            margin: 0 calc(var(--gutter) * -1) calc(var(--spacing) * 5);
+            padding: 0.8rem var(--gutter);
+            background: rgba(11, 10, 10, 0.9);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border-block: 1px solid var(--g-rule);
+        }
+        .works__label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+        }
+        .works__services {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .service {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+        .service__index,
+        .service__line,
+        .service__stack,
+        .service__proof {
+            display: none;
+        }
+        .service__name {
+            font-size: 0.95rem;
+        }
+    }
+
+    /* Tablet and up: the copy under each frame splits into two columns. */
+    @media (min-width: 768px) {
         .project__info {
-            grid-column: 3;
-            padding-top: calc(var(--spacing) * 2);
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            column-gap: calc(var(--spacing) * 5);
+            align-items: start;
         }
-        .project--flip .project__stage {
-            grid-column: 3;
-            grid-row: 2;
+        .project__summary,
+        .project__detail,
+        .project__links {
+            grid-column: 1;
         }
-        .project--flip .project__info {
+        .project__spec {
             grid-column: 2;
-            grid-row: 2;
-        }
-        .projects__next {
-            padding-left: calc(var(--gutter) + 12rem + var(--spacing) * 6);
+            grid-row: 1 / span 3;
+            margin-top: 0.35rem;
         }
     }
 

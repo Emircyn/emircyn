@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 /* ---------------------------------------------------------------------------
    The scroll layer, build 3.
 
-   Six acts, one smooth-scroll instance, one ScrollTrigger per act. Two kinds
+   Five acts, one smooth-scroll instance, one ScrollTrigger per act. Two kinds
    of motion live here and they are kept apart on purpose:
 
      scroll-driven   GSAP timelines, scrubbed. Own the outer plane elements.
@@ -34,6 +34,7 @@ let lenis: Lenis | null = null;
 
 export function initPage() {
   initReveals();
+  initServiceIndex();
   if (window.matchMedia(REDUCED).matches) return;
 
   lenis = new Lenis({
@@ -53,7 +54,6 @@ export function initPage() {
     ctx?.revert();
     ctx = gsap.context(() => {
       hero();
-      work();
       projects();
       close();
     });
@@ -155,28 +155,7 @@ function hero() {
   }
 }
 
-/* --- Act 2: what I do ----------------------------------------------------- */
-
-function work() {
-  const rows = qa("[data-work-row]");
-  rows.forEach((row) => {
-    const rule = q("[data-work-rule]", row);
-    const name = q("[data-work-name]", row);
-    const body = q("[data-work-body]", row);
-    const st = { trigger: row, start: "top 85%", end: "top 45%", scrub: 0.6 };
-    // The rule is drawn from the thread's side, the name follows it in.
-    if (rule) gsap.fromTo(rule, { scaleX: 0 }, { scaleX: 1, ease: "power2.out", scrollTrigger: st });
-    if (name) gsap.fromTo(name, { xPercent: -4, opacity: 0.15 }, { xPercent: 0, opacity: 1, ease: "power2.out", scrollTrigger: st });
-    if (body)
-      gsap.fromTo(
-        Array.from(body.children),
-        { y: 18, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.08, ease: "power2.out", scrollTrigger: { ...st, start: "top 80%" } },
-      );
-  });
-}
-
-/* --- Act 3: projects ------------------------------------------------------ */
+/* --- Act 2: work --------------------------------------------------------- */
 
 function projects() {
   const rows = qa("[data-project]");
@@ -247,7 +226,7 @@ function projects() {
   });
 }
 
-/* --- Act 6: the close ----------------------------------------------------- */
+/* --- Act 5: the close ----------------------------------------------------- */
 
 function close() {
   const root = q("[data-close]");
@@ -359,6 +338,31 @@ function ambient() {
     requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
+}
+
+/* --- Services index --------------------------------------------------------
+
+   Not motion, so it runs under reduced motion too. The project crossing the
+   middle band of the viewport decides which services are lit. */
+
+function initServiceIndex() {
+  const works = q("[data-works]");
+  if (!works || !("IntersectionObserver" in window)) return;
+  const services = qa("[data-service]", works);
+  const rows = qa("[data-project]", works);
+  if (!services.length || !rows.length) return;
+
+  const light = (row: HTMLElement) => {
+    const uses = (row.dataset.uses || "").split(" ");
+    services.forEach((s) => s.toggleAttribute("data-on", uses.includes(s.dataset.service || "")));
+  };
+  works.setAttribute("data-live", "");
+  light(rows[0]);
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => e.isIntersecting && light(e.target as HTMLElement)),
+    { rootMargin: "-45% 0px -45% 0px" },
+  );
+  rows.forEach((r) => io.observe(r));
 }
 
 /* --- Reveals -------------------------------------------------------------- */
