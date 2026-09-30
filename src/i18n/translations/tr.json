@@ -85,7 +85,8 @@
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Geliştirici",
-    "description": "Ankara’da frontend geliştirici Emircan Erdemci. React, Vue ve Astro ile hızlı ve özenli animasyonlu web arayüzleri geliştiriyor. Projelerine göz at, iletişime geç."
+    "description": "Ankara’da frontend geliştirici Emircan Erdemci. React, Vue ve Astro ile hızlı, özenli animasyonlu web arayüzleri. Son işlerine göz at, iletişime geç.",
+    "imageAlt": "Ankara’da frontend geliştirici Emircan Erdemci ve çizim portresi"
   },
   "plates": {
     "instrument": "Ölçüm kadranı ve ibresi."

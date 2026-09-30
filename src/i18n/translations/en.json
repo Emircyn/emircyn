@@ -85,7 +85,8 @@
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Developer",
-    "description": "Emircan Erdemci is a frontend developer in Ankara. He builds fast, carefully animated web interfaces with React, Vue and Astro. See recent projects and get in touch."
+    "description": "Emircan Erdemci, frontend developer in Ankara. Fast, carefully animated web interfaces with React, Vue and Astro. See recent work and get in touch.",
+    "imageAlt": "Emircan Erdemci, frontend developer in Ankara, beside an illustrated portrait"
   },
   "plates": {
     "instrument": "A dial gauge and its needle."

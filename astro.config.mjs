@@ -22,6 +22,8 @@ export default defineConfig({
       // The root is a language gate, not a page. Only the two real pages are
       // listed, so the index never advertises a redirect as content.
       filter: (page) => page !== "https://emircyn.com/",
+      // The build date, so a crawler can tell the pages changed since it last came.
+      lastmod: new Date(),
       // These have to match the hreflang values in SEO.astro, or the sitemap and
       // the markup disagree about the same two URLs. Region-less on purpose: the
       // site is for English and Turkish readers anywhere, not the US and Turkey.
