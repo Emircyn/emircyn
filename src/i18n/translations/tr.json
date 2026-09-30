@@ -5,30 +5,7 @@
     "location": "Ankara, Türkiye"
   },
   "hero": {
-    "scenes": [
-      {
-        "label": "Kısaca",
-        "text": "Ankara’da yaşıyorum. InspireIT’te frontend geliştiriciyim."
-      },
-      {
-        "label": "Arayüz",
-        "text": "Web siteleri ve uygulamalar için arayüz geliştiriyorum."
-      },
-      {
-        "label": "Kod",
-        "text": "Kodun okunaklı ve değiştirilebilir kalmasına dikkat ediyorum."
-      },
-      {
-        "label": "Performans",
-        "text": "Yavaş sayfaların nedenini bulup düzeltiyorum."
-      },
-      {
-        "label": "Kullanım",
-        "text": "Arayüzün farklı ekranlarda rahat kullanılmasını sağlıyorum."
-      }
-    ],
-    "staticIntro": "Ankara’da yaşayan bir frontend geliştiriciyim. InspireIT’te çalışıyorum.",
-    "beat": "İyi görünen ve iyi çalışan web arayüzleri geliştiriyorum.",
+    "beat": "Web’in insanların dokunduğu tarafını geliştiriyorum.",
     "ticker": [
       "Frontend geliştirme",
       "Ankara",
@@ -48,9 +25,9 @@
   "about": {
     "label": "Hakkımda",
     "body": [
-      "Ankara’da yaşıyorum ve InspireIT’te frontend geliştirici olarak çalışıyorum. Daha önce GuruDesk’te çalıştım; web geliştirmeye Bilgeweb’deki stajımla başladım.",
-      "Bir tasarımın tarayıcıda iyi çalışan bir arayüze dönüşmesiyle ilgileniyorum. React, Vue ve Astro kullanarak yeni sayfalar geliştiriyor, mevcut arayüzleri düzenliyor ve performans sorunlarını çözüyorum.",
-      "Detaylara zaman ayırmayı seviyorum. Bir butonun tepkisi, sayfanın telefondaki kullanımı ve animasyonun doğru yerde bitmesi benim için işin parçası."
+      "Ankara’da yaşıyorum, InspireIT’te frontend geliştiriciyim. Öncesinde bir yılı aşkın süre GuruDesk’te çalıştım; bu işe 2019’da Bilgeweb’de stajyer olarak başladım.",
+      "İşin en sevdiğim anı, bir tasarımın resim olmaktan çıkıp tarayıcıda çalışmaya başladığı an. Çoğu gün bu React, Vue ya da Astro demek: yeni sayfalar, var olan ürünlerde düzeltmeler ve bir şeyin neden yavaş olduğunu bulmak.",
+      "Küçük şeylere çok vakit ayırırım. Bir butonun dokunuşa nasıl cevap verdiği, sayfanın telefonda nasıl davrandığı, bir animasyonun nerede durduğu."
     ]
   },
   "record": {
@@ -90,7 +67,7 @@
   "contact": {
     "label": "İletişim",
     "heading": "Bir fikrin mi var?",
-    "body": "Bir web sitesi, ürün arayüzü ya da sadece bir fikir hakkında konuşmak için bana yazabilirsin.",
+    "body": "Bir web sitesi, bir ürün arayüzü ya da henüz tam oturmamış bir fikir. Anlat, konuşalım.",
     "action": "E-posta gönder",
     "github": "GitHub",
     "linkedin": "LinkedIn",
@@ -108,7 +85,7 @@
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Geliştirici",
-    "description": "Ankara’da yaşayan frontend geliştirici Emircan Erdemci. React, Vue ve Astro ile web arayüzleri geliştiriyor; performans ve etkileşim üzerine çalışıyor."
+    "description": "Ankara’da frontend geliştirici Emircan Erdemci. React, Vue ve Astro ile hızlı ve özenli animasyonlu web arayüzleri geliştiriyor. Projelerine göz at, iletişime geç."
   },
   "plates": {
     "instrument": "Ölçüm kadranı ve ibresi.",
@@ -116,26 +93,22 @@
     "caliper": "İnce bir kâğıt destesini ölçen kumpas."
   },
   "scrub": {
-    "label": "Zaman",
-    "caption": "Zaman akarken ibre de yolunu buluyor."
+    "label": "Dene",
+    "caption": "İbre, sadece sen kaydırınca ilerliyor."
   },
   "thread": {
     "label": "Sayfa bölümleri",
     "hero": "Emircan",
-    "manifesto": "Yaklaşım",
     "work": "Neler yapıyorum",
     "measure": "Deneme",
     "projects": "Projeler",
     "record": "Deneyim",
     "contact": "İletişim"
   },
-  "manifesto": {
-    "label": "Nasıl çalışıyorum"
-  },
   "craft": {
     "label": "Neler yapıyorum",
     "heading": "Neler yapıyorum?",
-    "note": "Yeni arayüzler, mevcut ürünler ve web etkileşimleri.",
+    "note": "Üç tür iş; çoğu zaman iç içe.",
     "fields": {
       "what": "Ne",
       "how": "Nasıl",
@@ -149,37 +122,37 @@
         "name": "Arayüz",
         "tag": "Geliştirme",
         "what": "Tanıtım siteleri, web uygulamaları ve yönetim panelleri.",
-        "how": "Tasarımı tarayıcıda çalışan sayfalara dönüştürüyorum. Ortak parçaları tekrar kullanılabilen bileşenler olarak kuruyorum.",
-        "when": "Yeni bir siteye veya uygulamana çalışan bir arayüz gerektiğinde.",
+        "how": "Tasarımı her ekranda düzgün duran sayfalara çeviriyorum; tekrar eden parçaları bir kez, bileşen olarak kuruyorum.",
+        "when": "Elinde bir tasarım ya da en azından bir fikir var ve bunun tarayıcıda çalışması gerekiyor.",
         "stack": "React, Vue, Astro, TypeScript, Tailwind",
-        "honesty": "Tasarım hazırsa oradan ilerliyorum; değilse birlikte netleştiriyoruz."
+        "honesty": "Tasarım yok mu? Kod yazmadan önce birlikte çizebiliriz."
       },
       {
         "index": "02",
         "name": "İyileştirme",
         "tag": "Bakım",
-        "what": "Yavaş açılan sayfalar ve zamanla karmaşıklaşan arayüzler.",
-        "how": "Önce sorunun kaynağını ölçüyorum. Sonra kodu düzenleyip sonucu yeniden kontrol ediyorum.",
-        "when": "Siten telefonda yavaş açılıyorsa veya küçük değişiklikler gereğinden uzun sürüyorsa.",
+        "what": "Yavaş açılan sayfalar ve zamanla değiştirmesi zorlaşmış kod.",
+        "how": "Önce ölçüyorum, gerçekten yavaş olan yeri düzeltiyorum, sonra tekrar ölçüyorum.",
+        "when": "Siten telefonda sürünüyorsa ya da küçük değişiklikler günler sürüyorsa.",
         "stack": "Lighthouse, Web Vitals, profil alma, erişilebilirlik denetimi",
-        "honesty": "Mevcut kodu anlamadan büyük bir değişiklik önermiyorum."
+        "honesty": "Bir şeyi baştan yazmayı önermeden önce mevcut kodu okurum."
       },
       {
         "index": "03",
-        "name": "Animasyon",
+        "name": "Hareket",
         "tag": "Etkileşim",
         "what": "Kaydırmayla ilerleyen animasyonlar, sayfa geçişleri ve küçük etkileşimler.",
-        "how": "Hareketi içeriğin önüne geçirmeden kuruyorum. Mobilde ve hareket azaltma tercihi açıkken de kontrol ediyorum.",
-        "when": "Bir ürünü veya fikri sayfa hareketleriyle anlatmak istediğinde.",
+        "how": "Hareket bir şey anlatmalı. Telefonda ve hareket azaltma açıkken de deniyorum.",
+        "when": "Bir ürünün ya da fikrin, kaydırdıkça açılmasını istiyorsan.",
         "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
-        "honesty": "Bu sayfadaki kadran, kullandığım yaklaşımın küçük bir örneği."
+        "honesty": "Örneği bu sayfa: her şey hareket ediyor ama hareket kapalıyken de okunuyor."
       }
     ]
   },
   "projects": {
     "label": "Seçili işler",
-    "heading": "Geliştirdiğim projeler",
-    "note": "Hepsi yayında, göz atabilirsiniz.",
+    "heading": "Son işler",
+    "note": "İkisi de yayında, tıklayıp gezebilirsin.",
     "fields": {
       "year": "Yıl",
       "role": "Rol",
@@ -187,7 +160,7 @@
     },
     "visit": "Siteyi ziyaret et",
     "source": "Kaynak kodu",
-    "next": "Sıradaki proje yapım aşamasında.",
+    "next": "Sıradaki proje tezgâhta.",
     "items": [
       {
         "index": "01",
@@ -196,8 +169,8 @@
         "kind": "Yapay zekâ sohbet uygulaması",
         "year": "2026",
         "role": "Tasarım ve geliştirme",
-        "summary": "Sadece metinle cevap vermeyen bir yapay zekâ sohbeti. Hava durumunu sorunca tahmin kartı, bir hesap sorunca kesin sonuç geliyor. Cevaplar yazıldıkça ekrana akıyor.",
-        "detail": "Nuxt 4 ve Nuxt UI ile geliştirildi, tamamen Cloudflare’ın ücretsiz katmanında çalışıyor. Turnstile, imzalı oturumlar ve istek sınırları yapay zekâ kotasını gerçek ziyaretçilere saklıyor.",
+        "summary": "Sadece metinle cevap vermeyen bir yapay zekâ sohbeti. Hava durumunu sorunca tahmin kartı çıkıyor, bir hesap sorunca kesin sonuç geliyor. Cevaplar yazıldıkça ekrana düşüyor.",
+        "detail": "Nuxt 4 ve Nuxt UI ile geliştirildi, tamamen Cloudflare’ın ücretsiz katmanında çalışıyor. Turnstile, imzalı oturumlar ve istek sınırları botları yapay zekâ kotasından uzak tutuyor.",
         "stack": "Nuxt 4 · Nuxt UI · AI SDK · Workers AI · TypeScript",
         "url": "https://parley.emircan-erdemci.workers.dev",
         "host": "parley.emircan-erdemci.workers.dev",
@@ -212,8 +185,8 @@
         "kind": "Kurumsal web sitesi",
         "year": "2026",
         "role": "Frontend geliştirme",
-        "summary": "Çalıştığım şirket InspireIT’in web sitesi. InspireIT, 2003’ten beri kurumsal firmalara veri, bulut ve altyapı hizmetleri veren bir bilişim şirketi.",
-        "detail": "Türkçe ve İngilizce; ürünler, sektörler ve kaynaklar için sayfalar, özel bir tema ve özel eklentilerle.",
+        "summary": "Çalıştığım şirket InspireIT’in web sitesi. InspireIT, 2003’ten beri kurumsal firmalara veri, bulut ve BT altyapı hizmetleri veriyor.",
+        "detail": "İki dil, her ürün ve sektör için ayrı sayfa; özel bir WordPress teması ve siteye özel yazılmış eklentilerle.",
         "stack": "WordPress · Elementor · PHP · özel tema ve eklentiler",
         "url": "https://inspireit.com.tr/",
         "host": "inspireit.com.tr",

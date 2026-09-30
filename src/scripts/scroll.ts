@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 /* ---------------------------------------------------------------------------
    The scroll layer, build 3.
 
-   Seven acts, one smooth-scroll instance, one ScrollTrigger per act. Two kinds
+   Six acts, one smooth-scroll instance, one ScrollTrigger per act. Two kinds
    of motion live here and they are kept apart on purpose:
 
      scroll-driven   GSAP timelines, scrubbed. Own the outer plane elements.
@@ -53,7 +53,6 @@ export function initPage() {
     ctx?.revert();
     ctx = gsap.context(() => {
       hero();
-      manifesto();
       work();
       projects();
       close();
@@ -156,67 +155,7 @@ function hero() {
   }
 }
 
-/* --- Act 2: the manifesto ------------------------------------------------- */
-
-function manifesto() {
-  const root = q("[data-manifesto]");
-  const pin = q("[data-manifesto-pin]");
-  if (!root || !pin) return;
-
-  const items = qa("[data-manifesto-item]", root);
-  const band = q("[data-manifesto-band]", root);
-  const n = items.length;
-  if (!n) return;
-
-  const mobile = isMobile();
-  const span = mobile ? 0.8 * n : 0.9 * n;
-
-  const tl = gsap.timeline({
-    defaults: { ease: "none" },
-    scrollTrigger: {
-      trigger: root,
-      start: "top top",
-      end: () => `+=${window.innerHeight * span}`,
-      pin,
-      pinSpacing: true,
-      scrub: 0.5,
-      invalidateOnRefresh: true,
-      anticipatePin: 1,
-    },
-  });
-
-  if (band) tl.fromTo(band, { xPercent: 0 }, { xPercent: -50, duration: 1 }, 0);
-
-  const slot = 1 / n;
-  const inDur = slot * 0.36;
-  const outDur = slot * 0.24;
-  // The next sentence starts arriving while the last is still leaving, so no
-  // scroll position ever shows an empty frame.
-  const hold = -outDur * 0.45;
-
-  items.forEach((item, i) => {
-    const words = qa(".manifesto__w-in", item);
-    const at = i * slot;
-
-    if (i === 0) {
-      gsap.set(item, { opacity: 1, scale: 1, yPercent: 0 });
-      gsap.set(words, { yPercent: 0 });
-    } else {
-      tl.fromTo(item, { opacity: 0, scale: 1, yPercent: 4 }, { opacity: 1, yPercent: 0, duration: inDur * 0.5 }, at + hold);
-      tl.fromTo(
-        words,
-        { yPercent: 110 },
-        { yPercent: 0, duration: inDur, ease: "power3.out", stagger: inDur / Math.max(words.length, 1) * 0.6 },
-        at + hold,
-      );
-    }
-    if (i < n - 1) {
-      tl.to(item, { opacity: 0, scale: 0.94, yPercent: -6, duration: outDur, ease: "power2.in" }, at + slot - outDur);
-    }
-  });
-}
-
-/* --- Act 3: the work rail ------------------------------------------------- */
+/* --- Act 2: the work rail ------------------------------------------------- */
 
 function work() {
   const root = q("[data-work]");
@@ -282,7 +221,7 @@ function work() {
   );
 }
 
-/* --- Act 5: projects ------------------------------------------------------ */
+/* --- Act 3: projects ------------------------------------------------------ */
 
 function projects() {
   const rows = qa("[data-project]");
@@ -353,7 +292,7 @@ function projects() {
   });
 }
 
-/* --- Act 7: the close ----------------------------------------------------- */
+/* --- Act 6: the close ----------------------------------------------------- */
 
 function close() {
   const root = q("[data-close]");

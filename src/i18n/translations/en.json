@@ -5,30 +5,7 @@
     "location": "Ankara, Turkey"
   },
   "hero": {
-    "scenes": [
-      {
-        "label": "A little about me",
-        "text": "I’m based in Ankara and work as a frontend developer at InspireIT."
-      },
-      {
-        "label": "Interfaces",
-        "text": "I build interfaces for websites and web apps."
-      },
-      {
-        "label": "Code",
-        "text": "I try to keep code readable and easy to change."
-      },
-      {
-        "label": "Performance",
-        "text": "I find out why a page is slow and fix it."
-      },
-      {
-        "label": "Usability",
-        "text": "The interface should feel good on every screen."
-      }
-    ],
-    "staticIntro": "I’m a frontend developer based in Ankara, working at InspireIT.",
-    "beat": "I build web interfaces that look good and work well.",
+    "beat": "I build the part of the web people actually touch.",
     "ticker": [
       "Frontend development",
       "Ankara",
@@ -48,9 +25,9 @@
   "about": {
     "label": "About me",
     "body": [
-      "I live in Ankara and work as a frontend developer at InspireIT. Before that, I worked at GuruDesk and started out with a web development internship at Bilgeweb.",
-      "I’m interested in the point where a design becomes a working interface in the browser. I use React, Vue and Astro to build new pages, improve existing products and solve performance problems.",
-      "I like spending time on the details. The response of a button, the way a page works on a phone and where an animation ends all matter to me."
+      "I’m a frontend developer at InspireIT, and I live in Ankara. Before that I spent over a year at GuruDesk, and I got my start in 2019 as an intern at Bilgeweb.",
+      "My favourite moment in the work is when a design stops being a picture and starts working in the browser. Most days that means React, Vue or Astro: new pages, fixes to products that already exist, and finding out why something is slow.",
+      "I spend a lot of time on small things. How a button answers a tap, how a page behaves on a phone, where an animation comes to rest."
     ]
   },
   "record": {
@@ -90,7 +67,7 @@
   "contact": {
     "label": "Contact",
     "heading": "Have an idea?",
-    "body": "Email me if you want to talk about a website, a product interface or an early idea.",
+    "body": "A website, a product interface, or an idea that hasn’t quite settled yet. Tell me about it.",
     "action": "Email me",
     "github": "GitHub",
     "linkedin": "LinkedIn",
@@ -108,7 +85,7 @@
   },
   "seo": {
     "title": "Emircan Erdemci | Frontend Developer",
-    "description": "Emircan Erdemci is a frontend developer based in Ankara. I build web interfaces with React, Vue and Astro, focusing on performance and interaction."
+    "description": "Emircan Erdemci is a frontend developer in Ankara. He builds fast, carefully animated web interfaces with React, Vue and Astro. See recent projects and get in touch."
   },
   "plates": {
     "instrument": "A dial gauge and its needle.",
@@ -116,26 +93,22 @@
     "caliper": "Calipers measuring a thin stack of paper."
   },
   "scrub": {
-    "label": "Time",
-    "caption": "As time passes, the needle finds its way."
+    "label": "Try it",
+    "caption": "The needle only moves when you scroll."
   },
   "thread": {
     "label": "Page sections",
     "hero": "Emircan",
-    "manifesto": "Approach",
     "work": "What I do",
     "measure": "Experiment",
     "projects": "Projects",
     "record": "Experience",
     "contact": "Contact"
   },
-  "manifesto": {
-    "label": "How I work"
-  },
   "craft": {
     "label": "What I do",
     "heading": "What I work on",
-    "note": "New interfaces, existing products and web interaction.",
+    "note": "Three kinds of work, usually mixed together.",
     "fields": {
       "what": "What",
       "how": "How",
@@ -147,39 +120,39 @@
       {
         "index": "01",
         "name": "Interfaces",
-        "tag": "Development",
-        "what": "Marketing sites, web apps and dashboards.",
-        "how": "I turn designs into responsive pages and build shared elements as reusable components.",
-        "when": "You need a new website or a working interface for your app.",
+        "tag": "Building",
+        "what": "Marketing sites, web apps and admin panels.",
+        "how": "I turn a design into pages that hold up on every screen, and build the parts that repeat once, as components.",
+        "when": "You have a design, or at least an idea, and you need it working in the browser.",
         "stack": "React, Vue, Astro, TypeScript, Tailwind",
-        "honesty": "If you have a design, I’ll build from it. If not, we can work it out together."
+        "honesty": "No design yet? We can sketch it together before I write any code."
       },
       {
         "index": "02",
         "name": "Improvements",
         "tag": "Maintenance",
-        "what": "Slow pages and interfaces that have become difficult to maintain.",
-        "how": "I measure the problem first, then update the code and check the result again.",
-        "when": "Your site loads slowly on a phone or small changes take too long.",
+        "what": "Pages that load slowly, and code that has grown hard to change.",
+        "how": "I measure first, fix the part that is actually slow, then measure again.",
+        "when": "Your site crawls on a phone, or small changes keep taking days.",
         "stack": "Lighthouse, Web Vitals, profiling, accessibility audits",
-        "honesty": "I look at the existing code before suggesting a large change."
+        "honesty": "I read the existing code before I suggest rewriting any of it."
       },
       {
         "index": "03",
-        "name": "Animation",
+        "name": "Motion",
         "tag": "Interaction",
         "what": "Scroll animations, page transitions and small interactions.",
-        "how": "I keep motion tied to the content, then check it on mobile and with reduced motion enabled.",
-        "when": "You want to explain a product or idea through movement on the page.",
+        "how": "Motion has to explain something. I test it on phones and with reduced motion turned on.",
+        "when": "You want a product or an idea to unfold as people scroll.",
         "stack": "GSAP ScrollTrigger, Lenis, CSS scroll-driven animation",
-        "honesty": "The dial on this page is a small example of the approach."
+        "honesty": "This page is the example: it all moves, and it all still reads with motion turned off."
       }
     ]
   },
   "projects": {
     "label": "Selected work",
-    "heading": "Things I have built",
-    "note": "Live, and open to look at.",
+    "heading": "Recent work",
+    "note": "Both are live. Go and click around.",
     "fields": {
       "year": "Year",
       "role": "Role",
@@ -187,7 +160,7 @@
     },
     "visit": "Visit the site",
     "source": "Source code",
-    "next": "The next one is in production.",
+    "next": "The next one is on the workbench.",
     "items": [
       {
         "index": "01",
@@ -196,8 +169,8 @@
         "kind": "AI chat app",
         "year": "2026",
         "role": "Design and development",
-        "summary": "An AI chat that answers with more than text. Ask about the weather and a forecast card appears; ask for a calculation and you get the exact result. Replies stream in as they are written.",
-        "detail": "Built with Nuxt 4 and Nuxt UI, it runs entirely on Cloudflare’s free tier. Turnstile, signed sessions and rate limits keep the AI quota for real visitors.",
+        "summary": "An AI chat that answers with more than text. Ask for the weather and a forecast card appears; ask for a sum and you get the exact number. Replies show up as they are being written.",
+        "detail": "Built with Nuxt 4 and Nuxt UI, it runs entirely on Cloudflare’s free tier. Turnstile, signed sessions and rate limits keep bots away from the AI quota.",
         "stack": "Nuxt 4 · Nuxt UI · AI SDK · Workers AI · TypeScript",
         "url": "https://parley.emircan-erdemci.workers.dev",
         "host": "parley.emircan-erdemci.workers.dev",
@@ -212,8 +185,8 @@
         "kind": "Corporate website",
         "year": "2026",
         "role": "Frontend development",
-        "summary": "The website of InspireIT, the company I work at: an IT firm that has served enterprises with data, cloud and infrastructure services since 2003.",
-        "detail": "Turkish and English, with pages for products, sectors and resources, built on a custom theme and custom plugins.",
+        "summary": "The website of InspireIT, the company I work for. Since 2003 it has provided data, cloud and IT infrastructure services to enterprises.",
+        "detail": "Two languages, a page for every product and sector, on a custom WordPress theme with plugins made for the site.",
         "stack": "WordPress · Elementor · PHP · custom theme and plugins",
         "url": "https://inspireit.com.tr/",
         "host": "inspireit.com.tr",
