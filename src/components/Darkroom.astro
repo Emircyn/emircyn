@@ -583,8 +583,11 @@ const sizes =
         .room--home {
             --print-w: 78vw;
         }
+        /* The detail page's single card hangs at the top of its column. */
         .room--single {
             --print-w: 100%;
+            --line-y: 0px;
+            --curve: 1.8;
         }
         .card__go {
             width: 2.1rem;

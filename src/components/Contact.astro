@@ -178,8 +178,14 @@ const headingLines = t("contact.headingLines") as string[];
         text-transform: uppercase;
     }
     .close__links a {
+        /* The underline stays tight to the word; the target around it is a
+           full fingertip tall. */
+        display: inline-block;
         border-bottom: 1px solid var(--g-rule-strong);
+        padding-top: 0.75rem;
         padding-bottom: 0.2rem;
+        margin-top: -0.75rem;
+        line-height: 1.9;
     }
     .close__colophon {
         position: relative;

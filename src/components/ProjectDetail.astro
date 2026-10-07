@@ -295,6 +295,9 @@ const nextShot = shot(next.id, "desktop", lang);
     }
     .dhero__crumbs a {
         color: var(--color-bone);
+        /* A finger-sized target around an 11px label. */
+        padding-block: 0.9rem;
+        margin-block: -0.9rem;
     }
     .dhero__crumbs [aria-current] {
         color: var(--color-red-lit);
@@ -350,7 +353,7 @@ const nextShot = shot(next.id, "desktop", lang);
         display: inline-flex;
         align-items: center;
         gap: 0.6rem;
-        padding-block: 0.5rem;
+        min-height: 2.75rem;
     }
     .dlink svg {
         color: var(--g-accent);
@@ -871,6 +874,16 @@ const nextShot = shot(next.id, "desktop", lang);
         }
         .dhero__meta li {
             grid-template-columns: 5.5rem minmax(0, 1fr);
+        }
+        .dbrief {
+            gap: calc(var(--spacing) * 5);
+        }
+        .dbrief__summary {
+            font-size: 1.3rem;
+            line-height: 1.22;
+        }
+        .dbrief__cols p {
+            font-size: 1rem;
         }
         .dsec,
         .dshots {
