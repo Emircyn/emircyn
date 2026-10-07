@@ -1,0 +1,79 @@
+{
+  "name": "Porch",
+  "order": 1,
+  "year": 2026,
+  "featured": true,
+  "url": "https://porch.emircan-erdemci.workers.dev",
+  "host": "porch.emircan-erdemci.workers.dev",
+  "source": "https://github.com/Emircyn/porch",
+  "services": ["interface", "backend", "data"],
+  "tiers": [
+    { "key": "interface", "tech": ["Next.js 16", "Tailwind CSS 4", "shadcn/ui", "dnd-kit", "Recharts"] },
+    { "key": "server", "tech": ["Cloudflare Workers", "OpenNext", "Workers KV"] },
+    { "key": "data", "tech": ["Postgres", "Row-level security", "Supabase Auth", "Supabase Storage"] },
+    { "key": "services", "tech": ["Stripe Checkout", "Customer Portal", "Webhooks"] }
+  ],
+  "trace": ["interface", "services", "server", "data", "interface"],
+  "en": {
+    "kind": "Link-in-bio SaaS",
+    "role": "Product, design and full stack development",
+    "line": "A link page builder with live previews and subscriptions.",
+    "summary": "Put your links on one page, customise the theme and track clicks. Edits appear in a live phone preview. Stripe payments use test mode.",
+    "problem": "Fast public pages and API-proof subscription limits, within the Workers free plan’s CPU constraints.",
+    "contribution": "I built the product, interface, database rules, Stripe integration and deployment, with 62 tests running in CI.",
+    "alt": "Porch homepage in dark mode, with a headline and three phone previews of personal link pages.",
+    "altMobile": "A Porch link page in light mode on mobile, showing a potter’s profile, a featured link and four additional links.",
+    "tiers": {
+      "interface": { "runs": "Browser", "does": "Live previews, accessible link ordering and click analytics. Public pages use minimal JavaScript." },
+      "server": { "runs": "Cloudflare Workers", "does": "Runs Next.js, verifies webhooks and caches public pages for a day, refreshing after edits." },
+      "data": { "runs": "Supabase", "does": "Triggers, column permissions and row-level security enforce plans. A dedicated function exposes public data." },
+      "services": { "runs": "Stripe", "does": "Checkout, subscription management and signed webhooks, all in test mode." }
+    },
+    "traceTitle": "A Pro upgrade in test mode",
+    "traceSteps": [
+      "The user opens Stripe Checkout in test mode.",
+      "Stripe completes the test payment and sends a webhook.",
+      "The Worker verifies the signature and fetches the current subscription.",
+      "The handler updates the plan; database rules prevent user-side changes.",
+      "All themes and unlimited links become available."
+    ],
+    "decisions": [
+      { "title": "Database-enforced plans", "body": "Postgres enforces link limits and Pro themes. Users cannot change their plans. PGlite tests verify the rules." },
+      { "title": "Verified webhooks", "body": "Each verified event fetches the current Stripe subscription, reducing outdated updates from duplicate or reordered events." },
+      { "title": "Worker CPU usage", "body": "Static assets and caching reduced CPU usage. Recorded warm requests: 5 to 14 ms. Compressed bundle: 2.65 to 1.64 MiB." },
+      { "title": "Lightweight pages", "body": "Separate layouts, CSS dark mode and sendBeacon keep pages light. Recorded mobile Lighthouse performance: 98." },
+      { "title": "Theme contrast", "body": "An import script adjusts OKLCH lightness to meet WCAG AA contrast thresholds." }
+    ]
+  },
+  "tr": {
+    "kind": "Bağlantı sayfası oluşturucu",
+    "role": "Ürün tasarımı ve full stack geliştirme",
+    "line": "Canlı önizleme ve aboneliklerle kişisel bağlantı sayfaları.",
+    "summary": "Bağlantılarınızı tek sayfada toplayın, temanızı seçin ve tıklamaları takip edin. Düzenlemeler telefon önizlemesine anında yansır. Stripe ödemeleri test modunda çalışır.",
+    "problem": "Workers ücretsiz planının CPU sınırları içinde hızlı sayfalar ve API üzerinden aşılamayan abonelik kuralları.",
+    "contribution": "Ürünü, arayüzü, veritabanı kurallarını, Stripe entegrasyonunu ve dağıtımı geliştirdim. CI üzerinden 62 test çalışıyor.",
+    "alt": "Koyu temada Porch ana sayfası; başlığın yanında kişisel bağlantı sayfalarını gösteren üç telefon önizlemesi.",
+    "altMobile": "Açık temada mobil Porch sayfası; seramikçi profili, öne çıkan bir bağlantı ve dört ek bağlantı.",
+    "tiers": {
+      "interface": { "runs": "Tarayıcı", "does": "Canlı önizleme, erişilebilir bağlantı sıralama ve tıklama analitiği. Herkese açık sayfalarda çok az JavaScript." },
+      "server": { "runs": "Cloudflare Workers", "does": "Next.js çalıştırıyor, webhook’ları doğruluyor. Sayfaları bir gün önbellekte tutup düzenleme sonrası yeniliyor." },
+      "data": { "runs": "Supabase", "does": "Tetikleyiciler, sütun yetkileri ve satır düzeyinde güvenlikle plan denetimi. Herkese açık veriler için özel işlev." },
+      "services": { "runs": "Stripe", "does": "Test modunda ödeme, abonelik yönetimi ve imzalı webhook’lar." }
+    },
+    "traceTitle": "Test modunda Pro planına geçiş",
+    "traceSteps": [
+      "Kullanıcı Stripe Checkout’u test modunda açar.",
+      "Stripe test ödemesini tamamlar ve webhook gönderir.",
+      "Worker imzayı doğrular, güncel aboneliği Stripe üzerinden okur.",
+      "Sunucu planı günceller; veritabanı kuralları kullanıcı müdahalesini engeller.",
+      "Tüm temalar ve sınırsız bağlantı kullanımı açılır."
+    ],
+    "decisions": [
+      { "title": "Veritabanında plan kuralları", "body": "Postgres, bağlantı sınırlarını ve Pro temaları denetliyor. Kullanıcılar planlarını değiştiremiyor. Kurallar PGlite ile test ediliyor." },
+      { "title": "Doğrulanmış webhook’lar", "body": "Doğrulanan her olayda güncel abonelik okunuyor; tekrarlanan veya sırası değişen olaylardan kaynaklanan eski güncelleme riski azalıyor." },
+      { "title": "Worker CPU kullanımı", "body": "Statik dosyalar ve önbellekle CPU kullanımı azaldı. Ölçülen sıcak istekler: 5 ila 14 ms. Sıkıştırılmış paket: 2,65’ten 1,64 MiB boyutuna." },
+      { "title": "Hafif sayfalar", "body": "Ayrı yerleşimler, CSS ile koyu tema ve sendBeacon. Kaydedilen mobil Lighthouse performans puanı: 98." },
+      { "title": "Tema kontrastı", "body": "İçe aktarma betiği, OKLCH açıklığını WCAG AA kontrast eşiklerine göre ayarlıyor." }
+    ]
+  }
+}

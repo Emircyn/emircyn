@@ -1,0 +1,238 @@
+---
+import Darkroom, { type Print } from "@/components/Darkroom.astro";
+import { useTranslations, type Locale } from "@/i18n/utils";
+import { getProjects, indexOf, projectPath, projectsPath, shot } from "@/lib/projects";
+
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+
+type Service = { slug: string; index: string; name: string; line: string; stack: string };
+const services = t("services.items") as Service[];
+
+const all = await getProjects();
+const featured = all.filter((p) => p.data.featured);
+const prints: Print[] = featured.map((p) => ({
+    slug: p.id,
+    index: indexOf(p),
+    name: p.data.name,
+    kind: p.data[lang].kind,
+    line: p.data[lang].line,
+    href: projectPath(lang, p.id),
+    img: shot(p.id, "desktop", lang),
+    alt: p.data[lang].alt,
+    uses: p.data.services,
+}));
+---
+
+<!-- Act 2. The work, introduced rather than shown in full. A stretch of the
+     line from the projects page, pinned while the page scroll walks it from
+     print to print, under the four layers a product is built in. The layers
+     each print used light up as it reaches the middle. The line ends on a
+     card that leads to every project; each print leads to its own page. -->
+<section
+    id="work"
+    class="work grain"
+    data-work
+    data-thread-stop={t("thread.work")}
+    aria-labelledby="work-heading"
+>
+    <div class="work__pin" data-work-pin>
+        <header class="shell work__head">
+            <div class="work__title">
+                <span class="label">{t("work.label")}</span>
+                <h2 id="work-heading" class="display work__heading balance">{t("work.heading")}</h2>
+            </div>
+            <p class="work__intro pretty">{t("work.intro")}</p>
+        </header>
+
+        <div class="shell work__layers" data-services>
+            <h3 class="label work__layers-label">{t("services.label")}</h3>
+            <ol class="layers">
+                {
+                    services.map((sv) => (
+                        <li class="layer" data-service={sv.slug}>
+                            <span class="layer__dot" aria-hidden="true" />
+                            <span class="layer__index">{sv.index}</span>
+                            <span class="layer__name">{sv.name}</span>
+                            <p class="layer__line pretty">{sv.line}</p>
+                            <p class="layer__stack">{sv.stack}</p>
+                        </li>
+                    ))
+                }
+            </ol>
+        </div>
+
+        <Darkroom
+            items={prints}
+            variant="home"
+            label={t("work.heading")}
+            end={{ href: projectsPath(lang), title: t("work.all"), note: t("work.allNote") }}
+        />
+    </div>
+</section>
+
+<style>
+    .work {
+        position: relative;
+        background: var(--color-room);
+        isolation: isolate;
+    }
+    .work__pin {
+        position: relative;
+        display: grid;
+        /* minmax(0, …): the line is wider than the screen by design, and must
+           not widen the column the heading and layers sit in. */
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto 1fr;
+        min-height: 100svh;
+        padding-top: calc(var(--spacing) * 12);
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    .work__head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+        align-items: end;
+        gap: calc(var(--spacing) * 4);
+    }
+    .work__title {
+        display: grid;
+        gap: calc(var(--spacing) * 1.5);
+    }
+    .work__heading {
+        margin: 0;
+        font-size: clamp(2rem, 4.4vw, 4.6rem);
+    }
+    .work__intro {
+        margin: 0;
+        color: var(--color-bone-soft);
+        font-size: 0.98rem;
+        line-height: 1.5;
+    }
+
+    /* --- The four layers --------------------------------------------- */
+    .work__layers {
+        padding-top: calc(var(--spacing) * 4);
+    }
+    .work__layers-label {
+        margin: 0 0 calc(var(--spacing) * 1.5);
+    }
+    .layers {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: calc(var(--spacing) * 3);
+    }
+    .layer {
+        display: grid;
+        grid-template-columns: auto auto 1fr;
+        align-items: center;
+        column-gap: 0.6rem;
+        row-gap: 0.5rem;
+        padding-top: calc(var(--spacing) * 1.5);
+        border-top: 1px solid var(--g-rule);
+        transition:
+            opacity 320ms var(--ease-out),
+            border-color 320ms var(--ease-out);
+    }
+    .layer__dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: 1.5px solid var(--color-red-lit);
+        transition:
+            background-color 240ms var(--ease-out),
+            box-shadow 240ms var(--ease-out);
+    }
+    .layer__index {
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        letter-spacing: 0.14em;
+        color: var(--color-red-lit);
+    }
+    .layer__name {
+        font-family: var(--font-display);
+        font-variation-settings: "wdth" 88, "wght" 760;
+        text-transform: uppercase;
+        font-size: 1.35rem;
+        line-height: 1;
+    }
+    .layer__line,
+    .layer__stack {
+        grid-column: 1 / -1;
+        margin: 0;
+        color: var(--color-bone-soft);
+    }
+    .layer__line {
+        font-size: 0.86rem;
+        line-height: 1.42;
+    }
+    .layer__stack {
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        line-height: 1.55;
+    }
+    /* With the engine running, the layers follow the line: the ones the print
+       in the middle used are lit, the rest step back. Without it all four read
+       at full strength. */
+    .work__layers[data-live] .layer {
+        opacity: 0.3;
+    }
+    .work__layers[data-live] .layer[data-on] {
+        opacity: 1;
+        border-color: var(--color-red-lit);
+    }
+    .layer[data-on] .layer__dot {
+        background: var(--color-red-lit);
+        box-shadow: 0 0 12px rgba(255, 50, 71, 0.7);
+    }
+
+    /* --- The wall ----------------------------------------------------- */
+    .work :global(.room--home) {
+        --line-y: 6svh;
+        min-width: 0;
+        align-self: stretch;
+        min-height: 30rem;
+        padding-bottom: calc(var(--spacing) * 6);
+    }
+
+    @media (max-width: 1099px) {
+        .layers {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            row-gap: calc(var(--spacing) * 2);
+        }
+        .layer__stack {
+            display: none;
+        }
+    }
+    @media (max-width: 767px) {
+        .work__pin {
+            padding-top: calc(var(--spacing) * 10);
+        }
+        .work__head {
+            grid-template-columns: 1fr;
+            gap: calc(var(--spacing) * 2);
+        }
+        .work__heading {
+            font-size: clamp(2rem, 9vw, 3rem);
+        }
+        .work__intro {
+            font-size: 0.92rem;
+        }
+        .layers {
+            gap: calc(var(--spacing) * 1.5);
+        }
+        .layer__line {
+            display: none;
+        }
+        .layer__name {
+            font-size: 1rem;
+        }
+        .work :global(.room--home) {
+            --line-y: 6svh;
+            min-height: 24rem;
+        }
+    }
+</style>

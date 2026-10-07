@@ -19,6 +19,8 @@ const t = useTranslations(lang);
 
 <style is:global>
     .thread {
+        /* Held in place across page changes: the one constant on every page. */
+        view-transition-name: thread;
         position: fixed;
         left: calc(var(--gutter) * 0.5);
         top: 14vh;
@@ -121,6 +123,22 @@ const t = useTranslations(lang);
     .thread[data-thread-quiet] .thread__link {
         opacity: 0;
         pointer-events: none;
+    }
+    /* Quiet, the stops are still there: pointing at one, or tabbing to it,
+       brings its name back. */
+    .thread[data-thread-quiet] .thread__stop:hover .thread__link,
+    .thread[data-thread-quiet] .thread__link:focus-visible {
+        opacity: 1;
+        pointer-events: auto;
+        background: var(--color-room);
+        padding-inline: 0.4rem;
+    }
+    .thread[data-thread-quiet][data-thread-paper] .thread__stop:hover .thread__link,
+    .thread[data-thread-quiet][data-thread-paper] .thread__link:focus-visible {
+        background: var(--color-paper);
+    }
+    .thread__stop {
+        padding-right: 0.5rem;
     }
     .thread__stop[data-current] .thread__link {
         color: var(--color-red-lit);

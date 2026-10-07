@@ -12,11 +12,13 @@ interface Props {
     caption?: string;
     stop?: string;
     /** Measured values the readout steps through as the dial turns. */
-    readings?: { site: string; device?: string; value: number; from?: number }[];
+    readings?: { site: string; device?: string; value: number; from?: number; unit?: string; decimals?: number; approx?: boolean }[];
     note?: string;
 }
 
 const { poster, alt, src, srcMobile, span = 2.6, label, caption, stop, readings, note } = Astro.props;
+// Decimal comma in Turkish, point in English: 2,65 MiB, 2.65 MiB.
+const num = new Intl.NumberFormat(Astro.currentLocale || "en", { maximumFractionDigits: 2 });
 ---
 
 <!-- Act 3, the measure. The dial answers the wheel one frame per notch, and
@@ -70,8 +72,10 @@ const { poster, alt, src, srcMobile, span = 2.6, label, caption, stop, readings,
                                         <span class="scrub__site">{r.site}</span>
                                         {r.device && <span class="label scrub__device">{r.device}</span>}
                                         <span class="scrub__value">
-                                            {r.from !== undefined && <span class="scrub__from">{r.from} → </span>}
-                                            {r.value}
+                                            {r.from !== undefined && <span class="scrub__from">{num.format(r.from)} → </span>}
+                                            {r.approx && "~"}
+                                            {num.format(r.value)}
+                                            {r.unit && <span class="scrub__unit"> {r.unit}</span>}
                                         </span>
                                     </li>
                                 ))}
@@ -143,13 +147,25 @@ const { poster, alt, src, srcMobile, span = 2.6, label, caption, stop, readings,
         );
         pointer-events: none;
     }
+    /* The readings sit on a sheet of the paper ground, so the dial behind
+       them can be as busy as it likes and the copy still reads at 15:1. */
     .scrub__meta {
         position: absolute;
-        left: 0;
-        right: 0;
+        left: var(--gutter);
+        right: auto;
         bottom: calc(var(--spacing) * 6);
         display: grid;
         gap: calc(var(--spacing) * 2);
+        width: min(38rem, calc(100% - var(--gutter) * 2));
+        max-width: none;
+        margin: 0;
+        padding: calc(var(--spacing) * 3) calc(var(--spacing) * 3.5);
+        box-sizing: border-box;
+        background: rgba(241, 241, 239, 0.94);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(25, 25, 25, 0.14);
+        box-shadow: 0 30px 60px -30px rgba(25, 25, 25, 0.35);
     }
     .scrub__caption {
         margin: 0;
@@ -165,13 +181,13 @@ const { poster, alt, src, srcMobile, span = 2.6, label, caption, stop, readings,
         margin: 0;
         padding: 0;
         display: grid;
-        width: min(100%, 30rem);
+        width: 100%;
         border-top: 1px solid rgba(25, 25, 25, 0.34);
     }
     .scrub__reading {
         display: grid;
         /* Fixed columns so the device and score line up across rows. */
-        grid-template-columns: minmax(0, 1fr) auto 5.5rem;
+        grid-template-columns: minmax(0, 1fr) auto minmax(5.5rem, auto);
         align-items: baseline;
         gap: calc(var(--spacing) * 2);
         padding-block: 0.55rem;
@@ -189,7 +205,8 @@ const { poster, alt, src, srcMobile, span = 2.6, label, caption, stop, readings,
         text-align: right;
         white-space: nowrap;
     }
-    .scrub__from {
+    .scrub__from,
+    .scrub__unit {
         color: var(--g-ink-soft);
     }
     .scrub__reading[data-current] {
@@ -204,6 +221,30 @@ const { poster, alt, src, srcMobile, span = 2.6, label, caption, stop, readings,
         text-transform: none;
         letter-spacing: 0.02em;
         line-height: 1.5;
+    }
+    /* Each new reading rolls in: the number from below (or above, scrolling
+       back), the label just after it. Restarted by scrub.ts per reading. */
+    .scrub__readout > * {
+        display: block;
+    }
+    .scrub__readout[data-rolling] > * {
+        animation: readout-in 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .scrub__readout[data-rolling] > .scrub__readout-label {
+        animation-delay: 90ms;
+    }
+    .scrub__readout[data-rolling="down"] > * {
+        --from: -0.6em;
+    }
+    @keyframes readout-in {
+        from {
+            opacity: 0;
+            transform: translate3d(0, var(--from, 0.6em), 0);
+            filter: blur(6px);
+        }
+    }
+    .scrub__readout {
+        overflow: hidden;
     }
     .scrub__readout-label {
         display: block;
@@ -241,8 +282,24 @@ const { poster, alt, src, srcMobile, span = 2.6, label, caption, stop, readings,
                 rgba(241, 241, 239, 0.95)
             );
         }
+        /* Narrow: the site and its value on one line, what was measured under. */
+        .scrub__reading {
+            grid-template-columns: minmax(0, 1fr) auto;
+            row-gap: 0.25rem;
+        }
+        .scrub__device {
+            grid-column: 1 / -1;
+            grid-row: 2;
+        }
+        .scrub__value {
+            grid-column: 2;
+            grid-row: 1;
+        }
         .scrub__meta {
-            bottom: calc(var(--spacing) * 5);
+            right: var(--gutter);
+            width: auto;
+            bottom: calc(var(--spacing) * 3);
+            padding: calc(var(--spacing) * 2.5) calc(var(--spacing) * 2.5);
         }
     }
 

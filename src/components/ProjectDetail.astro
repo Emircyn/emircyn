@@ -1,0 +1,902 @@
+---
+import { Image } from "astro:assets";
+import Darkroom from "@/components/Darkroom.astro";
+import { useTranslations, type Locale } from "@/i18n/utils";
+import { indexOf, projectPath, projectsPath, shot, type Project } from "@/lib/projects";
+
+interface Props {
+    project: Project;
+    next: Project;
+}
+
+const { project, next } = Astro.props;
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+const d = project.data;
+const c = d[lang];
+const tierName = t("tiers") as Record<string, string>;
+
+const lanes = d.tiers.map((tier) => tier.key);
+const laneOf = (key: string) => lanes.indexOf(key as (typeof lanes)[number]);
+const at = (k: number) => ((k + 0.5) / lanes.length) * 100;
+const pad = (n: number) => String(n).padStart(2, "0");
+
+// One segment of the thread per step: in from the previous stop's lane,
+// curving across to this one, then straight on down to the next row. Drawn
+// in percentages so it needs no measuring and is complete without JS.
+const steps = d.trace.map((key, i) => {
+    const lane = laneOf(key);
+    const x = at(lane);
+    const px = i > 0 ? at(laneOf(d.trace[i - 1])) : x;
+    const last = i === d.trace.length - 1;
+    const path =
+        (i > 0 ? `M ${px} 0 C ${px} 34, ${x} 16, ${x} 50` : `M ${x} 50`) + (last ? "" : ` L ${x} 100`);
+    return { key, lane, x, path, text: c.traceSteps[i] };
+});
+
+const nextShot = shot(next.id, "desktop", lang);
+---
+
+<article class="detail" aria-labelledby="project-name" data-thread-dots>
+    <!-- The print arrives from the line and hangs alone. -->
+    <section id="top" class="dhero grain" data-thread-stop={d.name}>
+        <div class="shell dhero__inner">
+            <nav class="dhero__crumbs label" aria-label={t("detail.breadcrumb")}>
+                <a href={projectsPath(lang)}>{t("detail.back")}</a>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">{indexOf(project)}</span>
+            </nav>
+
+            <div class="dhero__copy">
+                <h1 id="project-name" class="dhero__name" lang="en" style={`--chars:${Math.max(6, d.name.length)}`}>{d.name}</h1>
+                <p class="dhero__line pretty">{c.line}</p>
+                <ul class="dhero__meta">
+                    <li><span class="label">{t("detail.kind")}</span><span>{c.kind}</span></li>
+                    <li><span class="label">{t("detail.year")}</span><span>{d.year}</span></li>
+                    <li><span class="label">{t("detail.role")}</span><span>{c.role}</span></li>
+                </ul>
+                <div class="dhero__links">
+                    <a class="dlink" href={d.url} target="_blank" rel="noopener">
+                        <span class="label label-accent">{t("detail.visit")}</span>
+                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 18L18 6M9 6h9v9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </a>
+                    {
+                        d.source && (
+                            <a class="dlink" href={d.source} target="_blank" rel="noopener">
+                                <span class="label">{t("detail.source")}</span>
+                                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 18L18 6M9 6h9v9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                            </a>
+                        )
+                    }
+                </div>
+            </div>
+
+            <div class="dhero__print">
+                <Darkroom
+                    variant="single"
+                    label={d.name}
+                    items={[
+                        {
+                            slug: project.id,
+                            index: indexOf(project),
+                            name: d.name,
+                            kind: d.host,
+                            href: d.url,
+                            external: true,
+                            img: shot(project.id, "desktop", lang),
+                            alt: c.alt,
+                        },
+                    ]}
+                    eager
+                />
+            </div>
+        </div>
+    </section>
+
+    <!-- The hard cut to paper: the developed print, read closely. -->
+    <div class="dpaper ground-paper" data-paper>
+        <section id="problem" class="shell dsec dbrief" data-thread-stop={t("detail.problem")} aria-labelledby="problem-heading">
+            <p class="dbrief__summary pretty" data-reveal>{c.summary}</p>
+            <div class="dbrief__cols">
+                <div data-reveal>
+                    <h2 id="problem-heading" class="label dsec__label">{t("detail.problem")}</h2>
+                    <p class="pretty">{c.problem}</p>
+                </div>
+                <div data-reveal>
+                    <h2 class="label dsec__label">{t("detail.role")}</h2>
+                    <p class="pretty">{c.contribution}</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The architecture as a section drawing. Each column is a layer of the
+             product with where it runs; under them, one real request is followed
+             down through the layers it touches, step by step. -->
+        <section
+            id="architecture"
+            class="shell dsec arch"
+            data-thread-stop={t("detail.architecture")}
+            aria-labelledby="arch-heading"
+            style={`--lanes:${lanes.length}`}
+        >
+            <header class="arch__head" data-reveal>
+                <h2 id="arch-heading" class="display arch__heading">{t("detail.architecture")}</h2>
+                <p class="arch__note pretty">{t("detail.architectureNote")}</p>
+            </header>
+
+            <ol class="tiers">
+                {
+                    d.tiers.map((tier, i) => (
+                        <li class="tier" data-reveal>
+                            <span class="tier__tag">L{i + 1}</span>
+                            <span class="label tier__name">{tierName[tier.key]}</span>
+                            <span class="tier__runs">
+                                <span class="sr-only">{t("detail.runs")}: </span>
+                                {c.tiers[tier.key]?.runs}
+                            </span>
+                            <p class="tier__does pretty">{c.tiers[tier.key]?.does}</p>
+                            <ul class="tier__tech" aria-label={t("detail.stack")}>
+                                {tier.tech.map((x) => <li>{x}</li>)}
+                            </ul>
+                        </li>
+                    ))
+                }
+            </ol>
+
+            <div class="trace">
+                <h3 class="label label-accent trace__title">
+                    {t("detail.trace")}: {c.traceTitle}
+                </h3>
+                <div class="trace__lanes-head" aria-hidden="true">
+                    {lanes.map((_, i) => <span>L{i + 1}</span>)}
+                </div>
+                <ol class="trace__steps">
+                    {
+                        steps.map((s, i) => (
+                            <li class="step">
+                                <span class="step__lanes" aria-hidden="true">
+                                    <svg class="step__svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <path class="step__ghost" d={s.path} />
+                                        <path class="step__path" d={s.path} pathLength="1" />
+                                    </svg>
+                                    <span class="step__dot" style={`left:${s.x}%`}>{pad(i + 1)}</span>
+                                </span>
+                                <span class="step__body">
+                                    <span class="label step__where">
+                                        L{s.lane + 1} · {tierName[s.key]}
+                                    </span>
+                                    <span class="step__text pretty">{s.text}</span>
+                                </span>
+                            </li>
+                        ))
+                    }
+                </ol>
+            </div>
+        </section>
+
+        <section id="decisions" class="shell dsec decisions" data-thread-stop={t("detail.decisions")} aria-labelledby="decisions-heading">
+            <h2 id="decisions-heading" class="display decisions__heading" data-reveal>{t("detail.decisions")}</h2>
+            <ol class="decisions__list">
+                {
+                    c.decisions.map((dec, i) => (
+                        <li class="decision" data-reveal>
+                            <span class="decision__n">{pad(i + 1)}</span>
+                            <h3 class="decision__title">{dec.title}</h3>
+                            <p class="decision__body pretty">{dec.body}</p>
+                        </li>
+                    ))
+                }
+            </ol>
+        </section>
+    </div>
+
+    <!-- Back into the room: the product as people see it, on both screens. -->
+    <section id="shots" class="dshots grain" data-thread-stop={t("detail.shots")} aria-labelledby="shots-heading">
+        <div class="shell">
+            <h2 id="shots-heading" class="label dshots__label">{t("detail.shots")}</h2>
+            <div class="stage">
+                <a class="frame" href={d.url} target="_blank" rel="noopener" aria-label={`${d.name}: ${t("detail.visit")}`}>
+                    <span class="frame__bar" aria-hidden="true">
+                        <span class="frame__dot"></span>
+                        <span class="frame__host">{d.host}</span>
+                    </span>
+                    <Image
+                        src={shot(project.id, "desktop", lang)}
+                        alt={c.alt}
+                        widths={[720, 1100, 1600, 2000]}
+                        sizes="(max-width: 899px) 92vw, 80vw"
+                        loading="lazy"
+                        decoding="async"
+                        class="frame__img"
+                    />
+                </a>
+                <div class="phone">
+                    <Image
+                        src={shot(project.id, "mobile", lang)}
+                        alt={c.altMobile}
+                        widths={[260, 420, 560]}
+                        sizes="(max-width: 899px) 34vw, 18vw"
+                        loading="lazy"
+                        decoding="async"
+                        class="phone__img"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The next print waits at the edge. -->
+    <section id="next" class="dnext" data-thread-stop={t("detail.next")} aria-labelledby="next-heading">
+        <a class="shell dnext__link" href={projectPath(lang, next.id)}>
+            <span class="dnext__copy">
+                <span id="next-heading" class="label label-accent">{t("detail.next")} · {indexOf(next)}</span>
+                <span class="dnext__name" lang="en" style={`--chars:${Math.max(6, next.data.name.length)}`}>{next.data.name}</span>
+                <span class="dnext__line pretty">{next.data[lang].line}</span>
+            </span>
+            <span class="dnext__print">
+                <span class="dnext__paper">
+                    <Image
+                        src={nextShot}
+                        alt=""
+                        widths={[480, 800]}
+                        sizes="(max-width: 767px) 70vw, 30vw"
+                        loading="lazy"
+                        decoding="async"
+                        class="dnext__img"
+                        data-vt={next.id}
+                    />
+                </span>
+            </span>
+        </a>
+    </section>
+</article>
+
+<style>
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    /* --- Hero --------------------------------------------------------- */
+    .dhero {
+        position: relative;
+        background:
+            radial-gradient(60% 50% at 70% 40%, rgba(255, 50, 71, 0.08), transparent 70%),
+            var(--color-room);
+        isolation: isolate;
+        overflow: hidden;
+    }
+    .dhero__inner {
+        position: relative;
+        z-index: 6;
+        display: grid;
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+        grid-template-areas:
+            "crumbs crumbs"
+            "copy print";
+        column-gap: calc(var(--spacing) * 6);
+        row-gap: calc(var(--spacing) * 6);
+        min-height: 100svh;
+        padding-top: calc(var(--spacing) * 10);
+        padding-bottom: calc(var(--spacing) * 8);
+        box-sizing: border-box;
+        align-content: start;
+    }
+    .dhero__crumbs {
+        grid-area: crumbs;
+        display: flex;
+        gap: 0.7rem;
+        padding-top: calc(var(--spacing) * 1.5);
+        border-top: 1px solid var(--g-rule-strong);
+    }
+    .dhero__crumbs a {
+        color: var(--color-bone);
+    }
+    .dhero__crumbs [aria-current] {
+        color: var(--color-red-lit);
+    }
+    .dhero__copy {
+        grid-area: copy;
+        display: grid;
+        gap: calc(var(--spacing) * 3);
+        align-content: start;
+        padding-top: 8svh;
+    }
+    .dhero__name {
+        margin: 0;
+        font-family: var(--font-display);
+        font-variation-settings: "wdth" 76, "wght" 800;
+        text-transform: uppercase;
+        /* Sized by the name's own length, so "Porch" and "emircyn.com" both
+           fill their column on one line instead of breaking mid-word. */
+        font-size: clamp(2.6rem, calc(50vw / var(--chars, 8)), 10rem);
+        line-height: 0.84;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+    }
+    .dhero__line {
+        margin: 0;
+        max-width: 30ch;
+        font-size: clamp(1.15rem, 1.7vw, 1.6rem);
+        line-height: 1.25;
+        font-variation-settings: "wdth" 96, "wght" 560;
+    }
+    .dhero__meta {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0.7rem;
+        border-top: 1px solid var(--g-rule);
+        padding-top: calc(var(--spacing) * 2);
+    }
+    .dhero__meta li {
+        display: grid;
+        grid-template-columns: 7rem minmax(0, 1fr);
+        gap: 1rem;
+        align-items: baseline;
+        font-size: 0.95rem;
+    }
+    .dhero__links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: calc(var(--spacing) * 3);
+    }
+    .dlink {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding-block: 0.5rem;
+    }
+    .dlink svg {
+        color: var(--g-accent);
+        transition: transform 180ms var(--ease-out);
+    }
+    @media (hover: hover) {
+        .dlink:hover svg {
+            transform: translate(3px, -3px);
+        }
+    }
+    .dhero__print {
+        grid-area: print;
+        padding-top: 4svh;
+    }
+    .dhero__print :global(.room--single) {
+        --print-w: 100%;
+    }
+    /* The page's own title says what the card is; only its way out stays. */
+    .dhero__print :global(.room--single .card__meta),
+    .dhero__print :global(.room--single .card__shade) {
+        display: none;
+    }
+    .dhero__print :global(.room--single .room__track) {
+        overflow: visible;
+    }
+
+    /* --- Paper -------------------------------------------------------- */
+    .dpaper {
+        position: relative;
+        background-image: radial-gradient(rgba(25, 25, 25, 0.055) 0.5px, transparent 0.5px);
+        background-size: 5px 5px;
+    }
+    .dsec {
+        padding-block: calc(var(--spacing) * 14);
+        border-bottom: 1px solid var(--g-rule);
+    }
+    .dsec__label {
+        margin: 0 0 calc(var(--spacing) * 2);
+    }
+    .dbrief {
+        display: grid;
+        gap: calc(var(--spacing) * 8);
+    }
+    .dbrief__summary {
+        margin: 0;
+        max-width: 36ch;
+        font-size: clamp(1.5rem, 2.8vw, 2.6rem);
+        line-height: 1.14;
+        font-variation-settings: "wdth" 94, "wght" 600;
+    }
+    .dbrief__cols {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: calc(var(--spacing) * 8);
+        max-width: 72rem;
+    }
+    .dbrief__cols p {
+        margin: 0;
+        font-size: 1.05rem;
+        line-height: 1.55;
+    }
+
+    /* --- Architecture ------------------------------------------------- */
+    .arch {
+        --lane-w: 62%;
+        display: grid;
+        gap: calc(var(--spacing) * 6);
+    }
+    .arch__head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+        align-items: end;
+        gap: calc(var(--spacing) * 4);
+    }
+    .arch__heading,
+    .decisions__heading {
+        margin: 0;
+        font-size: clamp(2.4rem, 6vw, 6rem);
+    }
+    .arch__note {
+        margin: 0;
+        color: var(--g-ink-soft);
+    }
+    .tiers {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: var(--lane-w);
+        display: grid;
+        grid-template-columns: repeat(var(--lanes), minmax(0, 1fr));
+        gap: 0;
+        border-top: 1px solid var(--g-rule-strong);
+    }
+    .tier {
+        display: grid;
+        grid-template-rows: auto auto auto 1fr auto;
+        gap: 0.6rem;
+        align-content: start;
+        padding: calc(var(--spacing) * 2) calc(var(--spacing) * 1.5) calc(var(--spacing) * 2.5);
+        border-left: 1px solid var(--g-rule);
+    }
+    .tier:first-child {
+        border-left: 0;
+        padding-left: 0;
+    }
+    .tier__tag {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--g-accent);
+    }
+    .tier__name {
+        color: var(--g-ink);
+    }
+    .tier__runs {
+        font-family: var(--font-display);
+        font-variation-settings: "wdth" 86, "wght" 760;
+        text-transform: uppercase;
+        font-size: clamp(1.05rem, 1.5vw, 1.45rem);
+        line-height: 1;
+    }
+    .tier__does {
+        margin: 0;
+        font-size: 0.84rem;
+        line-height: 1.45;
+        color: var(--g-ink-soft);
+    }
+    .tier__tech {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+    .tier__tech li {
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.04em;
+        padding: 0.25rem 0.4rem;
+        border: 1px solid var(--g-rule-strong);
+    }
+
+    .trace {
+        display: grid;
+    }
+    .trace__title {
+        margin: 0 0 calc(var(--spacing) * 2);
+    }
+    .trace__lanes-head {
+        display: none;
+    }
+    .trace__steps {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    .step {
+        display: grid;
+        grid-template-columns: var(--lane-w) minmax(0, 1fr);
+        min-height: 5.5rem;
+    }
+    .step__lanes {
+        position: relative;
+        /* A hairline down the middle of every lane. */
+        background-image: linear-gradient(90deg, var(--g-rule) 1px, transparent 1px);
+        background-size: calc(100% / var(--lanes)) 100%;
+        background-position: calc(50% / var(--lanes)) 0;
+    }
+    .step__svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+    .step__svg path {
+        fill: none;
+        vector-effect: non-scaling-stroke;
+    }
+    .step__ghost {
+        stroke: var(--g-rule-strong);
+        stroke-width: 1;
+    }
+    .step__path {
+        stroke: var(--color-red);
+        stroke-width: 2;
+    }
+    .step__dot {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        display: grid;
+        place-items: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--color-paper);
+        border: 2px solid var(--color-red);
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        color: var(--color-red);
+    }
+    .step__body {
+        display: grid;
+        gap: 0.35rem;
+        align-content: center;
+        padding: calc(var(--spacing) * 1.5) 0 calc(var(--spacing) * 1.5) calc(var(--spacing) * 4);
+        border-bottom: 1px solid var(--g-rule);
+    }
+    .step__text {
+        font-size: 0.98rem;
+        line-height: 1.45;
+    }
+
+    /* Drawn by the page scroll where the browser can do it on its own, with no
+       script: each segment draws as its row crosses the screen. Elsewhere, and
+       under reduced motion, the whole route is simply there. */
+    @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+            .step__path {
+                stroke-dasharray: 1;
+                animation: trace-draw linear both;
+                animation-timeline: view();
+                animation-range: entry 70% cover 55%;
+            }
+            .step__dot {
+                animation: trace-dot linear both;
+                animation-timeline: view();
+                animation-range: cover 40% cover 50%;
+            }
+        }
+    }
+    @keyframes trace-draw {
+        from {
+            stroke-dashoffset: 1;
+        }
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+    @keyframes trace-dot {
+        from {
+            background: var(--color-paper);
+            color: var(--color-red);
+        }
+        to {
+            background: var(--color-red);
+            color: var(--color-paper);
+        }
+    }
+
+    /* --- Decisions ---------------------------------------------------- */
+    .decisions {
+        display: grid;
+        gap: calc(var(--spacing) * 6);
+        border-bottom: 0;
+    }
+    .decisions__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: calc(var(--spacing) * 8);
+    }
+    .decision {
+        display: grid;
+        grid-template-columns: 3rem minmax(0, 1fr);
+        column-gap: 1rem;
+        row-gap: 0.6rem;
+        padding-block: calc(var(--spacing) * 3);
+        border-top: 1px solid var(--g-rule-strong);
+    }
+    .decision__n {
+        grid-row: span 2;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--g-accent);
+        padding-top: 0.3rem;
+    }
+    .decision__title {
+        margin: 0;
+        font-family: var(--font-display);
+        font-variation-settings: "wdth" 90, "wght" 720;
+        font-size: clamp(1.2rem, 1.7vw, 1.55rem);
+        line-height: 1.1;
+    }
+    .decision__body {
+        margin: 0;
+        color: var(--g-ink-soft);
+        line-height: 1.55;
+    }
+
+    /* --- Shots -------------------------------------------------------- */
+    .dshots {
+        position: relative;
+        background: var(--color-room);
+        padding-block: calc(var(--spacing) * 14);
+        isolation: isolate;
+    }
+    .dshots__label {
+        margin: 0 auto calc(var(--spacing) * 4);
+        max-width: min(100%, calc((100svh - 12rem) * 1.75));
+    }
+    /* Sized so the frame and the phone fit on one screen together. */
+    .stage {
+        position: relative;
+        max-width: min(100%, calc((100svh - 12rem) * 1.75));
+        margin-inline: auto;
+        padding-bottom: 8%;
+        padding-right: 6%;
+    }
+    .frame {
+        display: block;
+        background: var(--color-room-lift);
+        border: 1px solid var(--g-rule);
+        overflow: hidden;
+    }
+    .frame__bar {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        height: 2.25rem;
+        padding-inline: 0.9rem;
+        border-bottom: 1px solid var(--g-rule);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.06em;
+        color: var(--g-ink-soft);
+    }
+    .frame__dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--color-red-lit);
+        box-shadow: 0 0 10px rgba(255, 50, 71, 0.6);
+    }
+    .frame__img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        object-position: top center;
+    }
+    .phone {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 19%;
+        aspect-ratio: 9 / 19.5;
+        padding: 5px;
+        border-radius: 1.6rem;
+        background: #050505;
+        border: 1px solid var(--g-rule-strong);
+        box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.9);
+    }
+    .phone__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        border-radius: calc(1.6rem - 5px);
+    }
+
+    /* --- Next --------------------------------------------------------- */
+    .dnext {
+        position: relative;
+        background: var(--color-room);
+        border-top: 1px solid var(--g-rule);
+    }
+    .dnext__link {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.7fr);
+        align-items: center;
+        gap: calc(var(--spacing) * 6);
+        padding-block: calc(var(--spacing) * 12);
+    }
+    .dnext__copy {
+        display: grid;
+        gap: calc(var(--spacing) * 2);
+    }
+    .dnext__name {
+        font-family: var(--font-display);
+        font-variation-settings: "wdth" 76, "wght" 800;
+        text-transform: uppercase;
+        font-size: clamp(2.4rem, calc(56vw / var(--chars, 8)), 8.5rem);
+        line-height: 0.84;
+        letter-spacing: -0.02em;
+        transition: color 240ms var(--ease-out);
+        white-space: nowrap;
+    }
+    .dnext__line {
+        max-width: 34ch;
+        color: var(--color-bone-soft);
+    }
+    /* The next card waits at the edge, turned slightly into the room. */
+    .dnext__print {
+        display: block;
+        perspective: 1400px;
+    }
+    .dnext__paper {
+        display: block;
+        border-radius: clamp(12px, 1.2vw, 20px);
+        overflow: hidden;
+        box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+        transform: rotateY(-14deg);
+        transform-origin: 0 50%;
+        transition: transform 800ms var(--ease-out);
+    }
+    .dnext__img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        object-position: top center;
+        filter: brightness(0.6);
+        transition: filter 600ms var(--ease-out);
+    }
+    @media (hover: hover) {
+        .dnext__link:hover .dnext__name {
+            color: var(--color-red-lit);
+        }
+        .dnext__link:hover .dnext__paper {
+            transform: rotateY(-4deg);
+        }
+        .dnext__link:hover .dnext__img {
+            filter: none;
+        }
+    }
+    .dnext__link:focus-visible .dnext__img {
+        filter: none;
+    }
+    @media (hover: none) {
+        .dnext__img {
+            filter: none;
+        }
+    }
+
+    /* --- Narrow ------------------------------------------------------- */
+    /* Below 1280 five lanes side by side get too narrow to read: the layers
+       become a list, and the request is traced through narrow lanes beside
+       its steps. */
+    @media (max-width: 1279px) {
+        .arch {
+            --lane-w: 100%;
+        }
+        .arch__head {
+            grid-template-columns: 1fr;
+        }
+        .tiers {
+            grid-template-columns: 1fr;
+        }
+        .tier {
+            border-left: 0;
+            border-bottom: 1px solid var(--g-rule);
+            padding-inline: 0;
+            grid-template-columns: 2.4rem minmax(0, 1fr);
+            grid-template-rows: none;
+        }
+        .tier > :not(.tier__tag) {
+            grid-column: 2;
+        }
+        .tier__tag {
+            grid-row: span 4;
+            padding-top: 0.1rem;
+        }
+        .step {
+            grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+        }
+        .trace__lanes-head {
+            display: grid;
+            width: 42%;
+            grid-template-columns: repeat(var(--lanes), minmax(0, 1fr));
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            color: var(--g-accent);
+            padding-bottom: 0.5rem;
+        }
+        .step__body {
+            padding-left: calc(var(--spacing) * 2);
+        }
+        .step__dot {
+            width: 1.6rem;
+            height: 1.6rem;
+            font-size: 0.58rem;
+        }
+    }
+    @media (max-width: 1023px) {
+        .dhero__name {
+            font-size: clamp(2.6rem, calc(130vw / var(--chars, 8)), 9rem);
+        }
+        .dhero__inner {
+            grid-template-columns: 1fr;
+            grid-template-areas:
+                "crumbs"
+                "print"
+                "copy";
+            row-gap: calc(var(--spacing) * 4);
+        }
+        .dhero__copy {
+            padding-top: 0;
+        }
+        .dhero__print :global(.room--single) {
+            min-height: 0;
+        }
+        .decisions__list {
+            grid-template-columns: 1fr;
+        }
+        .dbrief__cols {
+            grid-template-columns: 1fr;
+            gap: calc(var(--spacing) * 5);
+        }
+    }
+    @media (max-width: 767px) {
+        .dhero__inner {
+            padding-top: calc(var(--spacing) * 9);
+        }
+        .dhero__meta li {
+            grid-template-columns: 5.5rem minmax(0, 1fr);
+        }
+        .dsec,
+        .dshots {
+            padding-block: calc(var(--spacing) * 10);
+        }
+        .step__text {
+            font-size: 0.9rem;
+        }
+        .stage {
+            padding-bottom: 18%;
+            padding-right: 0;
+        }
+        .phone {
+            width: 30%;
+            border-radius: 1.1rem;
+            padding: 3px;
+        }
+        .phone__img {
+            border-radius: calc(1.1rem - 3px);
+        }
+        .dnext__link {
+            grid-template-columns: 1fr;
+            padding-block: calc(var(--spacing) * 9);
+        }
+        .dnext__name {
+            font-size: clamp(2.4rem, calc(130vw / var(--chars, 8)), 7rem);
+        }
+    }
+</style>

@@ -1,0 +1,26 @@
+---
+// The projects page for either language; the route files only pick the locale.
+import Layout from "@/layouts/Layout.astro";
+import ProjectsPage from "@/components/ProjectsPage.astro";
+import Contact from "@/components/Contact.astro";
+import { useTranslations, type Locale } from "@/i18n/utils";
+import { getProjects, projectsJsonLd, projectsPath } from "@/lib/projects";
+
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+const projects = await getProjects();
+const title = t("line.title") as string;
+const description = t("line.description") as string;
+---
+
+<Layout
+    title={title}
+    description={description}
+    image={`/og/projects-${lang}.jpg`}
+    alternates={{ en: projectsPath("en"), tr: projectsPath("tr") }}
+    ogType="website"
+    jsonLd={projectsJsonLd(lang, Astro.site!, projects, title, description)}
+>
+    <ProjectsPage />
+    <Contact />
+</Layout>

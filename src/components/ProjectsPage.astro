@@ -1,0 +1,271 @@
+---
+import Darkroom, { type Print } from "@/components/Darkroom.astro";
+import { useTranslations, type Locale } from "@/i18n/utils";
+import { getProjects, indexOf, projectPath, shot } from "@/lib/projects";
+
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+
+const all = await getProjects();
+type Service = { slug: string; name: string };
+const serviceName = Object.fromEntries((t("services.items") as Service[]).map((s) => [s.slug, s.name]));
+
+const prints: Print[] = all.map((p) => ({
+    slug: p.id,
+    index: indexOf(p),
+    name: p.data.name,
+    kind: p.data[lang].kind,
+    line: p.data[lang].line,
+    href: projectPath(lang, p.id),
+    img: shot(p.id, "desktop", lang),
+    alt: p.data[lang].alt,
+}));
+---
+
+<!-- The line: every project, hung up to develop. -->
+<section
+    id="line"
+    class="lineview grain"
+    data-thread-dots
+    data-thread-stop={t("line.label")}
+    aria-labelledby="line-heading"
+>
+    <header class="shell lineview__head">
+        <h1 id="line-heading" class="label label-accent">{t("line.title")}</h1>
+        <p class="label lineview__count">{String(all.length).padStart(2, "0")} {t("line.count")}</p>
+    </header>
+
+    <Darkroom items={prints} variant="page" label={t("line.listLabel")} eager />
+</section>
+
+<!-- The index: the same projects as a plain list on paper, for scanning,
+     for search engines, and as the page's second way in. -->
+<section
+    id="index"
+    class="projindex ground-paper"
+    data-paper
+    data-thread-stop={t("line.indexLabel")}
+    aria-labelledby="index-heading"
+>
+    <div class="shell projindex__inner">
+        <div class="projindex__head" data-reveal>
+            <h2 id="index-heading" class="label projindex__label">{t("line.indexHeading")}</h2>
+            <p class="projindex__intro pretty">{t("line.intro")}</p>
+        </div>
+
+        <ol class="rows">
+            {
+                all.map((p) => (
+                    <li class="row" data-reveal>
+                        <a class="row__link" href={projectPath(lang, p.id)}>
+                            <span class="row__index">{indexOf(p)}</span>
+                            <span class="display row__name" lang="en">{p.data.name}</span>
+                            <span class="row__line pretty">{p.data[lang].line}</span>
+                            <span class="row__meta">
+                                <span class="label">{p.data[lang].kind}</span>
+                                <span class="label">{p.data.year}</span>
+                            </span>
+                            <span class="row__layers" aria-label={t("line.layers")}>
+                                {p.data.services.map((s) => (
+                                    <span class="row__layer">{serviceName[s]}</span>
+                                ))}
+                            </span>
+                            <svg class="row__arrow" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                <path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </a>
+                    </li>
+                ))
+            }
+        </ol>
+    </div>
+</section>
+
+<style>
+    .lineview {
+        position: relative;
+        background:
+            radial-gradient(70% 55% at 50% 30%, rgba(255, 50, 71, 0.07), transparent 70%),
+            var(--color-room);
+        isolation: isolate;
+    }
+    .lineview__head {
+        position: absolute;
+        top: calc(var(--spacing) * 9);
+        left: 0;
+        right: 0;
+        z-index: 5;
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-top: calc(var(--spacing) * 1.5);
+        border-top: 1px solid var(--g-rule-strong);
+        background-clip: content-box;
+    }
+    .lineview__head h1 {
+        margin: 0;
+    }
+
+    /* The room fills the screen. Static, the cards simply sit in it; with
+       the engine the stage below them says what is in focus. */
+    .lineview :global(.room--page) {
+        height: 100svh;
+        min-height: 36rem;
+    }
+    .lineview :global(.room--page .room__now) {
+        position: absolute;
+        left: var(--gutter);
+        right: calc(var(--gutter) + 8rem);
+        bottom: calc(var(--spacing) * 6);
+        height: 0;
+    }
+    .lineview :global(.room--page .room__controls) {
+        position: absolute;
+        right: var(--gutter);
+        bottom: calc(var(--spacing) * 6);
+    }
+
+    /* --- The index ---------------------------------------------------- */
+    .projindex {
+        position: relative;
+        background-image: radial-gradient(rgba(25, 25, 25, 0.055) 0.5px, transparent 0.5px);
+        background-size: 5px 5px;
+    }
+    .projindex__inner {
+        display: grid;
+        gap: calc(var(--spacing) * 6);
+        padding-block: calc(var(--spacing) * 14);
+    }
+    .projindex__head {
+        display: grid;
+        grid-template-columns: 14rem minmax(0, 1fr);
+        gap: calc(var(--spacing) * 4);
+    }
+    .projindex__label {
+        margin: 0;
+        padding-top: 0.6rem;
+    }
+    .projindex__intro {
+        margin: 0;
+        max-width: 34ch;
+        font-size: clamp(1.4rem, 2.6vw, 2.3rem);
+        line-height: 1.15;
+        font-variation-settings: "wdth" 94, "wght" 600;
+    }
+    .rows {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-top: 1px solid var(--g-rule-strong);
+    }
+    .row {
+        border-bottom: 1px solid var(--g-rule);
+    }
+    .row__link {
+        display: grid;
+        grid-template-columns: 3rem minmax(0, 1.1fr) minmax(0, 1.4fr) auto 2rem;
+        grid-template-areas:
+            "index name line meta arrow"
+            "index name layers meta arrow";
+        align-items: start;
+        column-gap: calc(var(--spacing) * 3);
+        row-gap: 0.8rem;
+        padding-block: calc(var(--spacing) * 3.5);
+        transition: background-color 240ms var(--ease-out);
+    }
+    .row__index {
+        grid-area: index;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--g-accent);
+        padding-top: 0.4rem;
+    }
+    .row__name {
+        grid-area: name;
+        font-size: clamp(2.2rem, 4.6vw, 4.6rem);
+        transition: color 200ms var(--ease-out);
+    }
+    .row__line {
+        grid-area: line;
+        color: var(--g-ink-soft);
+        font-size: 0.98rem;
+        line-height: 1.45;
+        padding-top: 0.3rem;
+    }
+    .row__meta {
+        grid-area: meta;
+        display: grid;
+        justify-items: end;
+        gap: 0.6rem;
+        padding-top: 0.5rem;
+    }
+    .row__layers {
+        grid-area: layers;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+    .row__layer {
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.5rem;
+        border: 1px solid var(--g-rule-strong);
+    }
+    .row__arrow {
+        grid-area: arrow;
+        color: var(--g-accent);
+        margin-top: 0.45rem;
+        transition: transform 220ms var(--ease-out);
+    }
+    @media (hover: hover) {
+        .row__link:hover .row__name {
+            color: var(--g-accent);
+        }
+        .row__link:hover .row__arrow {
+            transform: translateX(6px);
+        }
+    }
+
+    @media (max-width: 899px) {
+        .projindex__head {
+            grid-template-columns: 1fr;
+        }
+        .row__link {
+            grid-template-columns: 2.4rem minmax(0, 1fr) 1.5rem;
+            grid-template-areas:
+                "index name arrow"
+                "index line line"
+                "index layers layers"
+                "index meta meta";
+        }
+        .row__meta {
+            justify-items: start;
+            display: flex;
+            gap: 1rem;
+            padding-top: 0;
+        }
+    }
+    @media (max-width: 767px) {
+        .lineview__head {
+            top: calc(var(--spacing) * 8);
+        }
+        .lineview :global(.room--page .room__now) {
+            right: var(--gutter);
+            bottom: calc(var(--spacing) * 11);
+        }
+        .lineview :global(.room--page .room__controls) {
+            left: var(--gutter);
+            right: var(--gutter);
+            bottom: calc(var(--spacing) * 3);
+            justify-content: space-between;
+        }
+        .lineview :global(.room--page .room__hint) {
+            margin: 0;
+        }
+        .projindex__inner {
+            padding-block: calc(var(--spacing) * 10);
+        }
+    }
+</style>

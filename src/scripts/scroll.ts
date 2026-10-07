@@ -32,7 +32,33 @@ const qa = <T extends HTMLElement>(sel: string, root: ParentNode = document) =>
 
 let lenis: Lenis | null = null;
 
+/* Pages change without a reload (Astro's ClientRouter), so everything this
+   file starts is stopped again before the next page is swapped in: window
+   listeners through one AbortSignal, the rest through the cleanups list. */
+let ac: AbortController | null = null;
+let cleanups: (() => void)[] = [];
+const later = (fn: () => void) => cleanups.push(fn);
+const live = () => !!ac && !ac.signal.aborted;
+
+export function destroyPage() {
+  ac?.abort();
+  ac = null;
+  cleanups.splice(0).reverse().forEach((fn) => {
+    try {
+      fn();
+    } catch {}
+  });
+}
+
+/** Stop smooth scrolling where it is, before a page change is captured. */
+export function freezePage() {
+  lenis?.stop();
+}
+
 export function initPage() {
+  destroyPage();
+  ac = new AbortController();
+  const signal = ac.signal;
   initReveals();
   initServiceIndex();
   if (window.matchMedia(REDUCED).matches) return;
@@ -45,16 +71,27 @@ export function initPage() {
     syncTouch: false,
   });
   lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis!.raf(time * 1000));
+  const raf = (time: number) => lenis?.raf(time * 1000);
+  gsap.ticker.add(raf);
   gsap.ticker.lagSmoothing(0);
+  later(() => {
+    gsap.ticker.remove(raf);
+    lenis?.destroy();
+    lenis = null;
+  });
   ScrollTrigger.config({ ignoreMobileResize: true });
 
   let ctx: gsap.Context | null = null;
+  later(() => {
+    ctx?.revert();
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+  });
   const build = () => {
+    if (!live()) return;
     ctx?.revert();
     ctx = gsap.context(() => {
       hero();
-      projects();
+      work();
       close();
     });
     ScrollTrigger.refresh();
@@ -63,7 +100,8 @@ export function initPage() {
 
   const start = () => {
     build();
-    window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+    if (document.readyState !== "complete")
+      window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true, signal });
   };
   if (document.fonts?.status === "loaded") start();
   else document.fonts?.ready.then(start).catch(start);
@@ -81,11 +119,15 @@ export function initPage() {
   });
 
   let lastWidth = window.innerWidth;
-  window.addEventListener("resize", () => {
-    if (window.innerWidth === lastWidth) return;
-    lastWidth = window.innerWidth;
-    build();
-  });
+  window.addEventListener(
+    "resize",
+    () => {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      build();
+    },
+    { signal },
+  );
 }
 
 /* --- Act 1: the hero ------------------------------------------------------ */
@@ -127,7 +169,8 @@ function hero() {
   if (line0 && line1) {
     tl.fromTo(line0, { xPercent: 0 }, { xPercent: mobile ? -70 : -26, duration: 1 }, 0);
     tl.fromTo(line1, { xPercent: 0 }, { xPercent: mobile ? 70 : 18, duration: 1 }, 0);
-    tl.fromTo([line0, line1], { opacity: 1 }, { opacity: mobile ? 0 : 0.22, duration: 0.5 }, 0.35);
+    // On a phone the name clears out before the beat arrives in its place.
+    tl.fromTo([line0, line1], { opacity: 1 }, { opacity: mobile ? 0 : 0.22, duration: mobile ? 0.3 : 0.5 }, mobile ? 0.12 : 0.35);
   }
 
   // Near plane: the figure comes forward, feet anchored.
@@ -135,7 +178,7 @@ function hero() {
     tl.fromTo(
       figure,
       { yPercent: 0, scale: 1 },
-      { yPercent: mobile ? -14 : -6, scale: mobile ? 1.18 : 1.14, duration: 1 },
+      { yPercent: mobile ? -7 : -6, scale: mobile ? 1.08 : 1.14, duration: 1 },
       0,
     );
 
@@ -155,74 +198,27 @@ function hero() {
   }
 }
 
-/* --- Act 2: work --------------------------------------------------------- */
+/* --- Act 2: work --------------------------------------------------------
 
-function projects() {
-  const rows = qa("[data-project]");
-  if (!rows.length) return;
-  const mobile = isMobile();
+   The act is pinned while the page scroll walks the line from print to print.
+   The line itself lives in darkroom.ts; this only tells it how far along the
+   act is, so the prints keep their own weight and swing. */
 
-  rows.forEach((row, i) => {
-    const frame = q("[data-project-frame]", row);
-    const img = q("[data-project-img]", row);
-    const phone = q("[data-project-phone]", row);
-    const name = q("[data-project-name]", row);
-    const info = q("[data-project-info]", row);
-    // Alternate rows mirror the layout, so the name slides in from the other side.
-    const fromLeft = i % 2 === 1;
-
-    if (frame)
-      gsap.fromTo(
-        frame,
-        // Opens from the left edge, the side the thread is drawn on.
-        { clipPath: "inset(0% 100% 0% 0%)" },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          ease: "power2.out",
-          scrollTrigger: { trigger: row, start: "top 80%", end: mobile ? "top 30%" : "top 15%", scrub: 0.6 },
-        },
-      );
-
-    // Inside the frame the screen drifts against the scroll: depth, not travel.
-    if (img)
-      gsap.fromTo(
-        img,
-        { yPercent: -4 },
-        { yPercent: 4, ease: "none", scrollTrigger: { trigger: row, start: "top bottom", end: "bottom top", scrub: true } },
-      );
-
-    // The phone is the near plane and runs faster than the page.
-    if (phone)
-      gsap.fromTo(
-        phone,
-        { y: mobile ? 50 : 140 },
-        { y: mobile ? -20 : -60, ease: "none", scrollTrigger: { trigger: row, start: "top bottom", end: "bottom top", scrub: true } },
-      );
-
-    if (name)
-      gsap.fromTo(
-        name,
-        { xPercent: fromLeft ? 6 : -6, opacity: 0.15 },
-        {
-          xPercent: 0,
-          opacity: 1,
-          ease: "power2.out",
-          scrollTrigger: { trigger: row, start: "top 90%", end: "top 45%", scrub: 0.6 },
-        },
-      );
-
-    if (info)
-      gsap.fromTo(
-        Array.from(info.children),
-        { y: 24, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.08,
-          ease: "power2.out",
-          scrollTrigger: { trigger: info, start: "top 85%", end: "top 45%", scrub: 0.6 },
-        },
-      );
+function work() {
+  const root = q("[data-work]");
+  const pin = q("[data-work-pin]");
+  const room = q("[data-darkroom='home']", root ?? document);
+  if (!root || !pin || !room) return;
+  const stops = qa("[data-print]", room).length;
+  ScrollTrigger.create({
+    trigger: root,
+    start: "top top",
+    end: () => `+=${window.innerHeight * Math.max(1, stops - 1) * (isMobile() ? 0.6 : 0.75)}`,
+    pin,
+    pinSpacing: true,
+    invalidateOnRefresh: true,
+    anticipatePin: 1,
+    onUpdate: (self) => room.dispatchEvent(new CustomEvent("darkroom:progress", { detail: self.progress })),
   });
 }
 
@@ -262,15 +258,19 @@ function ambient() {
   const heroRoot = q("[data-hero]");
   const closeRoot = q("[data-close]");
 
+  // Pages without a hero or a close have nothing for this loop to do.
+  if (!heroPin && !closePin) return;
   const fine = isFine();
-  let heroOn = true;
+  let heroOn = !!heroRoot;
   let closeOn = false;
 
   if ("IntersectionObserver" in window) {
-    if (heroRoot)
-      new IntersectionObserver(([e]) => (heroOn = e.isIntersecting), { threshold: 0 }).observe(heroRoot);
-    if (closeRoot)
-      new IntersectionObserver(([e]) => (closeOn = e.isIntersecting), { threshold: 0 }).observe(closeRoot);
+    const io = new IntersectionObserver((entries) =>
+      entries.forEach((e) => (e.target === heroRoot ? (heroOn = e.isIntersecting) : (closeOn = e.isIntersecting))),
+    );
+    if (heroRoot) io.observe(heroRoot);
+    if (closeRoot) io.observe(closeRoot);
+    later(() => io.disconnect());
   }
 
   // Pointer, normalised to -1..1 from the viewport centre, lerped.
@@ -293,7 +293,7 @@ function ambient() {
         lightT.x = (e.clientX / window.innerWidth) * 100;
         lightT.y = (e.clientY / window.innerHeight) * 100;
       },
-      { passive: true },
+      { passive: true, signal: ac!.signal },
     );
   }
 
@@ -335,34 +335,29 @@ function ambient() {
       }
     }
 
-    requestAnimationFrame(tick);
+    if (live()) requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
 }
 
-/* --- Services index --------------------------------------------------------
+/* --- Layers index --------------------------------------------------------
 
-   Not motion, so it runs under reduced motion too. The project crossing the
-   middle band of the viewport decides which services are lit. */
+   Not motion, so it runs whenever the line does. The print in the middle of
+   the line decides which layers are lit. */
 
 function initServiceIndex() {
-  const works = q("[data-works]");
-  if (!works || !("IntersectionObserver" in window)) return;
-  const services = qa("[data-service]", works);
-  const rows = qa("[data-project]", works);
-  if (!services.length || !rows.length) return;
-
-  const light = (row: HTMLElement) => {
-    const uses = (row.dataset.uses || "").split(" ");
-    services.forEach((s) => s.toggleAttribute("data-on", uses.includes(s.dataset.service || "")));
-  };
-  works.setAttribute("data-live", "");
-  light(rows[0]);
-  const io = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.isIntersecting && light(e.target as HTMLElement)),
-    { rootMargin: "-45% 0px -45% 0px" },
-  );
-  rows.forEach((r) => io.observe(r));
+  const layers = q("[data-services]");
+  const room = q("[data-darkroom='home']");
+  if (!layers || !room) return;
+  const services = qa("[data-service]", layers);
+  const prints = qa("[data-print]", room);
+  room.addEventListener("darkroom:current", ((e: CustomEvent<number>) => {
+    const uses = (prints[e.detail]?.dataset.uses || "").split(" ");
+    // The end card is not a project: every layer comes back on.
+    const end = prints[e.detail]?.hasAttribute("data-print-end");
+    layers.toggleAttribute("data-live", !end);
+    services.forEach((s) => s.toggleAttribute("data-on", end || uses.includes(s.dataset.service || "")));
+  }) as EventListener);
 }
 
 /* --- Reveals -------------------------------------------------------------- */
@@ -382,6 +377,7 @@ function initReveals() {
     { rootMargin: "0px 0px -12% 0px" },
   );
   els.forEach((el) => io.observe(el));
+  later(() => io.disconnect());
 }
 
 /* --- The thread (signature) ----------------------------------------------- */
@@ -392,7 +388,9 @@ function thread() {
   const list = q("[data-thread-stops]");
   const bar = q("[data-bar]");
   const paper = q("[data-paper]");
-  const works = q("[data-works]");
+  const works = q("[data-work]");
+  const measureAct = q("[data-scrub-stage]");
+  const dots = !!q("[data-thread-dots]");
   if (!nav || !line || !list) return;
 
   const stops = qa("[data-thread-stop]");
@@ -431,6 +429,7 @@ function thread() {
   };
   measure();
   ScrollTrigger.addEventListener("refresh", measure);
+  later(() => ScrollTrigger.removeEventListener("refresh", measure));
 
   const update = () => {
     const total = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
@@ -446,11 +445,19 @@ function thread() {
     });
     rows.forEach((r) => r.li.toggleAttribute("data-current", r === current));
 
-    // Over the work act the index sits at the page edge, so the thread keeps
-    // its line and dots and drops its labels until the act has passed.
-    if (works) {
-      const rect = works.getBoundingClientRect();
-      nav.toggleAttribute("data-thread-quiet", rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.3);
+    // Over the work act the heading and layers sit at the page edge, so the
+    // thread keeps its line and dots and drops its labels until it has passed.
+    // Pages whose copy starts at the page edge keep the labels away for good.
+    // The work act and the measure's readings panel also start at the page
+    // edge, so over them the thread keeps its line and dots only.
+    if (dots) nav.setAttribute("data-thread-quiet", "");
+    else if (works || measureAct) {
+      const over = (el: HTMLElement | null) => {
+        if (!el) return false;
+        const rect = el.getBoundingClientRect();
+        return rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.3;
+      };
+      nav.toggleAttribute("data-thread-quiet", over(works) || over(measureAct));
     }
 
     // Ground: the thread and the bar re-ink over the paper act.
@@ -463,5 +470,6 @@ function thread() {
   };
   update();
   ScrollTrigger.addEventListener("scrollEnd", update);
+  later(() => ScrollTrigger.removeEventListener("scrollEnd", update));
   lenis?.on("scroll", update);
 }

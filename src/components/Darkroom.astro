@@ -1,0 +1,597 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { useTranslations, type Locale } from "@/i18n/utils";
+
+/* ---------------------------------------------------------------------------
+   The room. The projects stand in it as large cards on a curved wall, over a
+   floor that runs off into the dark; the crimson thread is drawn on the floor
+   where the cards stand.
+
+   Three layers, each complete on its own:
+
+     native   No JS, reduced motion, or the engine failed: a horizontal
+              scroll-snap track of real links and images. Swipe, scroll and
+              Tab all work; nothing is hidden.
+     driven   darkroom.ts takes the track over: drag, wheel, keys and flicks
+              with weight, the cards set on a cylinder with CSS 3D on the real
+              elements, so focus rings and hit areas stay on the cards.
+     gl       darkroom-gl.ts paints the same cards in WebGL over the same
+              geometry and adds what CSS cannot: each card wrapped round the
+              cylinder, rippling like a flag with speed, and the floor.
+
+   Variants: "page" is the projects page, "home" is the homepage's Work act
+   (driven by the page scroll instead of its own input), "single" is the one
+   card that opens a detail page.
+--------------------------------------------------------------------------- */
+
+export type Print = {
+    slug: string;
+    index: string;
+    name: string;
+    kind: string;
+    line?: string;
+    href: string;
+    img: ImageMetadata;
+    alt: string;
+    /** Services this project used; the homepage lights them. */
+    uses?: string[];
+    /** Opens another site (the detail page's card opens the live product). */
+    external?: boolean;
+};
+
+interface Props {
+    items: Print[];
+    variant?: "page" | "home" | "single";
+    label: string;
+    /** A last card on the wall that leads somewhere else (the homepage's "All projects"). */
+    end?: { href: string; title: string; note: string };
+    /** Which card starts in focus. */
+    start?: number;
+    /** The first cards are above the fold on the projects page. */
+    eager?: boolean;
+}
+
+const { items, variant = "page", label, end, start = 0, eager = false } = Astro.props;
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+const count = String(items.length).padStart(2, "0");
+const sizes =
+    variant === "single"
+        ? "(max-width: 767px) 88vw, 52vw"
+        : variant === "home"
+          ? "(max-width: 767px) 80vw, 40vw"
+          : "(max-width: 767px) 82vw, 48vw";
+---
+
+<div
+    class:list={["room", `room--${variant}`]}
+    data-darkroom={variant}
+    data-start={start}
+    role="region"
+    aria-roledescription="carousel"
+    aria-label={label}
+>
+    <canvas class="room__gl" aria-hidden="true" data-room-gl></canvas>
+
+    <div class="room__track" data-room-track>
+        <ol class="room__list" data-room-list>
+            {
+                items.map((p, i) => (
+                    <li class="card" data-print data-slug={p.slug} data-index={i} data-uses={p.uses?.join(" ")}>
+                        <a
+                            class="card__link"
+                            href={p.href}
+                            data-print-link
+                            target={p.external ? "_blank" : undefined}
+                            rel={p.external ? "noopener" : undefined}
+                        >
+                            <span class="card__media" data-print-paper>
+                                <Image
+                                    src={p.img}
+                                    alt={p.alt}
+                                    widths={variant === "single" ? [640, 960, 1400] : [560, 900, 1300]}
+                                    sizes={sizes}
+                                    loading={eager && i < 2 ? "eager" : "lazy"}
+                                    fetchpriority={eager && i === start ? "high" : undefined}
+                                    decoding="async"
+                                    class="card__img"
+                                    data-print-img
+                                    data-vt={p.slug}
+                                />
+                            </span>
+                            <span class="card__shade" aria-hidden="true"></span>
+                            <span class="card__meta">
+                                <span class="card__index">{p.index}</span>
+                                <span class="card__name" lang="en">{p.name}</span>
+                                <span class="card__kind">{p.kind}</span>
+                            </span>
+                            <span class="card__go" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                        </a>
+                    </li>
+                ))
+            }
+            {
+                end && (
+                    <li class="card card--end" data-print data-print-end data-index={items.length}>
+                        <a class="card__link" href={end.href}>
+                            <span class="card__media card__index-card">
+                                <span class="display card__end-title">{end.title}</span>
+                                <span class="card__end-note pretty">{end.note}</span>
+                            </span>
+                            <span class="card__go" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                        </a>
+                    </li>
+                )
+            }
+        </ol>
+    </div>
+
+    {
+        variant === "page" && (
+            <script is:inline data-astro-rerun>
+                // Coming back from a project, the native track starts on it, before
+                // the first paint, so the card that carried across lands in view.
+                (function () {
+                    var s = document.currentScript, root = s && s.closest("[data-darkroom]");
+                    var slug = null;
+                    try {
+                        slug = sessionStorage.getItem("vt-slug");
+                    } catch (e) {}
+                    var li = root && slug && root.querySelector('[data-slug="' + slug + '"]');
+                    var track = root && root.querySelector("[data-room-track]");
+                    if (li && track) track.scrollLeft = li.offsetLeft + li.offsetWidth / 2 - track.clientWidth / 2;
+                })();
+            </script>
+        )
+    }
+
+    {
+        variant === "page" && (
+            <>
+                <!-- What is in focus now. Only shown once the engine runs; without
+                     it every card carries its own caption. A copy of what the
+                     card links say, so hidden from assistive tech and untabbable. -->
+                <div class="room__now" aria-hidden="true" data-room-now>
+                    {items.map((p, i) => (
+                        <div class="now" data-now={i}>
+                            <span class="label label-accent now__index">
+                                {p.index} {t("line.of")} {count}
+                            </span>
+                            <span class="label now__kind">{p.kind}</span>
+                            {p.line && <span class="now__line pretty">{p.line}</span>}
+                            <a class="now__open" href={p.href} tabindex="-1">
+                                <span class="label label-accent">{t("line.open")}</span>
+                                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                    <path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    ))}
+                </div>
+
+                <div class="room__controls" data-room-controls>
+                    <span class="label room__hint">
+                        <span class="room__hint--fine">{t("line.hint")}</span>
+                        <span class="room__hint--touch">{t("line.hintTouch")}</span>
+                    </span>
+                    <button class="room__btn" type="button" data-room-prev aria-label={t("line.prev")}>
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                            <path d="M20 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <button class="room__btn" type="button" data-room-next aria-label={t("line.next")}>
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                            <path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+            </>
+        )
+    }
+</div>
+
+<style is:global>
+    /* Global, not scoped: darkroom.ts toggles state on these elements from
+       outside the component, and the pages restyle the variants. */
+    .room {
+        --print-w: clamp(18rem, 46vw, 52rem);
+        --print-gap: clamp(1rem, 2vw, 2rem);
+        --radius: clamp(12px, 1.2vw, 20px);
+        /* Where the cards stand, from the top of the room. */
+        --line-y: 22svh;
+        /* The geometry the engine reads: where the card in focus stops, where
+           the wall comes closest, and how tightly it curves (× room width). */
+        --anchor: 44;
+        --apex: 26;
+        --curve: 1;
+        position: relative;
+        isolation: isolate;
+        color: var(--color-bone);
+    }
+    .room--home {
+        --print-w: clamp(16rem, 38vw, 42rem);
+        --anchor: 36;
+        --apex: 18;
+    }
+    .room--single {
+        --print-w: 100%;
+        --line-y: 0px;
+        --anchor: 50;
+        --apex: 50;
+        --curve: 1.8;
+    }
+
+    .room__gl {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 700ms var(--ease-out);
+    }
+    .room[data-gl] .room__gl {
+        opacity: 1;
+    }
+    .room--single .room__gl {
+        /* The one card bends past its own box. */
+        inset: -12%;
+        width: 124%;
+        height: 124%;
+    }
+
+    /* --- The track: native first ---------------------------------------- */
+    .room__track {
+        position: relative;
+        z-index: 3;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        padding-top: var(--line-y);
+    }
+    .room__track::-webkit-scrollbar {
+        display: none;
+    }
+    .room__list {
+        list-style: none;
+        margin: 0;
+        padding: 0 calc((100% - var(--print-w)) / 2);
+        padding-left: calc(var(--anchor) * 1% - var(--print-w) / 2);
+        display: flex;
+        align-items: flex-start;
+        gap: var(--print-gap);
+        width: max-content;
+        min-width: 100%;
+        box-sizing: border-box;
+    }
+    .room--single .room__list {
+        padding: 0;
+        justify-content: center;
+    }
+
+    /* --- A card --------------------------------------------------------- */
+    .card {
+        position: relative;
+        flex: none;
+        width: var(--print-w);
+        scroll-snap-align: center;
+        transform-origin: 50% 50%;
+    }
+    .card__link {
+        position: relative;
+        display: block;
+        aspect-ratio: 16 / 10;
+        border-radius: var(--radius);
+        overflow: hidden;
+        outline-offset: 5px;
+        background: var(--color-room-lift);
+        box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+        -webkit-user-drag: none;
+    }
+    .card__media,
+    .card__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .card__img {
+        object-fit: cover;
+        object-position: top center;
+        -webkit-user-drag: none;
+    }
+    /* Density at the foot of the card, where its name sits. */
+    .card__shade {
+        position: absolute;
+        inset: 45% 0 0 0;
+        background: linear-gradient(180deg, transparent, rgba(11, 10, 10, 0.86));
+        pointer-events: none;
+    }
+    .card__meta {
+        position: absolute;
+        left: clamp(1rem, 1.6vw, 1.6rem);
+        right: 4.5rem;
+        bottom: clamp(0.9rem, 1.4vw, 1.4rem);
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: 0.6rem;
+        row-gap: 0.25rem;
+        align-items: baseline;
+        pointer-events: none;
+    }
+    .card__index {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--color-red-lit);
+    }
+    .card__name {
+        font-family: var(--font-display);
+        font-variation-settings: "wdth" 92, "wght" 640;
+        font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+        line-height: 1;
+        letter-spacing: -0.01em;
+        color: var(--color-bone);
+    }
+    .card__kind {
+        grid-column: 2;
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--color-bone-soft);
+    }
+    .card__go {
+        position: absolute;
+        right: clamp(0.9rem, 1.4vw, 1.4rem);
+        bottom: clamp(0.9rem, 1.4vw, 1.4rem);
+        display: grid;
+        place-items: center;
+        width: 2.4rem;
+        height: 2.4rem;
+        border-radius: 50%;
+        background: rgba(11, 10, 10, 0.82);
+        border: 1px solid rgba(255, 50, 71, 0.6);
+        color: var(--color-bone);
+        transition:
+            background-color 240ms var(--ease-out),
+            transform 240ms var(--ease-out);
+    }
+    @media (hover: hover) and (pointer: fine) {
+        .card__link:hover .card__go {
+            background: var(--color-red-lit);
+            transform: scale(1.08);
+        }
+    }
+    .card__link:focus-visible .card__go {
+        background: var(--color-red-lit);
+    }
+
+    /* The end card: an index card, not a screenshot. */
+    .card__index-card {
+        display: grid;
+        align-content: space-between;
+        padding: clamp(1.2rem, 2vw, 2rem);
+        box-sizing: border-box;
+        color: var(--color-ink);
+        background:
+            radial-gradient(rgba(25, 25, 25, 0.06) 0.5px, transparent 0.5px) 0 0 / 5px 5px,
+            var(--color-paper);
+    }
+    .card__end-title {
+        font-size: clamp(2rem, 3.6vw, 3.8rem);
+        color: var(--color-red);
+    }
+    .card__end-note {
+        max-width: 26ch;
+        color: var(--color-ink-soft);
+    }
+    .card--end .card__go {
+        background: var(--color-red);
+        border-color: var(--color-red);
+    }
+
+    /* --- Driven: the engine owns the track ------------------------------ */
+    .room[data-engine] .room__track {
+        overflow: hidden;
+        scroll-snap-type: none;
+        /* Vertical swipes still scroll the page; horizontal ones are ours. */
+        touch-action: pan-y;
+        perspective: var(--persp, 1400px);
+        cursor: grab;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    .room[data-engine][data-dragging] .room__track {
+        cursor: grabbing;
+    }
+    .room[data-engine] .room__list {
+        transform-style: preserve-3d;
+        will-change: transform;
+        /* The cards stand behind the list's own plane (the wall curves away
+           into the room), so in a 3D context the list would take every click
+           meant for them. It takes none; drags still land on the track. */
+        pointer-events: none;
+    }
+    .room[data-engine] .card {
+        pointer-events: auto;
+    }
+    .room[data-engine] .card {
+        will-change: transform, opacity;
+    }
+    /* With WebGL the canvas paints the card (wrapped, rippling, shaded); the
+       DOM card stays exactly where it is, its image invisible, for the name,
+       the link, focus and the page-change snapshot. */
+    .room[data-gl] .card:not(.card--end) .card__img,
+    .room[data-gl] .card:not(.card--end) .card__shade {
+        opacity: 0;
+    }
+    .room[data-gl] .card:not(.card--end) .card__link {
+        background: transparent;
+        box-shadow: none;
+    }
+    /* Leaving the page: the DOM cards come back for the snapshot. */
+    html[data-leaving] .room[data-gl] .card:not(.card--end) .card__img {
+        opacity: 1;
+    }
+    html[data-leaving] .room__gl {
+        visibility: hidden;
+    }
+
+    /* --- The stage ------------------------------------------------------ */
+    .room__now,
+    .room__controls {
+        display: none;
+    }
+    .room[data-engine] .room__now {
+        display: block;
+        position: relative;
+        z-index: 4;
+        pointer-events: none;
+    }
+    .now {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: grid;
+        gap: 0.7rem;
+        max-width: 34rem;
+    }
+    .now > * {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0);
+        transition:
+            opacity 260ms var(--ease-out),
+            transform 260ms var(--ease-out);
+    }
+    .now[data-current] > * {
+        opacity: 1;
+        transform: none;
+        transition-duration: 640ms;
+    }
+    .now[data-current] > :nth-child(2) {
+        transition-delay: 60ms;
+    }
+    .now[data-current] > :nth-child(3) {
+        transition-delay: 120ms;
+    }
+    .now[data-current] > :nth-child(4) {
+        transition-delay: 180ms;
+    }
+    .now__line {
+        color: var(--color-bone);
+        font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+        line-height: 1.3;
+        font-variation-settings: "wdth" 96, "wght" 520;
+    }
+    .now__open {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        justify-self: start;
+        color: var(--color-red-lit);
+    }
+    .now[data-current] .now__open {
+        pointer-events: auto;
+    }
+
+    .room[data-engine] .room__controls {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: relative;
+        z-index: 4;
+    }
+    .room__btn {
+        display: grid;
+        place-items: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 50%;
+        border: 1px solid var(--g-rule-strong);
+        background: transparent;
+        color: var(--color-bone);
+        cursor: pointer;
+        transition:
+            border-color 200ms var(--ease-out),
+            color 200ms var(--ease-out);
+    }
+    .room__btn:disabled {
+        opacity: 0.3;
+        cursor: default;
+    }
+    @media (hover: hover) {
+        .room__btn:not(:disabled):hover {
+            border-color: var(--color-red-lit);
+            color: var(--color-red-lit);
+        }
+    }
+    .room__hint {
+        margin-right: 0.75rem;
+    }
+    .room__hint--touch {
+        display: none;
+    }
+    @media (hover: none) {
+        .room__hint--fine {
+            display: none;
+        }
+        .room__hint--touch {
+            display: inline;
+        }
+    }
+
+    /* Tablets: a bigger card nearer the middle, and the hint gives its room
+       to the description beside the buttons. */
+    @media (min-width: 768px) and (max-width: 1099px) {
+        .room {
+            --print-w: 64vw;
+            --anchor: 48;
+            --apex: 38;
+            --line-y: 18svh;
+        }
+        .room--home {
+            --print-w: 56vw;
+            --anchor: 40;
+            --apex: 30;
+        }
+        .room__hint {
+            display: none;
+        }
+    }
+    @media (max-width: 767px) {
+        .room {
+            --print-w: 80vw;
+            --print-gap: 4vw;
+            --line-y: 30svh;
+            --anchor: 50;
+            --apex: 50;
+            --curve: 1.5;
+        }
+        .room--home {
+            --print-w: 78vw;
+        }
+        .room--single {
+            --print-w: 100%;
+        }
+        .card__go {
+            width: 2.1rem;
+            height: 2.1rem;
+        }
+        .card__meta {
+            right: 3.6rem;
+        }
+    }
+</style>

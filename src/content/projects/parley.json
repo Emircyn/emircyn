@@ -1,0 +1,79 @@
+{
+  "name": "Parley",
+  "order": 2,
+  "year": 2026,
+  "featured": true,
+  "url": "https://parley.emircan-erdemci.workers.dev",
+  "host": "parley.emircan-erdemci.workers.dev",
+  "source": "https://github.com/Emircyn/parley",
+  "services": ["interface", "backend", "ai"],
+  "tiers": [
+    { "key": "interface", "tech": ["Nuxt 4", "Nuxt UI 4", "AI SDK useChat", "Comark"] },
+    { "key": "server", "tech": ["Cloudflare Workers", "Nitro", "Turnstile", "Rate Limiting", "Durable Object"] },
+    { "key": "ai", "tech": ["AI SDK streamText", "Workers AI", "GLM-4.7 Flash"] },
+    { "key": "services", "tech": ["Open-Meteo"] }
+  ],
+  "trace": ["interface", "server", "ai", "services", "interface"],
+  "en": {
+    "kind": "AI chat app",
+    "role": "Design and full stack development",
+    "line": "Streaming AI chat with weather, calculation and time cards.",
+    "summary": "Read replies as they arrive and see tool results as cards. Chat history stays in your browser; a usage screen shows the remaining quota.",
+    "problem": "Protect a shared AI quota and present useful tool results, with arithmetic handled by a dedicated parser.",
+    "contribution": "I built the interface, API, tools, usage meter and access controls, then deployed on Workers.",
+    "alt": "Parley in dark mode on desktop, showing a weather forecast for Istanbul and a calculation result as cards.",
+    "altMobile": "Parley in light mode on mobile, showing a card with the local time in Tokyo.",
+    "tiers": {
+      "interface": { "runs": "Browser", "does": "Renders streaming replies and tool cards. Stores chat history locally." },
+      "server": { "runs": "Cloudflare Workers", "does": "Serves the app and API. Session checks and rate limits protect usage; a Durable Object meters it." },
+      "ai": { "runs": "Workers AI", "does": "Streams replies and tool calls. A smaller model suggests follow-up messages." },
+      "services": { "runs": "Open-Meteo", "does": "Provides four-day weather forecasts." }
+    },
+    "traceTitle": "Asking about the weather",
+    "traceSteps": [
+      "Turnstile verification creates a 30-minute signed session.",
+      "The API checks origin, session, rate limits and input.",
+      "The model receives 16 messages and three tools.",
+      "getWeather fetches the forecast from Open-Meteo.",
+      "The tool result appears as a forecast card."
+    ],
+    "decisions": [
+      { "title": "Tool cards", "body": "Structured weather, calculation and time results render as dedicated cards." },
+      { "title": "Calculation parser", "body": "A parser evaluates supported expressions without eval. The model selects the calculation." },
+      { "title": "Shared quota", "body": "Turnstile, signed sessions and origin checks guard access. Limits allow five messages per minute per IP and session." },
+      { "title": "Follow-up suggestions", "body": "A smaller model suggests the next message. Press Tab to accept it." },
+      { "title": "Usage limits", "body": "Recorded average: about 23 neurons per reply, roughly 400 daily. Capacity varies by model and message length; the meter shows remaining quota." }
+    ]
+  },
+  "tr": {
+    "kind": "Yapay zekâ sohbet uygulaması",
+    "role": "Tasarım ve full stack geliştirme",
+    "line": "Anlık yanıtlar, hava durumu, hesaplama ve saat kartlarıyla yapay zekâ sohbeti.",
+    "summary": "Yanıtları oluşturulurken okuyun, araç sonuçlarını kartlarda görün. Geçmiş tarayıcınızda saklanır; kullanım ekranı kalan kotayı gösterir.",
+    "problem": "Ortak yapay zekâ kotasını korumak, araç sonuçlarını anlaşılır sunmak ve hesaplamaları ayrı bir ayrıştırıcıyla yapmak.",
+    "contribution": "Arayüzü, API’yi, araçları, kullanım sayacını ve erişim kontrollerini geliştirip Workers üzerinde yayımladım.",
+    "alt": "Masaüstünde koyu temalı Parley; İstanbul için hava tahmini ve hesaplama sonucu kartları.",
+    "altMobile": "Telefonda açık temalı Parley; Tokyo’daki yerel saati gösteren kart.",
+    "tiers": {
+      "interface": { "runs": "Tarayıcı", "does": "Yanıtları ve araç kartlarını anlık gösteriyor. Sohbet geçmişini yerel olarak saklıyor." },
+      "server": { "runs": "Cloudflare Workers", "does": "Uygulamayı ve API’yi sunuyor. Oturum kontrolleri ve istek sınırları erişimi denetliyor; Durable Object kullanımı sayıyor." },
+      "ai": { "runs": "Workers AI", "does": "Yanıtları ve araç çağrılarını akış halinde gönderiyor. Küçük bir model sonraki mesajı öneriyor." },
+      "services": { "runs": "Open-Meteo", "does": "Dört günlük hava tahmini sağlıyor." }
+    },
+    "traceTitle": "Hava durumu sorgusu",
+    "traceSteps": [
+      "Turnstile doğrulamasıyla 30 dakikalık imzalı oturum oluşturulur.",
+      "API; kaynak, oturum, istek sınırı ve girdiyi denetler.",
+      "Modele 16 mesaj ve üç araç gönderilir.",
+      "getWeather, tahmini Open-Meteo üzerinden alır.",
+      "Araç sonucu hava tahmini kartında gösterilir."
+    ],
+    "decisions": [
+      { "title": "Araç kartları", "body": "Hava durumu, hesaplama ve saat sonuçları özel kartlarda gösteriliyor." },
+      { "title": "Hesaplama ayrıştırıcısı", "body": "Model işlemi seçiyor; ayrıştırıcı desteklenen ifadeleri eval kullanmadan hesaplıyor." },
+      { "title": "Ortak kota", "body": "Turnstile, imzalı oturum ve kaynak kontrolü erişimi denetliyor. IP ve oturum başına dakikada beş mesaj sınırı var." },
+      { "title": "Mesaj önerileri", "body": "Küçük bir model sonraki mesajı öneriyor. Tab tuşuyla kabul ediliyor." },
+      { "title": "Kullanım sınırları", "body": "Ölçülen ortalama: yanıt başına yaklaşık 23 nöron, günlük yaklaşık 400 yanıt. Kapasite modele ve mesaj uzunluğuna bağlı; sayaç kalan kotayı gösteriyor." }
+    ]
+  }
+}

@@ -1,17 +1,30 @@
 ---
 import { useTranslations, type Locale } from "@/i18n/utils";
 import { languages } from "@/i18n/ui";
+import { homePath, projectsPath, type Alternates } from "@/lib/projects";
+
+interface Props {
+    /** This page in both languages, so the switch lands on the same page. */
+    alternates?: Alternates;
+}
 
 const lang = (Astro.currentLocale || "en") as Locale;
 const t = useTranslations(lang);
-const localeHref = (l: string) => `/${l}/`;
+const { alternates = { en: homePath("en"), tr: homePath("tr") } } = Astro.props;
+const here = Astro.url.pathname;
+const onHome = here === homePath(lang);
+const inProjects = here.startsWith(projectsPath(lang));
+// On the homepage the action scrolls to the close; elsewhere it opens mail.
+const ctaHref = onHome ? "#contact" : undefined;
+import { site } from "@/config";
 ---
 
-<!-- Fixed, minimal: wordmark, one action, the language pair. It inverts
-     itself over the paper act, driven from scroll.ts. -->
+<!-- Fixed, minimal: wordmark, the projects, the language pair, one action.
+     It inverts itself over the paper grounds, driven from scroll.ts, and it
+     keeps its place across page changes (view-transition-name: bar). -->
 <header class="bar" data-bar>
     <div class="shell bar__inner">
-        <a class="bar__mark label" href={localeHref(lang)}>{t("meta.name")}</a>
+        <a class="bar__mark label" href={homePath(lang)} aria-current={onHome ? "page" : undefined}>{t("meta.name")}</a>
 
         <nav class="bar__nav" aria-label={t("thread.label")}>
             <ul class="bar__langs">
@@ -20,7 +33,7 @@ const localeHref = (l: string) => `/${l}/`;
                         <li>
                             <a
                                 class="label bar__lang"
-                                href={localeHref(code)}
+                                href={alternates[code as Locale]}
                                 hreflang={code}
                                 lang={code}
                                 aria-current={code === lang ? "true" : undefined}
@@ -31,13 +44,17 @@ const localeHref = (l: string) => `/${l}/`;
                     ))
                 }
             </ul>
-            <a class="label bar__cta" href="#contact">{t("contact.action")}</a>
+            <a class="label bar__link" href={projectsPath(lang)} aria-current={inProjects ? "page" : undefined}>
+                {t("header.projects")}
+            </a>
+            <a class="label bar__cta" href={ctaHref ?? `mailto:${site.email}`}>{t("contact.action")}</a>
         </nav>
     </div>
 </header>
 
 <style>
     .bar {
+        view-transition-name: bar;
         position: fixed;
         inset: 0 0 auto 0;
         z-index: 50;
@@ -49,10 +66,10 @@ const localeHref = (l: string) => `/${l}/`;
         pointer-events: none;
         /* A short fall-off of the ground behind the bar, so passing copy does
            not print through the wordmark. Redrawn per ground. */
-        background: linear-gradient(180deg, rgba(11, 10, 10, 0.92) 0%, rgba(11, 10, 10, 0.55) 60%, transparent 100%);
+        background: linear-gradient(180deg, rgba(11, 10, 10, 0.96) 0%, rgba(11, 10, 10, 0.8) 55%, transparent 100%);
     }
     .bar[data-bar-paper] {
-        background: linear-gradient(180deg, rgba(241, 241, 239, 0.94) 0%, rgba(241, 241, 239, 0.6) 60%, transparent 100%);
+        background: linear-gradient(180deg, rgba(241, 241, 239, 0.97) 0%, rgba(241, 241, 239, 0.85) 55%, transparent 100%);
     }
     .bar[data-bar-paper] {
         --bar-ink: var(--color-ink);
@@ -95,6 +112,17 @@ const localeHref = (l: string) => `/${l}/`;
     }
     .bar__cta {
         color: var(--bar-accent) !important;
+    }
+    .bar__link[aria-current="page"] {
+        color: var(--bar-ink);
+        border-bottom: 1px solid var(--bar-accent);
+        padding-bottom: 0.2rem;
+    }
+    @media (hover: hover) {
+        .bar__link:hover,
+        .bar__lang:hover {
+            color: var(--bar-ink);
+        }
     }
     @media (max-width: 767px) {
         .bar__cta {

@@ -1,0 +1,12 @@
+---
+import ProjectRoute from "@/components/pages/ProjectRoute.astro";
+import { getProjects } from "@/lib/projects";
+
+export async function getStaticPaths() {
+    return (await getProjects()).map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+---
+
+<ProjectRoute project={project} />

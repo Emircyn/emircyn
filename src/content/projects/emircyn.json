@@ -1,0 +1,68 @@
+{
+  "name": "emircyn.com",
+  "order": 5,
+  "year": 2026,
+  "url": "https://emircyn.com/",
+  "host": "emircyn.com",
+  "source": "https://github.com/Emircyn/emircyn",
+  "services": ["interface"],
+  "tiers": [
+    { "key": "interface", "tech": ["Astro 5", "GSAP ScrollTrigger", "Lenis", "WebGL", "View Transitions"] },
+    { "key": "server", "tech": ["Cloudflare Workers", "Static assets"] }
+  ],
+  "trace": ["server", "interface", "interface", "interface"],
+  "en": {
+    "kind": "Portfolio",
+    "role": "Design and development",
+    "line": "A bilingual portfolio with scroll animation and a WebGL gallery.",
+    "summary": "My personal site, with a dark-room setting, a red navigation thread and a curved project gallery. Built in English and Turkish.",
+    "problem": "Show my interface work through motion while keeping the site fast and usable without JavaScript.",
+    "contribution": "I designed and built the visuals, animations, WebGL gallery, bilingual content model and Worker.",
+    "alt": "The emircyn.com homepage, with Emircan Erdemci’s name in large type and a red-outlined illustrated portrait against a dark room.",
+    "altMobile": "Mobile view of emircyn.com, with Emircan Erdemci’s name and illustrated portrait.",
+    "tiers": {
+      "interface": { "runs": "Browser", "does": "Static HTML and inline CSS. Animation starts after first paint; the gallery pauses off screen or in hidden tabs." },
+      "server": { "runs": "Cloudflare Workers", "does": "Serves static files and redirects HTTP and www to canonical HTTPS." }
+    },
+    "traceTitle": "A first visit",
+    "traceSteps": [
+      "The Worker serves HTML with inline styles.",
+      "Preloaded images and fonts support the first paint.",
+      "Animation starts during browser idle time after page load.",
+      "Supported devices enable WebGL; rendering pauses off screen."
+    ],
+    "decisions": [
+      { "title": "Static layout", "body": "Content and links work without JavaScript. Motion respects the reduced-motion preference." },
+      { "title": "Deferred animation", "body": "Animation starts after first paint. Recorded Lighthouse performance: 100 desktop, 91 throttled mobile." },
+      { "title": "Native gallery", "body": "WebGL adds visual effects over a native scroll-snap track with touch, keyboard navigation and real links." },
+      { "title": "Grain texture", "body": "A pre-rendered grain tile replaced filters that crashed software-rendered Chromium." }
+    ]
+  },
+  "tr": {
+    "kind": "Portfolyo",
+    "role": "Tasarım ve geliştirme",
+    "line": "Kaydırma animasyonları ve WebGL galerisiyle iki dilli portfolyo.",
+    "summary": "Karanlık oda, kırmızı gezinme çizgisi ve kavisli proje galerisiyle kişisel sitem. Türkçe ve İngilizce olarak hazırladım.",
+    "problem": "Arayüz çalışmalarımı hareketle göstermek; siteyi hızlı ve JavaScript olmadan kullanılabilir tutmak.",
+    "contribution": "Görselleri, animasyonları, WebGL galerisini, iki dilli içerik yapısını ve Worker’ı tasarlayıp geliştirdim.",
+    "alt": "emircyn.com ana sayfası; karanlık oda üzerinde büyük harflerle Emircan Erdemci adı ve kırmızı çerçeveli çizim portre.",
+    "altMobile": "emircyn.com mobil görünümü; Emircan Erdemci’nin adı ve çizim portresi.",
+    "tiers": {
+      "interface": { "runs": "Tarayıcı", "does": "Statik HTML ve gömülü CSS. Animasyonlar ilk görüntüden sonra başlıyor; galeri ekran dışında veya gizli sekmede duraklıyor." },
+      "server": { "runs": "Cloudflare Workers", "does": "Statik dosyaları sunuyor; HTTP ve www isteklerini esas HTTPS adresine yönlendiriyor." }
+    },
+    "traceTitle": "İlk ziyaret",
+    "traceSteps": [
+      "Worker, stilleri içeren HTML sunar.",
+      "Önceden yüklenen görseller ve yazı tipleri ilk görüntüyü destekler.",
+      "Sayfa yüklendikten sonra tarayıcı boşta kaldığında animasyonlar başlar.",
+      "Desteklenen cihazlarda WebGL açılır; ekran dışında çizim duraklar."
+    ],
+    "decisions": [
+      { "title": "Statik yerleşim", "body": "İçerik ve bağlantılar JavaScript olmadan çalışıyor. Animasyonlar hareket azaltma tercihine uyuyor." },
+      { "title": "Sonradan başlayan animasyon", "body": "Animasyonlar ilk görüntüden sonra başlıyor. Kaydedilen Lighthouse performansı: masaüstü 100, yavaşlatılmış mobil 91." },
+      { "title": "Yerel galeri", "body": "WebGL, dokunmatik ve klavye kullanımını destekleyen gerçek bağlantılı, kartlara hizalanan galeriye görsel efekt ekliyor." },
+      { "title": "Gren dokusu", "body": "Yazılımla çizilen Chromium’u çökerten filtrelerin yerine hazır gren dokusu kullanılıyor." }
+    ]
+  }
+}

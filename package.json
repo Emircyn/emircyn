@@ -2,7 +2,7 @@
   "name": "emircyn",
   "version": "1.0.0",
   "private": true,
-  "description": "Personal site of Emircan Erdemci: a scroll-driven portfolio built with Astro, GSAP and Lenis, deployed on Cloudflare Workers.",
+  "description": "Personal site of Emircan Erdemci, full stack AI engineer: a scroll-driven portfolio with a WebGL darkroom, built with Astro, GSAP and Lenis, deployed on Cloudflare Workers.",
   "author": "Emircan Erdemci (https://emircyn.com)",
   "homepage": "https://emircyn.com",
   "repository": {

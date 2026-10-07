@@ -1,33 +1,38 @@
 {
   "meta": {
     "name": "Emircan Erdemci",
-    "role": "Frontend Geliştirici",
+    "role": "Full Stack AI Mühendisi",
     "location": "Ankara, Türkiye"
   },
   "hero": {
-    "beat": "Hızlı, kullanımı kolay web arayüzleri geliştiriyorum.",
+    "beat": "Özenli arayüzler, sağlam altyapılar ve yapay zekâ entegrasyonlarıyla web ürünleri geliştiriyorum.",
     "ticker": [
-      "Frontend geliştirme",
+      "Full stack geliştirme",
+      "Yapay zekâ özellikleri",
       "Ankara",
       "InspireIT",
-      "React",
-      "Vue",
-      "Astro",
       "TypeScript",
-      "Tailwind",
-      "GSAP",
+      "Next.js",
+      "Nuxt",
+      "Astro",
+      "Postgres",
+      "Supabase",
+      "Stripe",
+      "AI SDK",
+      "Workers AI",
+      "Cloudflare Workers",
+      "SQLite",
       "Web performansı",
-      "Erişilebilirlik",
       "Etkileşim tasarımı",
       "2019’dan beri"
-    ]
+    ],
+    "scroll": "Kaydırın"
   },
   "about": {
     "label": "Hakkımda",
     "body": [
-      "Ankara’da yaşayan bir frontend geliştiriciyim. Şu anda InspireIT’te çalışıyorum. Mesleğe 2019’da Bilgeweb’de staj yaparak başladım; ardından GuruDesk’te bir yılı aşkın süre frontend geliştirme üzerine çalıştım.",
-      "Bir tasarımın tarayıcıda çalışan bir ürüne dönüşmesini seviyorum. React, Vue ve Astro ile yeni arayüzler geliştiriyor, mevcut ürünlerdeki sorunları gideriyorum. Yavaş açılan bir sayfanın nedenini bulup iyileştirmek de bu işin bir parçası.",
-      "Arayüzün kullanım sırasında nasıl hissettirdiğine önem veriyorum. Telefonda rahatça kullanılan bir sayfa, dokunuşa doğru tepki veren bir buton ya da yerinde biten bir animasyon için ayrıntılar üzerinde çalışıyorum."
+      "Ankara’da yaşayan bir full stack AI mühendisiyim. InspireIT bünyesinde çalışıyor, arayüzden veritabanına web ürünleri geliştiriyorum.",
+      "2019’da web geliştirmeyle başladım. Frontend geçmişim, mobil kullanımı, performansı ve etkileşim ayrıntılarını ön planda tutmamı sağlıyor."
     ]
   },
   "record": {
@@ -37,29 +42,29 @@
     "positions": [
       {
         "org": "InspireIT Bilgi Teknolojileri Danışmanlık",
-        "detail": "Frontend Geliştirici, tam zamanlı, İstanbul",
-        "period": "Nis 2024 - halen"
+        "detail": "Frontend geliştirici · Tam zamanlı · İstanbul",
+        "period": "Nis 2024 - devam ediyor"
       },
       {
         "org": "GuruDesk.com",
-        "detail": "Frontend Geliştirici, tam zamanlı, Tallinn",
+        "detail": "Frontend geliştirici · Tam zamanlı · Tallinn",
         "period": "Şub 2023 - Nis 2024"
       },
       {
         "org": "Bilgeweb",
-        "detail": "Junior Web Geliştirici, staj, Ankara",
+        "detail": "Başlangıç düzeyi web geliştirici · Staj · Ankara",
         "period": "Eyl 2019 - Haz 2020"
       }
     ],
     "education": [
       {
         "org": "İstanbul Üniversitesi",
-        "detail": "Yönetim Bilişim Sistemleri, lisans",
+        "detail": "Yönetim Bilişim Sistemleri · Lisans",
         "period": "Eyl 2022 - Haz 2026"
       },
       {
         "org": "Sincan Borsa İstanbul Mesleki ve Teknik Anadolu Lisesi",
-        "detail": "Bilişim Teknolojileri, web tasarım ve programlama",
+        "detail": "Bilişim teknolojileri · Web tasarımı ve programlama",
         "period": "Eyl 2016 - Haz 2020"
       }
     ]
@@ -67,7 +72,7 @@
   "contact": {
     "label": "İletişim",
     "heading": "Projenizi konuşalım.",
-    "body": "Yeni bir web sitesi veya mevcut ürününüz için frontend desteği arıyorsanız bana yazın. Fikriniz henüz şekilleniyorsa da nereden başlayabileceğimizi birlikte konuşabiliriz.",
+    "body": "Yeni web projenizi bana e-posta ile anlatın.",
     "action": "E-posta gönder",
     "github": "GitHub",
     "linkedin": "LinkedIn",
@@ -81,37 +86,49 @@
     "rights": "Emircan Erdemci"
   },
   "header": {
-    "sourceCode": "Projenin kaynak kodu"
+    "sourceCode": "Sitenin kaynak kodu",
+    "projects": "Projeler",
+    "skip": "İçeriğe geç"
   },
   "seo": {
-    "title": "Emircan Erdemci | Frontend Geliştirici",
-    "description": "Ankara’da frontend geliştirici Emircan Erdemci. React, Vue ve Astro ile web siteleri ve ürün arayüzleri geliştiriyorum. Projelerimi ve deneyimimi inceleyin.",
-    "imageAlt": "Ankara’da frontend geliştirici Emircan Erdemci ve çizim portresi",
-    "socialDescription": "React, Vue ve Astro ile web siteleri ve ürün arayüzleri geliştiriyorum. Projelerimi inceleyin, birlikte çalışmak için iletişime geçin."
+    "title": "Emircan Erdemci | Full Stack AI Mühendisi",
+    "description": "Ankara’da full stack AI mühendisi Emircan Erdemci. Next.js, Nuxt, veritabanı, ödeme sistemleri ve yapay zekâ entegrasyonlarıyla geliştirdiğim web ürünlerini inceleyin.",
+    "imageAlt": "Emircan Erdemci’nin adı, full stack AI mühendisi unvanı ve çizim portresi",
+    "socialDescription": "Arayüzden veritabanına geliştirdiğim web ürünleri ve yapay zekâ entegrasyonları. Projelerimi ve geliştirme kararlarını inceleyin."
   },
   "plates": {
     "instrument": "Ölçüm kadranı ve ibresi."
   },
   "scrub": {
     "label": "Performans",
-    "caption": "Projelerin ölçülen performansı.",
-    "note": "Lighthouse 12 masaüstü performans puanları. Her proje için üç ölçümün medyanı, Eylül 2026.",
+    "caption": "Projelerimden ölçümler.",
+    "note": "Lighthouse 12: üç ölçümün medyanı, Eyl 2026. Diğer veriler: proje ölçümleri. AI kapasitesi modele ve mesaj uzunluğuna bağlı.",
     "readings": [
       {
         "site": "emircyn.com",
+        "device": "Lighthouse, masaüstü",
         "value": 100
       },
       {
         "site": "Porch",
-        "value": 98
+        "device": "Worker, gzip",
+        "from": 2.65,
+        "value": 1.64,
+        "decimals": 2,
+        "unit": "MiB"
       },
       {
         "site": "Parley",
-        "value": 98
+        "device": "Tahmini günlük yanıt, ücretsiz AI kotası",
+        "value": 400,
+        "approx": true
       },
       {
-        "site": "InspireIT",
-        "value": 92
+        "site": "Formadaş",
+        "device": "Paylaşım kartı oluşturma",
+        "value": 40,
+        "approx": true,
+        "unit": "ms"
       }
     ]
   },
@@ -123,127 +140,90 @@
     "record": "Deneyim",
     "contact": "İletişim"
   },
-  "craft": {
-    "label": "Çalışma alanlarım",
+  "services": {
+    "label": "Neler geliştiriyorum",
     "items": [
       {
-        "slug": "interfaces",
+        "slug": "interface",
         "index": "01",
         "name": "Arayüz",
-        "tag": "Geliştirme",
-        "line": "Tanıtım siteleri ve yönetim panelleri için, tasarıma sadık kalan ve farklı ekranlara uyum sağlayan arayüzler geliştiriyorum.",
-        "stack": "React · Vue · Astro · TypeScript · Tailwind"
+        "line": "Farklı ekranlara uyumlu arayüzler ve canlı önizlemeli editörler.",
+        "stack": "React · Next.js · Vue · Nuxt · Astro · Tailwind · GSAP"
       },
       {
-        "slug": "improvements",
+        "slug": "backend",
         "index": "02",
-        "name": "İyileştirme",
-        "tag": "Bakım",
-        "line": "Sayfayı yavaşlatan sorunları ölçümlerle tespit edip gideriyorum. Yaptığım değişikliğin etkisini yeniden ölçerek kontrol ediyorum.",
-        "stack": "Lighthouse · Web Vitals · performans analizi · erişilebilirlik denetimi",
-        "proof": "Ölçümleri inceleyin",
-        "href": "#measure"
+        "name": "Sunucu",
+        "line": "API’ler, kimlik doğrulama ve ödeme sistemleri.",
+        "stack": "Node · Nitro · Next.js · Stripe · Workers · Docker"
       },
       {
-        "slug": "motion",
+        "slug": "data",
         "index": "03",
-        "name": "Animasyon",
-        "tag": "Etkileşim",
-        "line": "Sayfa akışını destekleyen kaydırma animasyonları ve etkileşimler geliştiriyorum. Hareket azaltıldığında da içerik okunabilir kalıyor.",
-        "stack": "GSAP ScrollTrigger · Lenis · CSS scroll-driven animation"
+        "name": "Veri",
+        "line": "Veritabanı şemaları, erişim kuralları ve önbellekler.",
+        "stack": "Postgres · Supabase · RLS · SQLite · SPARQL"
+      },
+      {
+        "slug": "ai",
+        "index": "04",
+        "name": "Yapay zekâ",
+        "line": "Anlık yapay zekâ yanıtları ve etkileşimli araç kartları.",
+        "stack": "AI SDK · Workers AI · araç çağrıları · yapılandırılmış çıktı"
       }
     ]
   },
-  "projects": {
+  "work": {
+    "label": "Seçili projeler",
+    "heading": "Geliştirdiğim ürünler",
+    "intro": "Bir bağlantı sayfası oluşturucu, yapay zekâ sohbeti ve futbol uygulaması.",
+    "open": "Projeyi incele",
+    "all": "Tüm projeler",
+    "allNote": "Beş proje ve çalışma biçimleri."
+  },
+  "line": {
+    "title": "Projeler",
+    "description": "Emircan Erdemci’nin projeleri: Porch, Parley, Formadaş, InspireIT ve emircyn.com. Ürünlerin işlevlerini, mimarilerini ve geliştirme kararlarını inceleyin.",
     "label": "Projeler",
-    "heading": "Seçili projeler",
-    "note": "Projeler yayında. Bağlantılardan inceleyebilirsiniz.",
-    "fields": {
-      "year": "Yıl",
-      "role": "Rol",
-      "stack": "Teknolojiler"
-    },
-    "visit": "Siteyi inceleyin",
+    "heading": "Projeleri keşfedin",
+    "intro": "Her projede ne geliştirdim, hangi rolü üstlendim ve nasıl kararlar aldım?",
+    "hint": "Sürükleyin, kaydırın ya da ok tuşlarını kullanın",
+    "hintTouch": "Kaydırın",
+    "open": "Projeyi aç",
+    "of": "/",
+    "prev": "Önceki proje",
+    "next": "Sonraki proje",
+    "listLabel": "Projeler",
+    "indexLabel": "Proje listesi",
+    "indexHeading": "Tüm projeler",
+    "count": "proje",
+    "layers": "Katmanlar"
+  },
+  "detail": {
+    "problem": "İhtiyaç",
+    "role": "Rolüm",
+    "architecture": "Mimari",
+    "architectureNote": "Her parçanın çalıştığı yer. Kırmızı çizgi örnek akışı izliyor.",
+    "runs": "Çalıştığı yer",
+    "trace": "Adım adım akış",
+    "decisions": "Temel kararlar",
+    "stack": "Teknolojiler",
+    "year": "Yıl",
+    "kind": "Tür",
+    "visit": "Canlı siteyi aç",
     "source": "Kaynak kodu",
-    "items": [
-      {
-        "index": "01",
-        "slug": "porch",
-        "name": "Porch",
-        "year": "2026",
-        "stack": "Next.js 16 · Supabase · Stripe · shadcn/ui · Cloudflare Workers",
-        "url": "https://porch.emircan-erdemci.workers.dev",
-        "host": "porch.emircan-erdemci.workers.dev",
-        "source": "https://github.com/Emircyn/porch",
-        "services": [
-          "interfaces",
-          "improvements"
-        ],
-        "kind": "Link sayfası oluşturucu",
-        "role": "Tasarım ve geliştirme",
-        "summary": "Porch, bağlantılarınızı tek bir kişisel sayfada toplamanızı sağlayan bir uygulama. Hesap açıp fotoğrafınızı ve bağlantılarınızı ekleyebilir, temanızı seçerek sayfanızı kısa bir adresle paylaşabilirsiniz. Düzenlemeler anında telefon önizlemesine yansır.",
-        "detail": "Fikir aşamasından yayına kadar tasarımını ve geliştirmesini üstlendim. Next.js, Supabase ve Stripe ile geliştirdiğim uygulama Cloudflare Workers üzerinde çalışıyor. Abonelik limitleri veritabanında uygulanıyor; plan değişiklikleri yalnızca Stripe webhook’ları üzerinden yapılıyor. Herkese açık sayfaların mobil Lighthouse puanı 98.",
-        "alt": "Koyu tema, masaüstü: Porch ana sayfası: “One link for everything you make” başlığının yanında link-in-bio sayfası gösteren üç telefon.",
-        "altMobile": "Açık tema, mobil: Telefonda bir Porch sayfası: öne çıkan bir link ve dört link daha olan bir seramikçi profili."
-      },
-      {
-        "index": "02",
-        "slug": "parley",
-        "name": "Parley",
-        "kind": "Yapay zekâ sohbet uygulaması",
-        "year": "2026",
-        "role": "Tasarım ve geliştirme",
-        "summary": "Parley, hava durumu ve hesaplama gibi soruları sonuç kartlarıyla yanıtlayan bir yapay zekâ sohbet uygulaması. Hava tahminlerini kart üzerinde gösteriyor, hesaplamalarda kesin sonuç veriyor. Yanıtları oluşturuldukları sırada okuyabiliyorsunuz.",
-        "detail": "Nuxt 4 ve Nuxt UI ile tasarlayıp geliştirdim. Uygulama tamamen Cloudflare’ın ücretsiz katmanında çalışıyor. Yapay zekâ kotasını bot trafiğine karşı korumak için Turnstile, imzalı oturumlar ve istek sınırları kullandım.",
-        "stack": "Nuxt 4 · Nuxt UI · AI SDK · Workers AI · TypeScript",
-        "url": "https://parley.emircan-erdemci.workers.dev",
-        "host": "parley.emircan-erdemci.workers.dev",
-        "source": "https://github.com/Emircyn/parley",
-        "alt": "Koyu tema, masaüstü: Parley, İstanbul’daki hava durumu sorusunu bir tahmin kartı ve bir hesap kartıyla yanıtlıyor.",
-        "altMobile": "Açık tema, mobil: Telefonda Parley, Tokyo’daki yerel saati gösteriyor.",
-        "services": [
-          "interfaces",
-          "motion"
-        ]
-      },
-      {
-        "index": "03",
-        "slug": "inspireit",
-        "name": "InspireIT",
-        "kind": "Kurumsal web sitesi",
-        "year": "2026",
-        "role": "Frontend ve WordPress altyapı geliştirme",
-        "summary": "Çalıştığım şirket InspireIT’in Türkçe ve İngilizce web sitesi. Şirket, 2003’ten bu yana kurumsal müşterilere veri, bulut ve BT altyapı hizmetleri sunuyor.",
-        "detail": "Figma tasarımını temel alarak sitenin frontend’ini ve WordPress altyapısını geliştirdim. WordPress ve Elementor üzerine kurulu yapı, özel tema ve siteye özgü eklentiler kullanıyor. Her ürün ve sektörün ayrı bir sayfası var.",
-        "stack": "WordPress · Elementor · PHP · özel tema ve eklentiler",
-        "url": "https://inspireit.com.tr/",
-        "host": "inspireit.com.tr",
-        "alt": "InspireIT ana sayfası: dijital dönüşüm başlığının yanında dört baklava biçimli görsel.",
-        "altMobile": "Telefonda InspireIT ana sayfası.",
-        "services": [
-          "interfaces",
-          "improvements"
-        ]
-      },
-      {
-        "index": "04",
-        "slug": "formadas",
-        "name": "Formadaş",
-        "year": "2026",
-        "stack": "Nuxt 4 · Nuxt UI · TypeScript · SQLite · Wikidata",
-        "url": "https://formadas.com/",
-        "host": "formadas.com",
-        "services": [
-          "interfaces",
-          "improvements"
-        ],
-        "kind": "Futbolcu keşif uygulaması",
-        "role": "Tasarım ve geliştirme",
-        "summary": "Beşiktaş ve Galatasaray’da kimler oynadı? Formadaş, iki kulübün ortak futbolcularını dönem, maç ve gol bilgileriyle listeliyor. Ülke ve kulübe göre arama yapabilir, futbolcuların kariyerlerini inceleyip profillerini paylaşabilirsiniz. Telefonunuza da uygulama olarak ekleyebilirsiniz.",
-        "detail": "Nuxt 4 ve Nuxt UI ile geliştirdim. Wikidata ve API-Football verilerini SQLite’ta önbelleğe alıyor; canlı kaynaklara ulaşılamadığında yerel oyuncu indeksini kullanıyor. Kurulabilir uygulama, futbolcuya özel paylaşım kartları ve önceden yüklenen fotoğraflarla mobil deneyimi geliştirdim.",
-        "alt": "Koyu tema, masaüstü: Formadaş’ta Beşiktaş ve Galatasaray karşılaştırması; ortak futbolcuların dönem, maç ve gol bilgilerinin yer aldığı tablo.",
-        "altMobile": "Açık tema, mobil: Formadaş’ta Burak Yılmaz’ın fotoğrafı, kariyer istatistikleri, futbolcu bilgileri ve profil paylaşma düğmesi."
-      }
-    ]
+    "shots": "Masaüstü ve mobil",
+    "next": "Sonraki proje",
+    "back": "Tüm projeler",
+    "home": "Ana sayfa",
+    "breadcrumb": "Sayfa yolu"
+  },
+  "tiers": {
+    "interface": "Arayüz",
+    "edge": "Uç ağ",
+    "server": "Sunucu",
+    "ai": "Yapay zekâ",
+    "data": "Veri",
+    "services": "Harici servisler"
   }
 }

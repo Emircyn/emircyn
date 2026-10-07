@@ -1,0 +1,32 @@
+---
+// One project's page for either language; the route files only pick the locale.
+import { getImage } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import ProjectDetail from "@/components/ProjectDetail.astro";
+import Contact from "@/components/Contact.astro";
+import { useTranslations, type Locale } from "@/i18n/utils";
+import { getProjects, nextOf, projectJsonLd, projectPath, shot, type Project } from "@/lib/projects";
+
+interface Props {
+    project: Project;
+}
+
+const { project } = Astro.props;
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+const all = await getProjects();
+const c = project.data[lang];
+const shotURL = new URL((await getImage({ src: shot(project.id, "desktop", lang), width: 1200 })).src, Astro.site).href;
+---
+
+<Layout
+    title={`${project.data.name}: ${c.kind}`}
+    description={c.summary}
+    image={`/og/${project.id}-${lang}.jpg`}
+    alternates={{ en: projectPath("en", project.id), tr: projectPath("tr", project.id) }}
+    ogType="article"
+    jsonLd={projectJsonLd(lang, Astro.site!, project, t("line.title"), shotURL)}
+>
+    <ProjectDetail project={project} next={nextOf(all, project)} />
+    <Contact />
+</Layout>

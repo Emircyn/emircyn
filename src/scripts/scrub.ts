@@ -49,7 +49,25 @@ type Clip = {
   active: number;
 };
 
-type Reading = { site: string; device?: string; value: number; from?: number };
+type Reading = {
+  site: string;
+  device?: string;
+  value: number;
+  from?: number;
+  /** For figures that are not scores: "MiB", "ms". Shown beside the label. */
+  unit?: string;
+  decimals?: number;
+};
+
+/** A score reads as a three-digit gauge (098); a measurement keeps its own
+ *  precision (1.64), because padding a size or a time would misstate it. */
+function format(r: Reading, n: number) {
+  if (!r.decimals) return String(Math.round(n)).padStart(3, "0");
+  return n.toLocaleString(document.documentElement.lang || "en", {
+    minimumFractionDigits: r.decimals,
+    maximumFractionDigits: r.decimals,
+  });
+}
 
 /** Which reading the dial is on, and the number the readout should settle
  *  on. The middle 80% of the stage is split evenly between the readings; a
@@ -76,7 +94,18 @@ function dwell(p: number, amount: number): number {
   return p * k + eased * amount;
 }
 
+/* Pages change without a reload (Astro's ClientRouter): the loop, the
+   observers and the blob URLs are released before the next page arrives. */
+let stop: (() => void) | null = null;
+export function destroyScrub() {
+  stop?.();
+  stop = null;
+}
+
 export function initScrub() {
+  destroyScrub();
+  const cleanups: (() => void)[] = [];
+  stop = () => cleanups.splice(0).forEach((fn) => fn());
   const stages = Array.from(
     document.querySelectorAll<HTMLElement>("[data-scrub-stage]"),
   );
@@ -141,7 +170,9 @@ export function initScrub() {
       // the first paint is still competing for bandwidth. Nothing here is
       // needed until the visitor scrolls.
       if (document.readyState !== "complete") {
-        window.addEventListener("load", () => load2(), { once: true });
+        const onLoad = () => load2();
+        window.addEventListener("load", onLoad, { once: true });
+        cleanups.push(() => window.removeEventListener("load", onLoad));
         return;
       }
       load2();
@@ -150,7 +181,10 @@ export function initScrub() {
       fetch(src)
         .then((r) => r.blob())
         .then((blob) => {
-          video.src = URL.createObjectURL(blob);
+          if (!video.isConnected) return;
+          const url = URL.createObjectURL(blob);
+          video.src = url;
+          cleanups.push(() => URL.revokeObjectURL(url));
         })
         .catch(() => {
           video.src = src;
@@ -168,6 +202,7 @@ export function initScrub() {
         { rootMargin: "150% 0px" },
       );
       io.observe(stage);
+      cleanups.push(() => io.disconnect());
     } else {
       load();
     }
@@ -199,6 +234,7 @@ export function initScrub() {
         { rootMargin: "50% 0px" },
       );
       vis.observe(stage);
+      cleanups.push(() => vis.disconnect());
     } else {
       clip.visible = true;
     }
@@ -222,20 +258,36 @@ export function initScrub() {
       // while it slides out, which is the failure this device is known for.
       const rect = c.stage.getBoundingClientRect();
       const raw = (vh - rect.top) / (vh + rect.height);
-      c.target = dwell(Math.min(1, Math.max(0, raw)), 0.35);
+      c.target = dwell(Math.min(1, Math.max(0, raw)), 0.18);
 
       c.current += (c.target - c.current) * LERP;
       const t = c.current * c.duration;
       if (c.readout && c.readings.length) {
-        // A real score. The number ticks toward it, like a needle settling.
+        // A real figure. Each new reading rolls in from below and counts up
+        // from zero to its value, like a needle settling; a before/after
+        // reading counts from its old value to its new one.
         const { i, target } = readingAt(c.readings, c.current);
-        c.shown += (target - c.shown) * 0.12;
-        c.readout.textContent = String(Math.round(c.shown)).padStart(3, "0");
+        if (i !== c.active) {
+          const r = c.readings[i];
+          c.shown = r.from !== undefined && c.active !== -1 && c.shown > 0 ? c.shown : 0;
+          if (c.readings[c.active]?.unit !== r.unit) c.shown = 0;
+          // Restart the roll-in: drop the attribute, force a style flush, set it.
+          const box = c.readout.parentElement;
+          if (box) {
+            box.removeAttribute("data-rolling");
+            void box.offsetWidth;
+            box.setAttribute("data-rolling", c.active === -1 || i > c.active ? "up" : "down");
+          }
+        }
+        c.shown += (target - c.shown) * 0.1;
+        if (Math.abs(target - c.shown) < 0.004) c.shown = target;
+        c.readout.textContent = format(c.readings[i], c.shown);
         if (i !== c.active) {
           c.active = i;
           c.rows.forEach((row, k) => row.toggleAttribute("data-current", k === i));
           const r = c.readings[i];
-          if (c.readingLabel) c.readingLabel.textContent = r.device ? `${r.site} · ${r.device}` : r.site;
+          const name = r.device ? `${r.site} · ${r.device}` : r.site;
+          if (c.readingLabel) c.readingLabel.textContent = r.unit ? `${name} · ${r.unit}` : name;
         }
       } else if (c.readout) {
         // The reading the wheel is producing, as the instrument would show it.
@@ -271,5 +323,10 @@ export function initScrub() {
     }
   }
 
-  window.addEventListener("pagehide", () => cancelAnimationFrame(raf));
+  const onHide = () => cancelAnimationFrame(raf);
+  window.addEventListener("pagehide", onHide);
+  cleanups.push(() => {
+    cancelAnimationFrame(raf);
+    window.removeEventListener("pagehide", onHide);
+  });
 }

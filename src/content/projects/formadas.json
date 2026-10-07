@@ -1,0 +1,85 @@
+{
+  "name": "Formadaş",
+  "order": 3,
+  "year": 2026,
+  "featured": true,
+  "url": "https://formadas.com/",
+  "host": "formadas.com",
+  "services": ["interface", "backend", "data"],
+  "tiers": [
+    { "key": "interface", "tech": ["Nuxt 4", "Nuxt UI 4", "Installable web app"] },
+    { "key": "edge", "tech": ["Cloudflare cache"] },
+    { "key": "server", "tech": ["Node 24", "Nitro", "Docker", "Dokploy", "Takumi"] },
+    { "key": "data", "tech": ["SQLite", "Result cache", "Local player index"] },
+    { "key": "services", "tech": ["Wikidata SPARQL", "Wikimedia Commons"] }
+  ],
+  "trace": ["interface", "server", "data", "services", "server", "interface"],
+  "en": {
+    "kind": "Football data app",
+    "role": "Design, data pipeline and full stack development",
+    "line": "Find footballers who played for both clubs.",
+    "summary": "Compare clubs or search by country to explore player careers, available match statistics and shareable profiles. Install it on your phone.",
+    "problem": "Reconcile fragmented club records and multilingual names, while keeping results available when Wikidata is slow or offline.",
+    "contribution": "I built the interface, data pipeline, SQLite cache, scheduled updates and share cards, including Docker deployment.",
+    "alt": "Formadaş in dark mode on desktop, comparing Beşiktaş and Galatasaray in a table of shared players, seasons, appearances and goals.",
+    "altMobile": "Burak Yılmaz’s Formadaş profile in light mode on mobile, with his photo, career statistics and a share button.",
+    "tiers": {
+      "interface": { "runs": "Browser", "does": "Club and country searches, career pages and sharing. Installable, with light and dark themes." },
+      "edge": { "runs": "Cloudflare", "does": "Caches pages for ten minutes; clears them after the previous container stops serving." },
+      "server": { "runs": "Docker on an Oracle Cloud VM", "does": "Handles API requests, share cards and scheduled updates with Nitro and Dokploy." },
+      "data": { "runs": "SQLite on a Docker volume", "does": "Persistent results, profiles and a player index covering 150 clubs." },
+      "services": { "runs": "Wikidata", "does": "Career records and available statistics through SPARQL; photos from Wikimedia Commons." }
+    },
+    "traceTitle": "Who played for Beşiktaş and Galatasaray?",
+    "traceSteps": [
+      "Two clubs are selected; /api/common-players receives the request.",
+      "Related Wikidata club entries are grouped.",
+      "SQLite serves cached results, refreshing expired entries in the background.",
+      "On a cache miss, SPARQL fetches players and career records.",
+      "Names and spells are merged; players receive a 0 to 100 score.",
+      "Results appear; a local index covers Wikidata outages."
+    ],
+    "decisions": [
+      { "title": "Background refresh", "body": "Freshness lasts one day during transfer periods, one week otherwise. Expired results are served while refreshing." },
+      { "title": "Scheduled updates", "body": "Overnight refreshes run daily during transfer periods and weekly otherwise." },
+      { "title": "Club aliases", "body": "Alias groups combine football teams and multi-sport parent records before querying." },
+      { "title": "Name matching", "body": "Turkish and English names use normalisation, initials and Jaro-Winkler matching. Single-word names require an exact normalised match." },
+      { "title": "Share cards", "body": "Takumi renders 1200×630 cards in about 40 ms in recorded tests. Images remain cached until profiles change." },
+      { "title": "Deployment cache", "body": "Cloudflare’s cache is cleared after the old container stops serving, reducing references to outdated scripts." }
+    ]
+  },
+  "tr": {
+    "kind": "Futbol veri uygulaması",
+    "role": "Tasarım, veri akışı ve full stack geliştirme",
+    "line": "İki kulüpte de forma giymiş futbolcuları bulun.",
+    "summary": "Kulüpleri karşılaştırın veya ülkeye göre arayın. Futbolcu kariyerlerini, mevcut maç istatistiklerini ve paylaşılabilir profilleri inceleyin. Telefonunuza uygulama olarak yükleyebilirsiniz.",
+    "problem": "Dağınık kulüp kayıtlarını ve farklı dillerdeki isimleri birleştirmek; Wikidata yavaşladığında veya erişilemediğinde sonuç sunmak.",
+    "contribution": "Arayüzü, veri akışını, SQLite önbelleğini, zamanlanmış güncellemeleri ve paylaşım kartlarını geliştirdim. Docker dağıtımını da üstlendim.",
+    "alt": "Masaüstünde koyu temalı Formadaş; Beşiktaş ve Galatasaray’ın ortak futbolcularını sezon, maç ve gol bilgileriyle gösteren tablo.",
+    "altMobile": "Telefonda açık temalı Formadaş; Burak Yılmaz’ın fotoğrafı, kariyer istatistikleri ve paylaşım düğmesiyle profil sayfası.",
+    "tiers": {
+      "interface": { "runs": "Tarayıcı", "does": "Kulüp ve ülke araması, kariyer sayfaları ve paylaşım. Açık ve koyu tema; telefona yüklenebilir." },
+      "edge": { "runs": "Cloudflare", "does": "Sayfaları on dakika saklıyor; eski konteyner trafik almayı bırakınca önbelleği temizliyor." },
+      "server": { "runs": "Oracle Cloud sanal makinesinde Docker", "does": "Nitro ve Dokploy ile API istekleri, paylaşım kartları ve zamanlanmış güncellemeler." },
+      "data": { "runs": "Kalıcı Docker biriminde SQLite", "does": "Kalıcı sonuçlar, profiller ve 150 kulübü kapsayan oyuncu indeksi." },
+      "services": { "runs": "Wikidata", "does": "SPARQL ile kariyer kayıtları ve mevcut istatistikler; Wikimedia Commons üzerinden fotoğraflar." }
+    },
+    "traceTitle": "Beşiktaş ve Galatasaray’da kimler oynadı?",
+    "traceSteps": [
+      "İki kulüp seçilir; /api/common-players isteği alır.",
+      "İlişkili Wikidata kulüp kayıtları gruplanır.",
+      "SQLite önbellekteki sonucu sunar; eski kayıtlar arka planda yenilenir.",
+      "Önbellekte yoksa SPARQL, oyuncuları ve kariyer kayıtlarını getirir.",
+      "İsimler ve dönemler birleştirilir; 0 ile 100 arasında puanlanır.",
+      "Sonuçlar gösterilir; Wikidata erişilemiyorsa yerel indeks kullanılır."
+    ],
+    "decisions": [
+      { "title": "Arka planda yenileme", "body": "Güncellik süresi transfer döneminde bir gün, diğer zamanlarda bir hafta. Eski sonuçlar gösterilirken yenileri alınır." },
+      { "title": "Zamanlanmış güncellemeler", "body": "Gece güncellemeleri transfer dönemlerinde günlük, diğer zamanlarda haftalık çalışıyor." },
+      { "title": "Kulüp kayıtları", "body": "Takma ad grupları, futbol takımı ve çok branşlı ana kulüp kayıtlarını sorgu öncesi birleştiriyor." },
+      { "title": "İsim eşleştirme", "body": "Türkçe ve İngilizce isimler standartlaştırma, baş harf ve Jaro-Winkler ile eşleştiriliyor. Tek kelimelik isimlerde standartlaştırılmış birebir eşleşme aranıyor." },
+      { "title": "Paylaşım kartları", "body": "Takumi, 1200×630 kartları kaydedilen ölçümlerde yaklaşık 40 ms içinde oluşturuyor. Profil değişene kadar saklanıyor." },
+      { "title": "Dağıtım önbelleği", "body": "Eski konteyner trafik almayı bırakınca Cloudflare önbelleği temizleniyor; eski betiklere başvurma riski azalıyor." }
+    ]
+  }
+}

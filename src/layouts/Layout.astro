@@ -1,4 +1,6 @@
 ---
+import type { ComponentProps } from "astro/types";
+import { ClientRouter } from "astro:transitions";
 import SEO from "@/components/SEO.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
 import Thread from "@/components/Thread.astro";
@@ -11,19 +13,26 @@ import "@fontsource/jetbrains-mono/500.css";
 import archivoLatin from "@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url";
 import archivoLatinExt from "@fontsource-variable/archivo/files/archivo-latin-ext-wdth-normal.woff2?url";
 
-const lang = Astro.currentLocale || "en";
+import { useTranslations, type Locale } from "@/i18n/utils";
+
+type Props = ComponentProps<typeof SEO>;
+
+const lang = (Astro.currentLocale || "en") as Locale;
+const t = useTranslations(lang);
+const seo = Astro.props;
 ---
 
 <!doctype html>
 <html lang={lang}>
     <head>
-        <SEO />
+        <SEO {...seo} />
+        <ClientRouter fallback="animate" />
         <link rel="preload" as="font" type="font/woff2" href={archivoLatin} crossorigin />
         <link rel="preload" as="font" type="font/woff2" href={archivoLatinExt} crossorigin />
     </head>
     <body>
-        <a class="skip-link" href="#work">Skip to content</a>
-        <SiteHeader />
+        <a class="skip-link" href="#main">{t("header.skip")}</a>
+        <SiteHeader alternates={seo.alternates} />
         <Thread />
         <main id="main">
             <slot />
@@ -32,20 +41,155 @@ const lang = Astro.currentLocale || "en";
 </html>
 
 <script>
-    // The page is complete without this: every act has a static composition.
-    // So the scroll engine (GSAP, ScrollTrigger, Lenis) is not even fetched
-    // until the first paint is done and the browser is idle. On a throttled
-    // phone its parse and setup would otherwise sit between the hero image
-    // arriving and the hero image being painted.
-    const start = () =>
-        Promise.all([import("@/scripts/scroll"), import("@/scripts/scrub")]).then(([scroll, scrub]) => {
-            scroll.initPage();
-            scrub.initScrub();
+    /* ---------------------------------------------------------------------
+       Engines and page changes.
+
+       Pages change through Astro's ClientRouter: the new page is fetched and
+       swapped in under a view transition instead of a full reload, so the
+       header and the thread hold still and the project image the visitor
+       clicked travels to where it sits on the next page.
+
+       The page is complete without any of this: every act has a static
+       composition. So on the first visit the engines (GSAP, ScrollTrigger,
+       Lenis, the dial, the project wall) are not even fetched until the first
+       paint is done and the browser is idle. On later page changes they are
+       already loaded and start at once. Each is stopped before the next page
+       is swapped in, and each starts on its own, so one that fails to load
+       never keeps the others from running.
+    --------------------------------------------------------------------- */
+    type Engine = { init: () => void; destroy: () => void; freeze?: () => void };
+    const engines: Record<string, Promise<Engine | null>> = {};
+    // Loaded engines, kept by value too, so they can be stopped synchronously:
+    // a smooth-scroll engine still alive while the new page is swapped in
+    // would drag it back to the old scroll position.
+    const loaded: Record<string, Engine> = {};
+    const load = (key: string, get: () => Promise<Engine>) =>
+        (engines[key] ??= get()
+            .then((e) => (loaded[key] = e))
+            .catch((err) => {
+                console.warn("[engine]", key, err);
+                delete engines[key];
+                return null;
+            }));
+    const scroll = () =>
+        load("scroll", () => import("@/scripts/scroll").then((m) => ({ init: m.initPage, destroy: m.destroyPage, freeze: m.freezePage })));
+    const scrub = () =>
+        load("scrub", () => import("@/scripts/scrub").then((m) => ({ init: m.initScrub, destroy: m.destroyScrub })));
+    const room = () =>
+        load("room", () =>
+            import("@/scripts/darkroom").then((m) => ({ init: m.initDarkrooms, destroy: m.destroyDarkrooms })),
+        );
+
+    const start = () => {
+        const wanted = [scroll(), scrub()];
+        if (document.querySelector("[data-darkroom]")) wanted.push(room());
+        wanted.forEach((p) =>
+            p.then((e) => {
+                try {
+                    e?.init();
+                } catch (err) {
+                    console.warn("[engine]", err);
+                }
+            }),
+        );
+    };
+    const stop = () =>
+        Object.values(loaded).forEach((e) => {
+            try {
+                e.destroy();
+            } catch (err) {
+                console.warn("[engine]", err);
+            }
         });
-    const idle = () =>
-        "requestIdleCallback" in window ? requestIdleCallback(start, { timeout: 700 }) : setTimeout(start, 1);
-    if (document.readyState === "complete") idle();
-    else window.addEventListener("load", idle, { once: true });
+
+    let first = true;
+    document.addEventListener("astro:page-load", () => {
+        if (!first) return start();
+        first = false;
+        const idle = () =>
+            "requestIdleCallback" in window ? requestIdleCallback(start, { timeout: 700 }) : setTimeout(start, 1);
+        if (document.readyState === "complete") idle();
+        else window.addEventListener("load", idle, { once: true });
+    });
+    document.addEventListener("astro:before-swap", stop);
+
+    // html[data-scrolled] once the visitor has moved off the top: the hero's
+    // scroll cue steps back. Restated on every page, since a swap resets it.
+    const scrolled = () => document.documentElement.toggleAttribute("data-scrolled", scrollY > 40);
+    addEventListener("scroll", scrolled, { passive: true });
+    document.addEventListener("astro:page-load", scrolled);
+
+    /* --- The image that travels ------------------------------------------
+
+       One project image is named on each side of a page change, and only if
+       it is on screen: an image that flew in from below the fold would read
+       as a glitch, not continuity. Into a project it is that project's image;
+       out of one, its own. A WebGL plane cannot be captured, so the room's
+       DOM images are shown again for the old page's snapshot (data-leaving).
+    --------------------------------------------------------------------- */
+    const KEY = "vt-slug";
+    const detail = /\/(?:en\/projects|tr\/projeler)\/([^/]+)\/?$/;
+    const slugOf = (url?: URL | string | null) => {
+        try {
+            return url ? (new URL(url, location.href).pathname.match(detail)?.[1] ?? null) : null;
+        } catch {
+            return null;
+        }
+    };
+    const remember = (slug: string | null) => {
+        try {
+            slug ? sessionStorage.setItem(KEY, slug) : sessionStorage.removeItem(KEY);
+        } catch {}
+    };
+    const recall = () => {
+        try {
+            return sessionStorage.getItem(KEY);
+        } catch {
+            return null;
+        }
+    };
+    const onScreen = (el: Element) => {
+        const r = el.getBoundingClientRect();
+        return r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth && r.width > 0;
+    };
+    const name = (slug: string | null) => {
+        if (!slug) return;
+        const el = document.querySelector<HTMLElement>(`[data-vt="${CSS.escape(slug)}"]`);
+        if (!el || !onScreen(el)) return;
+        el.style.setProperty("view-transition-name", `print-${slug}`);
+        el.style.setProperty("view-transition-class", "print");
+    };
+    const unname = () =>
+        document.querySelectorAll<HTMLElement>("[data-vt]").forEach((el) => {
+            el.style.removeProperty("view-transition-name");
+            el.style.removeProperty("view-transition-class");
+        });
+
+    document.addEventListener("astro:before-preparation", (e) => {
+        // The page holds still from the click on: the old page is captured
+        // where the visitor left it, not halfway through a smooth scroll.
+        Object.values(loaded).forEach((en) => en.freeze?.());
+        const slug = slugOf(e.to) ?? slugOf(e.from);
+        remember(slug);
+        document.documentElement.setAttribute("data-leaving", "");
+        unname();
+        name(slug);
+    });
+    document.addEventListener("astro:before-swap", (e) => {
+        // Names come off once the new page has fully arrived. If the browser
+        // skips the animation, say why: it fails silently otherwise.
+        e.viewTransition?.ready.catch((err: unknown) => console.warn("[view transition skipped]", err));
+        e.viewTransition?.finished.finally(unname);
+    });
+    document.addEventListener("astro:after-swap", () => {
+        const slug = recall();
+        // On the projects page the native track starts on the project the
+        // visitor is coming back from, before the new page is captured.
+        const track = document.querySelector<HTMLElement>("[data-darkroom='page'] [data-room-track]");
+        const li = slug ? track?.querySelector<HTMLElement>(`[data-slug="${CSS.escape(slug)}"]`) : null;
+        if (track && li) track.scrollLeft = li.offsetLeft + li.offsetWidth / 2 - track.clientWidth / 2;
+        name(slug);
+    });
 </script>
 
 <style is:global>

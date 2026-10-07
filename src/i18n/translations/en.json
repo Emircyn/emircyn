@@ -1,33 +1,38 @@
 {
   "meta": {
     "name": "Emircan Erdemci",
-    "role": "Frontend Developer",
+    "role": "Full Stack AI Engineer",
     "location": "Ankara, Turkey"
   },
   "hero": {
-    "beat": "I build web interfaces that are fast and easy to use.",
+    "beat": "I build web products with thoughtful interfaces, solid backends and AI integrations.",
     "ticker": [
-      "Frontend development",
+      "Full stack development",
+      "AI features",
       "Ankara",
       "InspireIT",
-      "React",
-      "Vue",
-      "Astro",
       "TypeScript",
-      "Tailwind",
-      "GSAP",
+      "Next.js",
+      "Nuxt",
+      "Astro",
+      "Postgres",
+      "Supabase",
+      "Stripe",
+      "AI SDK",
+      "Workers AI",
+      "Cloudflare Workers",
+      "SQLite",
       "Web performance",
-      "Accessibility",
       "Interaction design",
       "Since 2019"
-    ]
+    ],
+    "scroll": "Scroll"
   },
   "about": {
     "label": "About me",
     "body": [
-      "I’m a frontend developer based in Ankara, currently working at InspireIT. I started as an intern at Bilgeweb in 2019 and later spent over a year at GuruDesk working in frontend development.",
-      "I enjoy turning a design into a working product in the browser. I use React, Vue and Astro to build new interfaces and improve existing ones. That includes tracking down why a page is slow and fixing the cause.",
-      "I care about how an interface feels to use. I spend time getting the details right, from a page that works comfortably on a phone to the way a button responds or an animation comes to a stop."
+      "I'm a full stack AI engineer in Ankara, currently at InspireIT. I build web products from interface to database.",
+      "I started in web development in 2019. My frontend background keeps mobile layouts, performance and interaction details central to my work."
     ]
   },
   "record": {
@@ -37,43 +42,43 @@
     "positions": [
       {
         "org": "InspireIT Information Technologies Consultancy",
-        "detail": "Frontend Developer, full time, Istanbul",
-        "period": "Apr 2024 – present"
+        "detail": "Frontend Developer · Full-time · Istanbul",
+        "period": "Apr 2024 to present"
       },
       {
         "org": "GuruDesk.com",
-        "detail": "Frontend Developer, full time, Tallinn",
+        "detail": "Frontend Developer · Full-time · Tallinn",
         "period": "Feb 2023 to Apr 2024"
       },
       {
         "org": "Bilgeweb",
-        "detail": "Junior Web Developer, internship, Ankara",
+        "detail": "Junior Web Developer · Internship · Ankara",
         "period": "Sep 2019 to Jun 2020"
       }
     ],
     "education": [
       {
-        "org": "İstanbul Üniversitesi",
-        "detail": "Management Information Systems, bachelor’s degree",
+        "org": "Istanbul University",
+        "detail": "Management Information Systems · Bachelor's degree",
         "period": "Sep 2022 to Jun 2026"
       },
       {
         "org": "Sincan Borsa İstanbul Mesleki ve Teknik Anadolu Lisesi",
-        "detail": "Information technologies, web design and programming",
+        "detail": "Information Technology · Web Design and Programming",
         "period": "Sep 2016 to Jun 2020"
       }
     ]
   },
   "contact": {
     "label": "Contact",
-    "heading": "Let’s talk.",
-    "body": "If you need a new website or frontend support for an existing product, send me an email. If your idea is still taking shape, we can work out where to start.",
+    "heading": "Let's talk.",
+    "body": "Email me about your next web project.",
     "action": "Email me",
     "github": "GitHub",
     "linkedin": "LinkedIn",
     "sourceCode": "Site source code",
     "headingLines": [
-      "Let’s",
+      "Let's",
       "talk."
     ]
   },
@@ -81,37 +86,49 @@
     "rights": "Emircan Erdemci"
   },
   "header": {
-    "sourceCode": "Project source code"
+    "sourceCode": "Site source code",
+    "projects": "Projects",
+    "skip": "Skip to content"
   },
   "seo": {
-    "title": "Emircan Erdemci | Frontend Developer",
-    "description": "Emircan Erdemci, frontend developer in Ankara. I build websites and product interfaces with React, Vue and Astro. Explore my projects and experience.",
-    "imageAlt": "Emircan Erdemci, frontend developer in Ankara, beside an illustrated portrait",
-    "socialDescription": "I build websites and product interfaces with React, Vue and Astro. Explore my projects and get in touch to work together."
+    "title": "Emircan Erdemci | Full Stack AI Engineer",
+    "description": "Emircan Erdemci, full stack AI engineer in Ankara. Explore web products built with Next.js, Nuxt, databases, Stripe payments and AI integrations.",
+    "imageAlt": "Emircan Erdemci, full stack AI engineer in Ankara, with an illustrated portrait",
+    "socialDescription": "Web products built from interface to database, with AI integrations. Explore my projects and the decisions behind them."
   },
   "plates": {
     "instrument": "A dial gauge and its needle."
   },
   "scrub": {
     "label": "Performance",
-    "caption": "How the projects perform.",
-    "note": "Lighthouse 12 desktop performance scores. Median of three runs per project, September 2026.",
+    "caption": "Numbers from my projects.",
+    "note": "Lighthouse 12: three-run median, Sep 2026. Other figures: project measurements. AI capacity varies by model and message length.",
     "readings": [
       {
         "site": "emircyn.com",
+        "device": "Lighthouse, desktop",
         "value": 100
       },
       {
         "site": "Porch",
-        "value": 98
+        "device": "Worker, gzip",
+        "from": 2.65,
+        "value": 1.64,
+        "decimals": 2,
+        "unit": "MiB"
       },
       {
         "site": "Parley",
-        "value": 98
+        "device": "Est. daily replies, free AI quota",
+        "value": 400,
+        "approx": true
       },
       {
-        "site": "InspireIT",
-        "value": 92
+        "site": "Formadaş",
+        "device": "Share card rendering",
+        "value": 40,
+        "approx": true,
+        "unit": "ms"
       }
     ]
   },
@@ -123,127 +140,90 @@
     "record": "Experience",
     "contact": "Contact"
   },
-  "craft": {
-    "label": "What I do",
+  "services": {
+    "label": "What I build",
     "items": [
       {
-        "slug": "interfaces",
+        "slug": "interface",
         "index": "01",
-        "name": "Interfaces",
-        "tag": "Building",
-        "line": "I build interfaces for marketing sites and admin panels, staying true to the design across screen sizes.",
-        "stack": "React · Vue · Astro · TypeScript · Tailwind"
+        "name": "Interface",
+        "line": "Responsive interfaces and live-preview editors.",
+        "stack": "React · Next.js · Vue · Nuxt · Astro · Tailwind · GSAP"
       },
       {
-        "slug": "improvements",
+        "slug": "backend",
         "index": "02",
-        "name": "Improvements",
-        "tag": "Maintenance",
-        "line": "I use performance measurements to find and fix what slows a page down, then measure again to check the result.",
-        "stack": "Lighthouse · Web Vitals · profiling · accessibility audits",
-        "proof": "View the results",
-        "href": "#measure"
+        "name": "Backend",
+        "line": "APIs, authentication and payments.",
+        "stack": "Node · Nitro · Next.js · Stripe · Workers · Docker"
       },
       {
-        "slug": "motion",
+        "slug": "data",
         "index": "03",
-        "name": "Motion",
-        "tag": "Interaction",
-        "line": "I build scroll animations and interactions that guide people through a page. Content stays readable when motion is reduced.",
-        "stack": "GSAP ScrollTrigger · Lenis · CSS scroll-driven animation"
+        "name": "Data",
+        "line": "Database schemas, access rules and caching.",
+        "stack": "Postgres · Supabase · RLS · SQLite · SPARQL"
+      },
+      {
+        "slug": "ai",
+        "index": "04",
+        "name": "AI",
+        "line": "Streaming AI replies and interactive tool cards.",
+        "stack": "AI SDK · Workers AI · tool calling · structured output"
       }
     ]
   },
-  "projects": {
+  "work": {
+    "label": "Selected projects",
+    "heading": "Products I build",
+    "intro": "A link page builder, an AI chat and a football app.",
+    "open": "Explore the project",
+    "all": "All projects",
+    "allNote": "Five projects and how they work."
+  },
+  "line": {
+    "title": "Projects",
+    "description": "Explore five projects by Emircan Erdemci: Porch, Parley, Formadaş, InspireIT and emircyn.com. Product overviews, architecture and development decisions.",
     "label": "Projects",
-    "heading": "Selected projects",
-    "note": "Explore the live projects below.",
-    "fields": {
-      "year": "Year",
-      "role": "Role",
-      "stack": "Technologies"
-    },
-    "visit": "Explore the site",
+    "heading": "Explore the projects",
+    "intro": "What I built, my role and the decisions behind each project.",
+    "hint": "Drag, scroll or use the arrow keys",
+    "hintTouch": "Swipe",
+    "open": "Open project",
+    "of": "of",
+    "prev": "Previous project",
+    "next": "Next project",
+    "listLabel": "Projects",
+    "indexLabel": "Project list",
+    "indexHeading": "Every project",
+    "count": "projects",
+    "layers": "Layers"
+  },
+  "detail": {
+    "problem": "The challenge",
+    "role": "My role",
+    "architecture": "Architecture",
+    "architectureNote": "Where each part runs. Red follows the example flow.",
+    "runs": "Runs on",
+    "trace": "Step by step",
+    "decisions": "Key decisions",
+    "stack": "Stack",
+    "year": "Year",
+    "kind": "Type",
+    "visit": "Open the live site",
     "source": "Source code",
-    "items": [
-      {
-        "index": "01",
-        "slug": "porch",
-        "name": "Porch",
-        "year": "2026",
-        "stack": "Next.js 16 · Supabase · Stripe · shadcn/ui · Cloudflare Workers",
-        "url": "https://porch.emircan-erdemci.workers.dev",
-        "host": "porch.emircan-erdemci.workers.dev",
-        "source": "https://github.com/Emircyn/porch",
-        "services": [
-          "interfaces",
-          "improvements"
-        ],
-        "kind": "Link-in-bio SaaS",
-        "role": "Design and development",
-        "summary": "Porch brings your links together on a personal page. Create an account, add your photo and links, choose a theme, and share a short address. A live phone preview shows your changes as you edit.",
-        "detail": "I designed and developed Porch from the initial idea through to launch, using Next.js, Supabase and Stripe on Cloudflare Workers. The database enforces subscription limits, and only Stripe webhooks can change a plan. Public pages score 98 on mobile Lighthouse.",
-        "alt": "Dark theme, desktop: The Porch home page: the headline “One link for everything you make” beside three phones showing link-in-bio pages.",
-        "altMobile": "Light theme, mobile: A Porch public page on a phone: a potter’s profile with a featured link and four more."
-      },
-      {
-        "index": "02",
-        "slug": "parley",
-        "name": "Parley",
-        "kind": "AI chat app",
-        "year": "2026",
-        "role": "Design and development",
-        "summary": "Parley is an AI chat app that presents weather forecasts and calculation results as cards. It returns exact answers to calculations, and you can read replies as they are generated.",
-        "detail": "I designed and built it with Nuxt 4 and Nuxt UI. It runs entirely on Cloudflare’s free tier, with Turnstile, signed sessions and rate limits to protect the AI quota from bot traffic.",
-        "stack": "Nuxt 4 · Nuxt UI · AI SDK · Workers AI · TypeScript",
-        "url": "https://parley.emircan-erdemci.workers.dev",
-        "host": "parley.emircan-erdemci.workers.dev",
-        "source": "https://github.com/Emircyn/parley",
-        "alt": "Dark theme, desktop: Parley answering a question about the weather in Istanbul with a forecast card and a calculation card.",
-        "altMobile": "Light theme, mobile: Parley on a phone, showing the local time in Tokyo.",
-        "services": [
-          "interfaces",
-          "motion"
-        ]
-      },
-      {
-        "index": "03",
-        "slug": "inspireit",
-        "name": "InspireIT",
-        "kind": "Corporate website",
-        "year": "2026",
-        "role": "Frontend and WordPress infrastructure development",
-        "summary": "The Turkish and English website for InspireIT, where I work. The company has provided data, cloud and IT infrastructure services to enterprise clients since 2003.",
-        "detail": "I built the site’s frontend and WordPress infrastructure from the Figma design. The site uses WordPress and Elementor with a custom theme and plugins built for the site, with dedicated pages for each product and industry.",
-        "stack": "WordPress · Elementor · PHP · custom theme and plugins",
-        "url": "https://inspireit.com.tr/",
-        "host": "inspireit.com.tr",
-        "alt": "The InspireIT home page: a headline about digital transformation next to a grid of four diamond-shaped images.",
-        "altMobile": "The InspireIT home page on a phone.",
-        "services": [
-          "interfaces",
-          "improvements"
-        ]
-      },
-      {
-        "index": "04",
-        "slug": "formadas",
-        "name": "Formadaş",
-        "year": "2026",
-        "stack": "Nuxt 4 · Nuxt UI · TypeScript · SQLite · Wikidata",
-        "url": "https://formadas.com/",
-        "host": "formadas.com",
-        "services": [
-          "interfaces",
-          "improvements"
-        ],
-        "kind": "Football player discovery",
-        "role": "Design and development",
-        "summary": "Who has played for both Beşiktaş and Galatasaray? Formadaş finds the players two clubs have in common, with their seasons, appearances and goals. Search by country and club, explore player careers and share their profiles. You can also install it on your phone.",
-        "detail": "I built the app with Nuxt 4 and Nuxt UI. It caches Wikidata and API-Football data in SQLite and falls back to a local player index when live sources are unavailable. I improved the mobile experience with an installable app, player-specific share cards and preloaded photos.",
-        "alt": "Dark theme, desktop: Formadaş comparing Beşiktaş and Galatasaray, with a table of shared players, seasons, appearances and goals.",
-        "altMobile": "Light theme, mobile: Burak Yılmaz’s Formadaş profile, with his photo, career statistics, player details and a share button."
-      }
-    ]
+    "shots": "Desktop and mobile",
+    "next": "Next project",
+    "back": "All projects",
+    "home": "Home",
+    "breadcrumb": "Breadcrumb"
+  },
+  "tiers": {
+    "interface": "Interface",
+    "edge": "Edge",
+    "server": "Server",
+    "ai": "AI",
+    "data": "Data",
+    "services": "External services"
   }
 }

@@ -113,6 +113,14 @@ const strip = [...ticker, ...ticker];
                 </p>
             </div>
 
+            <!-- An invitation to scroll: most visitors read the first screen as the
+                 whole page. A real link to the work, so it also works without JS;
+                 it fades out as soon as the page starts to move. -->
+            <a class="hero__cue" href="#work" data-hero-cue>
+                <span class="label hero__cue-text">{t("hero.scroll")}</span>
+                <span class="hero__cue-line" aria-hidden="true"><span class="hero__cue-drop"></span></span>
+            </a>
+
             <div class="ticker hero__ticker" data-hero-ticker aria-hidden="true">
                 <div class="ticker__track">
                     {
@@ -337,6 +345,69 @@ const strip = [...ticker, ...ticker];
         display: block;
     }
 
+    /* --- Scroll cue -----------------------------------------------------
+       A small pill above the ticker, on the figure's dark shirt so it reads
+       on every screen without touching the name. */
+    .hero__cue {
+        position: absolute;
+        right: var(--gutter);
+        bottom: calc(var(--spacing) * 8);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 0.7rem 0.95rem 0.7rem 1.1rem;
+        border: 1px solid rgba(241, 241, 239, 0.28);
+        border-radius: 999px;
+        background: rgba(11, 10, 10, 0.62);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        pointer-events: auto;
+        transition:
+            opacity 400ms var(--ease-out),
+            border-color 240ms var(--ease-out);
+    }
+    .hero__cue-text {
+        color: var(--color-bone);
+    }
+    /* A short run of the crimson thread with a drop sliding down it. */
+    .hero__cue-line {
+        position: relative;
+        width: 2px;
+        height: 1.6rem;
+        overflow: hidden;
+        border-radius: 2px;
+        background: rgba(241, 241, 239, 0.2);
+    }
+    .hero__cue-drop {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2px;
+        height: 45%;
+        border-radius: 2px;
+        background: var(--color-red-lit);
+        box-shadow: 0 0 8px rgba(255, 50, 71, 0.8);
+        animation: cue-drop 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+    @keyframes cue-drop {
+        from {
+            transform: translateY(-110%);
+        }
+        to {
+            transform: translateY(240%);
+        }
+    }
+    @media (hover: hover) {
+        .hero__cue:hover {
+            border-color: var(--color-red-lit);
+        }
+    }
+    /* Once the page moves, the cue has done its job. */
+    :global(html[data-scrolled]) .hero__cue {
+        opacity: 0;
+        pointer-events: none;
+    }
+
     /* The strip along the floor. Always moving, even when the page is not. */
     .hero__ticker {
         position: absolute;
@@ -386,19 +457,31 @@ const strip = [...ticker, ...ticker];
             width: min(78vw, 360px);
             bottom: 7%;
         }
+        /* The beat is two sentences: smaller and wider on a phone, so it ends
+           above the figure's head instead of running down its face. */
         .hero__beat {
-            margin-top: 9vh;
-            max-width: 18ch;
-            font-size: 1.5rem;
+            margin-top: 7vh;
+            max-width: 24ch;
+            font-size: clamp(1.05rem, 4.6vw, 1.25rem);
+            line-height: 1.2;
+            text-shadow: 0 2px 18px rgba(11, 10, 10, 0.8);
         }
         .hero__copy {
             padding-top: calc(var(--spacing) * 9);
+        }
+        .hero__cue {
+            bottom: calc(var(--spacing) * 7.5);
+            padding: 0.6rem 0.8rem 0.6rem 0.95rem;
         }
     }
 
     /* Static composition. The scroll layer never runs, so the second beat is
        shown from the start rather than hidden forever. */
     @media (prefers-reduced-motion: reduce) {
+        .hero__cue-drop {
+            animation: none;
+            transform: translateY(75%);
+        }
         .hero__beat {
             opacity: 1;
             transform: none;
@@ -417,8 +500,8 @@ const strip = [...ticker, ...ticker];
             padding-top: 16vh;
         }
         .hero__beat {
-            margin-top: 36vh;
-            font-size: 1.25rem;
+            margin-top: 30vh;
+            font-size: 1.05rem;
         }
         .hero__figure {
             width: min(62vw, 300px);

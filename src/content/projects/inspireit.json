@@ -1,0 +1,59 @@
+{
+  "name": "InspireIT",
+  "order": 4,
+  "year": 2026,
+  "url": "https://inspireit.com.tr/",
+  "host": "inspireit.com.tr",
+  "services": ["interface", "backend"],
+  "tiers": [
+    { "key": "interface", "tech": ["Custom theme", "Elementor", "Figma"] },
+    { "key": "server", "tech": ["WordPress", "PHP", "Custom plugins"] }
+  ],
+  "trace": ["server", "interface"],
+  "en": {
+    "kind": "Corporate website",
+    "role": "Frontend and WordPress development",
+    "line": "A bilingual corporate website built with WordPress.",
+    "summary": "The Turkish and English website for InspireIT, where I work. It presents the company’s data, cloud and infrastructure services, offered since 2003.",
+    "problem": "Let the team update bilingual product and industry pages while keeping layouts consistent.",
+    "contribution": "I turned Figma designs into the frontend, custom WordPress theme and site-specific plugins.",
+    "alt": "InspireIT homepage, with a digital transformation headline beside four diamond-shaped images.",
+    "altMobile": "Mobile view of the InspireIT homepage.",
+    "tiers": {
+      "interface": { "runs": "Browser", "does": "Responsive pages built from Figma designs with Elementor." },
+      "server": { "runs": "WordPress", "does": "Custom plugins manage bilingual product and industry content." }
+    },
+    "traceTitle": "Publishing a product page",
+    "traceSteps": [
+      "The team adds Turkish and English content in WordPress.",
+      "The theme displays it in responsive layouts."
+    ],
+    "decisions": [
+      { "title": "Content editing", "body": "The custom theme and plugins keep layouts consistent as the team edits content." },
+      { "title": "Dedicated pages", "body": "Each product and industry has a dedicated page in both languages." }
+    ]
+  },
+  "tr": {
+    "kind": "Kurumsal web sitesi",
+    "role": "Frontend ve WordPress geliştirme",
+    "line": "WordPress ile geliştirilen iki dilli kurumsal site.",
+    "summary": "Çalıştığım şirket InspireIT’in Türkçe ve İngilizce sitesi. Şirketin 2003’ten bu yana sunduğu veri, bulut ve altyapı hizmetlerini tanıtıyor.",
+    "problem": "Ekibin iki dilde ürün ve sektör sayfalarını güncellerken tutarlı yerleşimleri koruyabilmesi.",
+    "contribution": "Figma tasarımlarından arayüzü, özel WordPress temasını ve siteye özgü eklentileri geliştirdim.",
+    "alt": "InspireIT ana sayfası; dijital dönüşüm başlığının yanında dört baklava biçimli görsel.",
+    "altMobile": "InspireIT ana sayfasının mobil görünümü.",
+    "tiers": {
+      "interface": { "runs": "Tarayıcı", "does": "Figma tasarımlarından Elementor ile farklı ekranlara uyumlu sayfalar." },
+      "server": { "runs": "WordPress", "does": "Özel eklentilerle iki dilde ürün ve sektör içeriği yönetimi." }
+    },
+    "traceTitle": "Ürün sayfası yayımlama",
+    "traceSteps": [
+      "Ekip, WordPress üzerinden iki dilde içerik ekler.",
+      "Tema, içeriği farklı ekranlara uyumlu yerleşimlerde gösterir."
+    ],
+    "decisions": [
+      { "title": "İçerik düzenleme", "body": "Özel tema ve eklentiler, içerik düzenlenirken yerleşimlerin tutarlı kalmasını sağlıyor." },
+      { "title": "Özel sayfalar", "body": "Her ürün ve sektörün iki dilde ayrı sayfası var." }
+    ]
+  }
+}
