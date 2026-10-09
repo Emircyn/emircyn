@@ -162,14 +162,12 @@ function projects() {
   if (!rows.length) return;
   const mobile = isMobile();
 
-  rows.forEach((row, i) => {
+  rows.forEach((row) => {
     const frame = q("[data-project-frame]", row);
     const img = q("[data-project-img]", row);
     const phone = q("[data-project-phone]", row);
     const name = q("[data-project-name]", row);
     const info = q("[data-project-info]", row);
-    // Alternate rows mirror the layout, so the name slides in from the other side.
-    const fromLeft = i % 2 === 1;
 
     if (frame)
       gsap.fromTo(
@@ -202,7 +200,7 @@ function projects() {
     if (name)
       gsap.fromTo(
         name,
-        { xPercent: fromLeft ? 6 : -6, opacity: 0.15 },
+        { xPercent: -6, opacity: 0.15 },
         {
           xPercent: 0,
           opacity: 1,

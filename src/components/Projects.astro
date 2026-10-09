@@ -113,8 +113,8 @@ const list = {
 
     <ol class="projects__list" id="projects">
         {
-            items.map((p, i) => (
-                <li class:list={["project", i % 2 === 1 && "project--flip"]} data-project data-uses={p.services.join(" ")}>
+            items.map((p) => (
+                <li class="project" data-project data-uses={p.services.join(" ")}>
                     <div class="project__name-row">
                         <span class="display project__index">{p.index}</span>
                         <h3 class="display project__name" data-project-name>
@@ -344,11 +344,6 @@ const list = {
         object-position: top center;
         border-radius: calc(1.6rem - 5px);
     }
-    .project--flip .project__phone {
-        right: auto;
-        left: -1.5%;
-    }
-
     .project__info {
         display: grid;
         gap: calc(var(--spacing) * 2.5);
