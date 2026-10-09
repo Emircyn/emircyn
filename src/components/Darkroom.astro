@@ -44,8 +44,9 @@ interface Props {
     items: Print[];
     variant?: "page" | "home" | "single";
     label: string;
-    /** A last card on the wall that leads somewhere else (the homepage's "All projects"). */
-    end?: { href: string; title: string; note: string };
+    /** A last card on the wall that leads somewhere else (the homepage's "All projects"),
+        printed as a contact sheet of every project's frame. */
+    end?: { href: string; title: string; note: string; count?: string; frames?: { index: string; name: string; img: ImageMetadata }[] };
     /** Which card starts in focus. */
     start?: number;
     /** The first cards are above the fold on the projects page. */
@@ -120,7 +121,25 @@ const sizes =
                     <li class="card card--end" data-print data-print-end data-index={items.length}>
                         <a class="card__link" href={end.href}>
                             <span class="card__media card__index-card">
-                                <span class="display card__end-title">{end.title}</span>
+                                <span class="card__end-head">
+                                    <span class="display card__end-title">{end.title}</span>
+                                    {end.count && <span class="card__end-count" aria-hidden="true">{end.count}</span>}
+                                </span>
+                                {end.frames && end.frames.length > 0 && (
+                                    <span class="card__sheet" aria-hidden="true">
+                                        {end.frames.map((fr) => (
+                                            <span class="card__frame">
+                                                <span class="card__frame-img">
+                                                    <Image src={fr.img} alt="" widths={[200, 360]} sizes="(max-width: 767px) 16vw, 8vw" loading="lazy" decoding="async" />
+                                                </span>
+                                                <span class="card__frame-cap">
+                                                    <span class="card__frame-index">{fr.index}</span>
+                                                    <span class="card__frame-name" lang="en">{fr.name}</span>
+                                                </span>
+                                            </span>
+                                        ))}
+                                    </span>
+                                )}
                                 <span class="card__end-note pretty">{end.note}</span>
                             </span>
                             <span class="card__go" aria-hidden="true">
@@ -389,13 +408,120 @@ const sizes =
             radial-gradient(rgba(25, 25, 25, 0.06) 0.5px, transparent 0.5px) 0 0 / 5px 5px,
             var(--color-paper);
     }
+    .card__end-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+    }
     .card__end-title {
         font-size: clamp(2rem, 3.6vw, 3.8rem);
+        line-height: 0.9;
         color: var(--color-red);
+    }
+    .card__end-count {
+        font-family: var(--font-mono);
+        font-size: clamp(0.7rem, 0.8vw, 0.8rem);
+        letter-spacing: 0.14em;
+        color: var(--color-ink-soft);
+        padding-top: 0.3em;
     }
     .card__end-note {
         max-width: 26ch;
+        padding-right: 3rem;
         color: var(--color-ink-soft);
+    }
+
+    /* The contact sheet: every project as a frame on one strip of film,
+       sprocket holes above and below, the way a darkroom proofs a roll. */
+    .card__sheet {
+        --holes: radial-gradient(circle, var(--color-paper) 0 1.6px, transparent 2px) 0 50% / 9px 100% repeat-x;
+        position: relative;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(0, 1fr);
+        gap: clamp(4px, 0.5vw, 8px);
+        padding: clamp(12px, 1.2vw, 18px) clamp(6px, 0.6vw, 10px);
+        background: var(--color-ink);
+        border-radius: 3px;
+        transform: rotate(-1.2deg);
+        box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.6);
+    }
+    .card__sheet::before,
+    .card__sheet::after {
+        content: "";
+        position: absolute;
+        left: 6px;
+        right: 6px;
+        height: clamp(8px, 0.8vw, 12px);
+        background: var(--holes);
+        opacity: 0.85;
+    }
+    .card__sheet::before {
+        top: 1px;
+    }
+    .card__sheet::after {
+        bottom: 1px;
+    }
+    .card__frame {
+        display: grid;
+        gap: 0.35rem;
+        min-width: 0;
+        transition: transform 320ms var(--ease-out);
+    }
+    .card__frame-img {
+        position: relative;
+        display: block;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        border-radius: 1px;
+        background: #000;
+    }
+    .card__frame-img img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        filter: grayscale(1) contrast(1.05);
+        transition: filter 320ms var(--ease-out);
+    }
+    .card__frame-cap {
+        display: flex;
+        gap: 0.35rem;
+        min-width: 0;
+        font-family: var(--font-mono);
+        font-size: clamp(0.5rem, 0.55vw, 0.6rem);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(241, 241, 239, 0.7);
+        white-space: nowrap;
+    }
+    .card__frame-index {
+        color: var(--color-red-lit);
+    }
+    .card__frame-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /* In focus, or under the pointer, the proofs come up in colour, one
+       after another, as if the developer were reaching them. */
+    .card--end[data-current] .card__frame-img img,
+    .card--end .card__link:focus-visible .card__frame-img img {
+        filter: none;
+    }
+    .card--end .card__frame:nth-child(2) img { transition-delay: 70ms; }
+    .card--end .card__frame:nth-child(3) img { transition-delay: 140ms; }
+    .card--end .card__frame:nth-child(4) img { transition-delay: 210ms; }
+    .card--end .card__frame:nth-child(5) img { transition-delay: 280ms; }
+    @media (hover: hover) and (pointer: fine) {
+        .card--end .card__link:hover .card__frame-img img {
+            filter: none;
+        }
+        .card--end .card__link:hover .card__frame {
+            transform: translateY(-3px);
+        }
     }
     .card--end .card__go {
         background: var(--color-red);
@@ -595,6 +721,18 @@ const sizes =
         }
         .card__meta {
             right: 3.6rem;
+        }
+        .card__index-card {
+            padding: 1rem;
+        }
+        .card__end-title {
+            font-size: 1.6rem;
+        }
+        .card__end-note {
+            font-size: 0.8rem;
+        }
+        .card__frame-cap {
+            display: none;
         }
     }
 </style>

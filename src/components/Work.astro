@@ -66,7 +66,13 @@ const prints: Print[] = featured.map((p) => ({
             items={prints}
             variant="home"
             label={t("work.heading")}
-            end={{ href: projectsPath(lang), title: t("work.all"), note: t("work.allNote") }}
+            end={{
+                href: projectsPath(lang),
+                title: t("work.all"),
+                note: t("work.allNote"),
+                count: String(all.length).padStart(2, "0"),
+                frames: all.map((p) => ({ index: indexOf(p), name: p.data.name, img: shot(p.id, "desktop", lang) })),
+            }}
         />
     </div>
 </section>
