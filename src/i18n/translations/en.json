@@ -179,11 +179,11 @@
     "intro": "A link page builder, an AI chat and a football app.",
     "open": "Explore the project",
     "all": "All projects",
-    "allNote": "Five projects and how they work."
+    "allNote": "Six projects and how they work."
   },
   "line": {
     "title": "Projects",
-    "description": "Explore five projects by Emircan Erdemci: Porch, Parley, Formadaş, InspireIT and emircyn.com. Product overviews, architecture and development decisions.",
+    "description": "Explore six projects by Emircan Erdemci: Porch, Parley, Formadaş, Offhanger, InspireIT and emircyn.com. Product overviews, architecture and development decisions.",
     "label": "Projects",
     "heading": "Explore the projects",
     "intro": "What I built, my role and the decisions behind each project.",

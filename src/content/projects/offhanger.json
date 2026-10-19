@@ -1,0 +1,81 @@
+{
+  "name": "Offhanger",
+  "order": 4,
+  "year": 2026,
+  "url": "https://offhanger.com/",
+  "host": "offhanger.com",
+  "source": "https://github.com/Emircyn/offhanger",
+  "services": ["interface", "backend", "data"],
+  "tiers": [
+    { "key": "interface", "tech": ["Next.js 16", "React 19", "Tailwind CSS 4", "shadcn/ui"] },
+    { "key": "edge", "tech": ["Cloudflare DNS", "TLS", "Email Routing"] },
+    { "key": "server", "tech": ["Node.js", "Docker Compose", "Dokploy"] },
+    { "key": "data", "tech": ["JSON catalog", "Price history", "Docker volume"] },
+    { "key": "services", "tech": ["Storefront crawlers", "Scheduled updater"] }
+  ],
+  "trace": ["services", "server", "data", "server", "interface"],
+  "en": {
+    "kind": "Fashion deal catalog",
+    "role": "Design, data pipeline and full stack development",
+    "line": "One catalog for real fashion prices across Turkish stores.",
+    "summary": "Offhanger collects in-stock clothing from five Turkish retailers, records price changes and presents comparable offers, recommendations and product histories in one private catalog.",
+    "problem": "Show the actual checkout price and available stock across stores whose catalogs, campaign rules and product identifiers differ.",
+    "contribution": "I designed and built the Next.js interface, standardised the crawling pipeline, product matching, price history, persistent deployment and Cloudflare setup.",
+    "alt": "Offhanger desktop collection page with category filters and a four-column grid of discounted clothing products.",
+    "altMobile": "Offhanger mobile collection page with horizontally scrollable filters and two columns of discounted products.",
+    "tiers": {
+      "interface": { "runs": "Browser", "does": "Collection, search, favourites, recommendations, product comparisons and price-history views." },
+      "edge": { "runs": "Cloudflare", "does": "Proxies the domain, terminates TLS and routes domain email." },
+      "server": { "runs": "Docker on an Oracle Cloud VM", "does": "Serves the standalone Next.js app and runs scheduled catalog updates through Dokploy." },
+      "data": { "runs": "Persistent Docker volume", "does": "Stores the current catalog and append-only price history independently of deployments." },
+      "services": { "runs": "Retail storefronts", "does": "Provides product, stock and campaign-price data collected by store-specific adapters." }
+    },
+    "traceTitle": "Refreshing the catalog",
+    "traceSteps": [
+      "The scheduled updater visits each supported store for men’s and women’s products.",
+      "Store-specific responses are normalised into one product and offer model.",
+      "The catalog is replaced only after a successful run; price changes are appended to history.",
+      "The server notices the changed files without requiring a new build.",
+      "Visitors see current offers, comparisons and recorded price changes."
+    ],
+    "decisions": [
+      { "title": "Checkout prices", "body": "Campaign and basket discounts are folded into the displayed offer instead of showing only the crossed-out storefront price." },
+      { "title": "Safe updates", "body": "A failed crawl leaves the last successful catalog in place, and update runs never overlap." },
+      { "title": "Product matching", "body": "Offers from different stores are grouped by model code so the collection can lead with the cheapest current option." },
+      { "title": "Persistent history", "body": "Catalog and price-history files live on a named Docker volume, separate from disposable application containers." },
+      { "title": "Private launch", "body": "Metadata, response headers and robots.txt keep the site out of search engines until indexing is deliberately enabled." }
+    ]
+  },
+  "tr": {
+    "kind": "Moda fırsat kataloğu",
+    "role": "Tasarım, veri akışı ve full stack geliştirme",
+    "line": "Türkiye’deki mağazaların gerçek moda fiyatları tek katalogda.",
+    "summary": "Offhanger, beş Türkiye mağazasındaki stokta bulunan giyim ürünlerini topluyor; fiyat değişimlerini kaydedip karşılaştırılabilir teklifler, öneriler ve ürün geçmişleriyle özel bir katalogda sunuyor.",
+    "problem": "Katalogları, kampanya kuralları ve ürün tanımları farklı mağazalarda gerçek sepet fiyatını ve mevcut stoğu birlikte göstermek.",
+    "contribution": "Next.js arayüzünü, standartlaştırılmış tarama akışını, ürün eşleştirmeyi, fiyat geçmişini, kalıcı dağıtımı ve Cloudflare yapılandırmasını tasarlayıp geliştirdim.",
+    "alt": "Offhanger masaüstü koleksiyon sayfası; kategori filtreleri ve dört sütunda indirimli giyim ürünleri.",
+    "altMobile": "Offhanger mobil koleksiyon sayfası; yatay kaydırılan filtreler ve iki sütunda indirimli ürünler.",
+    "tiers": {
+      "interface": { "runs": "Tarayıcı", "does": "Koleksiyon, arama, favoriler, öneriler, mağaza karşılaştırmaları ve fiyat geçmişi görünümleri." },
+      "edge": { "runs": "Cloudflare", "does": "Domaini proxy üzerinden sunuyor, TLS’i sonlandırıyor ve domain e-postalarını yönlendiriyor." },
+      "server": { "runs": "Oracle Cloud sanal makinesinde Docker", "does": "Dokploy üzerinden bağımsız Next.js uygulamasını ve zamanlanmış katalog güncellemelerini çalıştırıyor." },
+      "data": { "runs": "Kalıcı Docker birimi", "does": "Güncel kataloğu ve eklemeli fiyat geçmişini dağıtımlardan bağımsız saklıyor." },
+      "services": { "runs": "Mağaza siteleri", "does": "Mağazaya özel bağdaştırıcıların topladığı ürün, stok ve kampanyalı fiyat verilerini sağlıyor." }
+    },
+    "traceTitle": "Kataloğun yenilenmesi",
+    "traceSteps": [
+      "Zamanlanmış güncelleyici, desteklenen her mağazayı kadın ve erkek ürünleri için tarar.",
+      "Mağazaya özel yanıtlar ortak ürün ve teklif modeline dönüştürülür.",
+      "Katalog yalnızca başarılı taramadan sonra değiştirilir; fiyat değişimleri geçmişe eklenir.",
+      "Sunucu, yeni build gerektirmeden değişen dosyaları algılar.",
+      "Ziyaretçiler güncel teklifleri, karşılaştırmaları ve kaydedilmiş fiyat değişimlerini görür."
+    ],
+    "decisions": [
+      { "title": "Sepet fiyatları", "body": "Yalnızca mağazadaki üstü çizili fiyat yerine kampanya ve sepet indirimleri gösterilen teklife dahil ediliyor." },
+      { "title": "Güvenli güncelleme", "body": "Başarısız taramada son başarılı katalog korunuyor ve güncelleme işlemleri üst üste çalışmıyor." },
+      { "title": "Ürün eşleştirme", "body": "Farklı mağazalardaki teklifler model koduyla gruplanıyor; koleksiyonda en ucuz güncel seçenek öne çıkıyor." },
+      { "title": "Kalıcı geçmiş", "body": "Katalog ve fiyat geçmişi, geçici uygulama konteynerlerinden ayrı adlı Docker biriminde tutuluyor." },
+      { "title": "Özel başlangıç", "body": "İndeksleme bilinçli olarak açılana kadar meta veriler, yanıt başlıkları ve robots.txt siteyi arama motorlarına kapalı tutuyor." }
+    ]
+  }
+}
