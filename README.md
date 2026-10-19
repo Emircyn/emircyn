@@ -4,7 +4,7 @@
 
 Currently at [InspireIT](https://inspireit.com.tr/). I build products end to end: the interface, the backend and database behind it, payments, and the AI features inside (LLM integrations, tool calls rendered as interface, inference at the edge). I came to this from the frontend, so the motion, the performance and the detail still get the most care.
 
-**[emircyn.com](https://emircyn.com)** · [LinkedIn](https://www.linkedin.com/in/emircyn/) · [emircan.erdemci@hotmail.com](mailto:emircan.erdemci@hotmail.com) · [Türkçe](https://emircyn.com/tr/)
+**[emircyn.com](https://emircyn.com)** · [LinkedIn](https://www.linkedin.com/in/emircyn/) · [iletisim@emircyn.com](mailto:iletisim@emircyn.com) · [Türkçe](https://emircyn.com/tr/)
 
 **Recent work** (each one has a page with its architecture and decisions on [emircyn.com/en/projects](https://emircyn.com/en/projects/))
 
