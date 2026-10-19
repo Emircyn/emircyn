@@ -37,7 +37,7 @@ const ogLocale = lang === "tr" ? "tr_TR" : "en_US";
 const ogAlternate = lang === "tr" ? "en_US" : "tr_TR";
 // Bump the version when the card image changes: social networks cache link
 // previews by image URL and otherwise keep showing the old card.
-const imageURL = new URL(`${image}?v=7`, Astro.site);
+const imageURL = new URL(`${image}?v=8`, Astro.site);
 // Link previews show about 125 characters; search results about 155.
 const socialDescription = ogType === "profile" ? t("seo.socialDescription") : description;
 
