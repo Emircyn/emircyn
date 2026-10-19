@@ -203,7 +203,7 @@ const nextShot = shot(next.id, "desktop", lang);
                     <Image
                         src={shot(project.id, "desktop", lang)}
                         alt={c.alt}
-                        widths={[720, 1100, 1600, 2000]}
+                        widths={[720, 1100, 1600, 2000, 2880]}
                         sizes="(max-width: 899px) 92vw, 80vw"
                         loading="lazy"
                         decoding="async"
@@ -214,7 +214,7 @@ const nextShot = shot(next.id, "desktop", lang);
                     <Image
                         src={shot(project.id, "mobile", lang)}
                         alt={c.altMobile}
-                        widths={[260, 420, 560]}
+                        widths={[260, 420, 560, 780]}
                         sizes="(max-width: 899px) 34vw, 18vw"
                         loading="lazy"
                         decoding="async"
@@ -238,7 +238,7 @@ const nextShot = shot(next.id, "desktop", lang);
                     <Image
                         src={nextShot}
                         alt=""
-                        widths={[480, 800]}
+                        widths={[480, 800, 1200]}
                         sizes="(max-width: 767px) 70vw, 30vw"
                         loading="lazy"
                         decoding="async"
@@ -756,7 +756,7 @@ const nextShot = shot(next.id, "desktop", lang);
     }
     .dnext__paper {
         display: block;
-        border-radius: clamp(12px, 1.2vw, 20px);
+        border-radius: clamp(0.75rem, 1.2vw, 1.25rem);
         overflow: hidden;
         box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9);
         transform: rotateY(-14deg);

@@ -54,6 +54,16 @@
   }
 }
 
+/* 2K and 4K. Sizes are in rem, so growing the root grows the whole layout in
+   proportion: a 2560 or 3840 wide window gets the 1792 composition scaled up
+   instead of a 96rem column in a sea of black. Below 1792 nothing changes,
+   and a larger browser font setting still wins through max(). */
+@media (min-width: 1792px) {
+  html {
+    font-size: max(100%, calc(100vw / 112));
+  }
+}
+
 @layer base {
   html {
     background-color: var(--color-room);

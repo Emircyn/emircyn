@@ -74,7 +74,7 @@ const strip = [...ticker, ...ticker];
                 <Image
                     src={portrait}
                     alt={name}
-                    widths={[400, 560, 720, 1040, 1400]}
+                    widths={[400, 560, 720, 1040, 1400, 1792]}
                     sizes="(max-width: 767px) 78vw, 44vw"
                     format="avif"
                     quality={60}
@@ -150,7 +150,7 @@ const strip = [...ticker, ...ticker];
     .hero__pin {
         position: relative;
         height: 100dvh;
-        min-height: 600px;
+        min-height: 37.5rem;
         overflow: hidden;
     }
 
@@ -243,7 +243,7 @@ const strip = [...ticker, ...ticker];
         position: absolute;
         right: 1.5vw;
         bottom: -2%;
-        width: min(41vw, 600px);
+        width: min(41vw, 37.5rem);
         height: auto;
         transform-origin: 50% 100%;
         /* The cutout's own alpha edge, drawn in red. Two shadows, one on each
