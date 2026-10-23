@@ -1,10 +1,21 @@
 // @ts-check
 import { readdirSync } from "node:fs";
+import { execSync } from "node:child_process";
 import { defineConfig } from 'astro/config';
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 
 const SITE = "https://emircyn.com";
+
+// When the content last changed: the date of the latest commit, not the date of
+// the build. A lastmod that moves on every build, whether or not anything
+// changed, teaches Google to ignore the field. Without git there is no honest
+// date, so the field is left out.
+let lastmod;
+try {
+  lastmod = new Date(execSync("git log -1 --format=%cI", { stdio: ["ignore", "pipe", "ignore"] }).toString().trim());
+  if (Number.isNaN(lastmod.getTime())) lastmod = undefined;
+} catch {}
 
 // Every page and its twin in the other language. The projects live under a
 // different word in each language (/en/projects/, /tr/projeler/), so the
@@ -52,8 +63,9 @@ export default defineConfig({
       // The root is a language gate, not a page, so the index never
       // advertises a redirect as content.
       filter: (page) => page !== `${SITE}/`,
-      // The build date, so a crawler can tell the pages changed since it last came.
-      lastmod: new Date(),
+      // The date of the last content change, so a crawler can tell the pages
+      // changed since it last came.
+      lastmod,
       // Region-less on purpose: the site is for English and Turkish readers
       // anywhere, not the US and Turkey.
       serialize(item) {

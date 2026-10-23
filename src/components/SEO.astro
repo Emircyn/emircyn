@@ -28,6 +28,11 @@ const {
     ogType = "profile",
 } = Astro.props;
 
+// The root only redirects to a language home, so structured data names the
+// language home as the site's address: Search Console reports a redirecting URL
+// found in markup as "Page with redirect".
+const homeURL = new URL(homePath(lang), Astro.site).href;
+
 const siteTitle =
     title === t("seo.title")
         ? title
@@ -52,7 +57,7 @@ const person = {
     // The professional title, not the title at a particular employer: the
     // record lists those as they were, so worksFor is left out on purpose.
     jobTitle: t("meta.role"),
-    url: Astro.site?.href,
+    url: homeURL,
     image: new URL("/og-image.jpg", Astro.site).href,
     email: `mailto:${site.email}`,
     address: { "@type": "PostalAddress", addressLocality: "Ankara", addressCountry: "TR" },
@@ -74,7 +79,7 @@ const person = {
 const website = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    url: Astro.site?.href,
+    url: homeURL,
     name: t("meta.name"),
     alternateName: "emircyn",
     inLanguage: [lang === "tr" ? "tr-TR" : "en-US"],

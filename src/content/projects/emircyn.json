@@ -2,7 +2,7 @@
   "name": "emircyn.com",
   "order": 6,
   "year": 2026,
-  "url": "https://emircyn.com/",
+  "url": "https://emircyn.com/en/",
   "host": "emircyn.com",
   "source": "https://github.com/Emircyn/emircyn",
   "services": ["interface"],
