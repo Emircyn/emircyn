@@ -511,10 +511,16 @@ const sizes =
     .card--end .card__link:focus-visible .card__frame-img img {
         filter: none;
     }
-    .card--end .card__frame:nth-child(2) img { transition-delay: 70ms; }
-    .card--end .card__frame:nth-child(3) img { transition-delay: 140ms; }
-    .card--end .card__frame:nth-child(4) img { transition-delay: 210ms; }
-    .card--end .card__frame:nth-child(5) img { transition-delay: 280ms; }
+    /* The frame's position is counted on the frame and handed down to its
+       image as a registered integer, so the delay follows the frame. Where
+       sibling-index() is unsupported it falls back to 0: no stagger. */
+    @property --frame-i {
+        syntax: "<integer>";
+        inherits: true;
+        initial-value: 0;
+    }
+    .card--end .card__frame { --frame-i: calc(sibling-index() - 1); }
+    .card--end .card__frame img { transition-delay: calc(var(--frame-i) * 70ms); }
     @media (hover: hover) and (pointer: fine) {
         .card--end .card__link:hover .card__frame-img img {
             filter: none;
@@ -607,14 +613,8 @@ const sizes =
         transform: none;
         transition-duration: 640ms;
     }
-    .now[data-current] > :nth-child(2) {
-        transition-delay: 60ms;
-    }
-    .now[data-current] > :nth-child(3) {
-        transition-delay: 120ms;
-    }
-    .now[data-current] > :nth-child(4) {
-        transition-delay: 180ms;
+    .now[data-current] > * {
+        transition-delay: calc((sibling-index() - 1) * 60ms);
     }
     .now__line {
         color: var(--color-bone);
